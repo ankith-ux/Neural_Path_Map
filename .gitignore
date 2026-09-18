@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+env/
+mahe_venv/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/*
+.codex
+
+# Logs
+*.log
+
+# Local caches and generated artifacts
+cache/
+ookla_q4_2024/
+frontend.zip
+
+# Large data/model artifacts (keep code in repo, host data externally)
+data_bnglr/
+states_india.geojson
+geojson/bangalore_buildings.geojson
+geojson/states_india.geojson
+kepler.gl.html
+osrm-data/

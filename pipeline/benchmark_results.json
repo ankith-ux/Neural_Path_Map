@@ -1,0 +1,285 @@
+{
+  "proposed": {
+    "mae": 1.475819706916809,
+    "rmse": 1.9202554593410295,
+    "r2": 0.9692350625991821
+  },
+  "feature_ablation": {
+    "svf": {
+      "mae": 1.862,
+      "rmse": 2.514,
+      "delta_mae": 0.386,
+      "pct_increase": 26.2
+    },
+    "jio_rf_score": {
+      "mae": 2.527,
+      "rmse": 3.249,
+      "delta_mae": 1.051,
+      "pct_increase": 71.2
+    },
+    "airtel_rf_score": {
+      "mae": 1.918,
+      "rmse": 2.624,
+      "delta_mae": 0.442,
+      "pct_increase": 30.0
+    },
+    "vi_rf_score": {
+      "mae": 2.996,
+      "rmse": 3.703,
+      "delta_mae": 1.52,
+      "pct_increase": 103.0
+    },
+    "bsnl_rf_score": {
+      "mae": 2.345,
+      "rmse": 3.064,
+      "delta_mae": 0.87,
+      "pct_increase": 58.9
+    },
+    "elevation": {
+      "mae": 1.946,
+      "rmse": 2.579,
+      "delta_mae": 0.47,
+      "pct_increase": 31.8
+    },
+    "slope": {
+      "mae": 2.022,
+      "rmse": 2.693,
+      "delta_mae": 0.546,
+      "pct_increase": 37.0
+    },
+    "road_type_enc": {
+      "mae": 2.256,
+      "rmse": 2.74,
+      "delta_mae": 0.78,
+      "pct_increase": 52.9
+    },
+    "segment_length": {
+      "mae": 2.012,
+      "rmse": 2.655,
+      "delta_mae": 0.536,
+      "pct_increase": 36.3
+    },
+    "dominant_band_enc": {
+      "mae": 1.369,
+      "rmse": 2.001,
+      "delta_mae": -0.107,
+      "pct_increase": -7.3
+    }
+  },
+  "aggregation_comparison": {
+    "max": {
+      "mae": 2.614,
+      "rmse": 3.132,
+      "r2": 0.9182
+    },
+    "mean": {
+      "mae": 1.798,
+      "rmse": 2.426,
+      "r2": 0.9509
+    },
+    "sum": {
+      "mae": 2.001,
+      "rmse": 2.676,
+      "r2": 0.9403
+    }
+  },
+  "depth_ablation": {
+    "1": {
+      "mae": 2.174,
+      "rmse": 3.066,
+      "r2": 0.9215
+    },
+    "2": {
+      "mae": 1.925,
+      "rmse": 2.504,
+      "r2": 0.9477
+    },
+    "3": {
+      "mae": 2.182,
+      "rmse": 2.885,
+      "r2": 0.9306
+    }
+  },
+  "loss_comparison": {
+    "Huber (\u03b4=10)": {
+      "mae": 2.237,
+      "rmse": 2.848,
+      "r2": 0.9323
+    },
+    "MSE": {
+      "mae": 1.524,
+      "rmse": 2.126,
+      "r2": 0.9623
+    },
+    "L1 (MAE)": {
+      "mae": 1.656,
+      "rmse": 2.308,
+      "r2": 0.9555
+    }
+  },
+  "feature_stats": {
+    "total_segments": 393221,
+    "labeled_segments": 393221,
+    "coverage_pct": 100.0,
+    "distributions": {
+      "svf": {
+        "mean": 0.208,
+        "std": 0.294,
+        "min": 0.0,
+        "median": 0.056,
+        "max": 1.0
+      },
+      "jio_rf_score": {
+        "mean": 72.924,
+        "std": 11.608,
+        "min": 20.238,
+        "median": 72.355,
+        "max": 100.0
+      },
+      "airtel_rf_score": {
+        "mean": 87.08,
+        "std": 9.996,
+        "min": 23.426,
+        "median": 87.79,
+        "max": 100.0
+      },
+      "vi_rf_score": {
+        "mean": 83.844,
+        "std": 11.098,
+        "min": 22.607,
+        "median": 84.159,
+        "max": 100.0
+      },
+      "bsnl_rf_score": {
+        "mean": 75.001,
+        "std": 11.289,
+        "min": 20.311,
+        "median": 74.529,
+        "max": 100.0
+      },
+      "elevation": {
+        "mean": 891.908,
+        "std": 27.102,
+        "min": 766.0,
+        "median": 897.0,
+        "max": 957.0
+      },
+      "slope": {
+        "mean": 0.874,
+        "std": 2.198,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 75.046
+      },
+      "road_type_enc": {
+        "mean": 3.941,
+        "std": 0.361,
+        "min": 0.0,
+        "median": 4.0,
+        "max": 5.0
+      },
+      "segment_length": {
+        "mean": 61.62,
+        "std": 66.131,
+        "min": 0.521,
+        "median": 42.459,
+        "max": 6884.931
+      },
+      "dominant_band_enc": {
+        "mean": 0.345,
+        "std": 0.756,
+        "min": 0.0,
+        "median": 0.0,
+        "max": 2.0
+      }
+    },
+    "correlations": {
+      "svf": -0.0509,
+      "jio_rf_score": 0.8304,
+      "airtel_rf_score": 0.85,
+      "vi_rf_score": 0.8619,
+      "bsnl_rf_score": 0.8195,
+      "elevation": 0.1769,
+      "slope": 0.0122,
+      "road_type_enc": -0.1779,
+      "segment_length": 0.0199,
+      "dominant_band_enc": -0.1483
+    },
+    "carrier_coverage": {
+      "jio": {
+        "segments": 393221,
+        "pct": 100.0
+      },
+      "airtel": {
+        "segments": 393221,
+        "pct": 100.0
+      },
+      "vi": {
+        "segments": 393221,
+        "pct": 100.0
+      },
+      "bsnl": {
+        "segments": 393221,
+        "pct": 100.0
+      }
+    },
+    "svf_analysis": {
+      "mean": 0.208,
+      "dense_canyon_pct": 82.2,
+      "open_road_pct": 5.5
+    },
+    "terrain_shadow": {
+      "shadowed_segments": 240,
+      "avg_score_shadowed": 27.1,
+      "avg_score_clear": 79.7,
+      "degradation": 52.7
+    }
+  },
+  "spatial_error": {
+    "by_road_type": {
+      "Trunk": {
+        "mae": "1.46",
+        "n": 107
+      },
+      "Primary": {
+        "mae": "1.97",
+        "n": 180
+      },
+      "Secondary": {
+        "mae": "2.05",
+        "n": 1154
+      },
+      "Tertiary/Residential": {
+        "mae": "1.45",
+        "n": 31316
+      },
+      "Service": {
+        "mae": "1.29",
+        "n": 224
+      }
+    },
+    "by_svf": {
+      "Dense Canyon (0-0.3)": {
+        "mae": "1.36",
+        "n": 22250
+      },
+      "Moderate (0.3-0.6)": {
+        "mae": "1.85",
+        "n": 4749
+      },
+      "Suburban (0.6-0.85)": {
+        "mae": "1.58",
+        "n": 2117
+      },
+      "Open (0.85-1.0)": {
+        "mae": "1.63",
+        "n": 3865
+      }
+    }
+  },
+  "inference_speed": {
+    "avg_ms": 65.3,
+    "std_ms": 0.3,
+    "segments": 393221
+  }
+}

@@ -1,19 +1,99 @@
 import { useStore } from '../../store';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Moon, Sun } from 'lucide-react';
 import maplibregl from 'maplibre-gl';
-import { cellToBoundary, cellToLatLng } from 'h3-js';
+import { cellToLatLng } from 'h3-js';
 import { useDebounce } from 'use-debounce';
 import { api } from '../../api/client';
-import { H3_COLOR_EXPRESSION } from '../../constants/colors';
+import MapStylePicker from '../MapStylePicker';
 import {
     estimateExpectedBandwidth,
     getSignalProfilePointForProgress,
     getPreferredRouteIndex,
     getRouteConnectivity,
     getRouteDuration,
+    getRouteSafetyScore,
+    getRouteSuvScore,
 } from '../../utils/routeBlend';
 
 const NAVIGATION_PROGRESS_STEP = 0.08;
+
+const ARROW_SVG = `<svg viewBox="0 0 24 24" width="32" height="32" style="filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));">
+  <path d="M12 2L2 22l10-4 10 4L12 2z" fill="#10b981" stroke="#ffffff" stroke-width="1.5" stroke-linejoin="round"/>
+</svg>`;
+
+function getMapLibreStyle(mapStyle, isDarkMode) {
+    if (mapStyle === 'terrain') {
+        return {
+            version: 8,
+            sources: {
+                opentopo: {
+                    type: 'raster',
+                    tiles: ['https://a.tile.opentopomap.org/{z}/{x}/{y}.png'],
+                    tileSize: 256,
+                    maxzoom: 17,
+                    attribution: 'Map data: OpenStreetMap contributors, SRTM | OpenTopoMap',
+                },
+            },
+            layers: [
+                { id: 'terrain-layer', type: 'raster', source: 'opentopo', minzoom: 0 },
+            ],
+        };
+    }
+
+    if (mapStyle === 'hybrid') {
+        return {
+            version: 8,
+            sources: {
+                satellite: {
+                    type: 'raster',
+                    tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+                    maxzoom: 19,
+                    attribution: 'Tiles © Esri',
+                },
+                roads: {
+                    type: 'raster',
+                    tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'],
+                    maxzoom: 19,
+                },
+            },
+            layers: [
+                { id: 'satellite-layer', type: 'raster', source: 'satellite', minzoom: 0 },
+                { id: 'roads-layer', type: 'raster', source: 'roads', minzoom: 0, paint: { 'raster-opacity': 0.65 } },
+            ],
+        };
+    }
+
+    return isDarkMode
+        ? 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+        : 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
+}
+
+function getNavigationCamera(mode, bearing = 30) {
+    if (mode === 'top-down') return { zoom: 15, pitch: 0, bearing: 0 };
+    if (mode === 'drone') return { zoom: 15.5, pitch: 45, bearing };
+    return { zoom: 16.5, pitch: 65, bearing };
+}
+
+function routesShareGeometry(a, b) {
+    const coordsA = a?.geometry?.coordinates;
+    const coordsB = b?.geometry?.coordinates;
+
+    if (!coordsA?.length || !coordsB?.length || coordsA.length !== coordsB.length) {
+        return false;
+    }
+
+    return coordsA.every((coord, index) => (
+        coord[0] === coordsB[index]?.[0] && coord[1] === coordsB[index]?.[1]
+    ));
+}
+
+function findDistinctRoute(indexedRoutes, primary, preferredRoutes = []) {
+    const preferred = preferredRoutes.find(({ route }) => route && route !== primary && !routesShareGeometry(route, primary));
+    if (preferred) return preferred;
+
+    return indexedRoutes.find(({ route }) => route && route !== primary && !routesShareGeometry(route, primary));
+}
 
 function pickDisplayRoutes(routes) {
     if (!Array.isArray(routes) || routes.length === 0) {
@@ -24,7 +104,45 @@ function pickDisplayRoutes(routes) {
         return [routes[0], routes[0]];
     }
 
+    const persona = useStore.getState().personaPreset;
     const indexedRoutes = routes.map((route, index) => ({ route, index }));
+
+    // When safe_commute is active, pick safest vs fastest
+    if (persona === 'safe_commute') {
+        const safetySorted = [...indexedRoutes].sort((a, b) => {
+            const safetyDelta = getRouteSafetyScore(b.route) - getRouteSafetyScore(a.route);
+            if (safetyDelta !== 0) return safetyDelta;
+            return getRouteDuration(a.route) - getRouteDuration(b.route);
+        });
+        const speedSorted = [...indexedRoutes].sort((a, b) => {
+            return getRouteDuration(a.route) - getRouteDuration(b.route);
+        });
+        const taggedSafestRoute = indexedRoutes.find(({ route }) => route.is_safest_route || route.route_role === 'safest');
+        const safestRoute = taggedSafestRoute || safetySorted[0];
+        const comparisonRoute = findDistinctRoute(indexedRoutes, safestRoute.route, speedSorted);
+
+        return [safestRoute.route, comparisonRoute?.route || safestRoute.route];
+    }
+
+    if (persona === 'suv') {
+        const suvSorted = [...indexedRoutes].sort((a, b) => {
+            const suvDelta = getRouteSuvScore(b.route) - getRouteSuvScore(a.route);
+            if (suvDelta !== 0) return suvDelta;
+
+            return getRouteDuration(a.route) - getRouteDuration(b.route);
+        });
+        const speedSorted = [...indexedRoutes].sort((a, b) => {
+            const durationDelta = getRouteDuration(a.route) - getRouteDuration(b.route);
+            if (durationDelta !== 0) return durationDelta;
+
+            return getRouteSuvScore(b.route) - getRouteSuvScore(a.route);
+        });
+        const taggedSuvRoute = indexedRoutes.find(({ route }) => route.is_suv_route || route.route_role === 'suv_optimal');
+        const suvRoute = taggedSuvRoute || suvSorted[0];
+        const comparisonRoute = findDistinctRoute(indexedRoutes, suvRoute.route, speedSorted);
+
+        return [suvRoute.route, comparisonRoute?.route || suvRoute.route];
+    }
 
     const connectivitySorted = [...indexedRoutes].sort((a, b) => {
         const connectivityDelta = getRouteConnectivity(b.route) - getRouteConnectivity(a.route);
@@ -46,9 +164,9 @@ function pickDisplayRoutes(routes) {
     const taggedSignalRoute = indexedRoutes.find(({ route }) => route.is_best_signal_route);
     const taggedFastestRoute = indexedRoutes.find(({ route }) => route.is_fastest_route);
     const connectivityRoute = taggedSignalRoute || connectivitySorted[0];
-    const speedRoute = taggedFastestRoute || speedSorted[0];
+    const speedRoute = findDistinctRoute(indexedRoutes, connectivityRoute.route, taggedFastestRoute ? [taggedFastestRoute, ...speedSorted] : speedSorted);
 
-    return [connectivityRoute.route, speedRoute.route];
+    return [connectivityRoute.route, speedRoute?.route || connectivityRoute.route];
 }
 
 function normalizeDisplayRoutePair(signalRoute, speedRoute) {
@@ -258,11 +376,31 @@ export default function MapContainer() {
         setRouteCacheKey,
         setCurrentNavSignal,
         setWeatherConditions,
+        setOriginCoords,
+        setDestinationCoords,
+        setOriginText,
+        setDestinationText,
+        mapSelectionMode,
+        setMapSelectionMode,
+        isDarkMode,
+        toggleDarkMode,
+        mapStyle,
+        cameraMode,
     } = useStore();
     const mapContainer = useRef(null);
     const map = useRef(null);
     const routeGeometry = useRef(null);
+    const originMarkerRef = useRef(null);
+    const destMarkerRef = useRef(null);
     const animationFrame = useRef(null);
+    const [is3D, setIs3D] = useState(true);
+    const [isCameraDetached, setIsCameraDetached] = useState(false);
+
+    const carMarkerRef = useRef(null);
+    const isNavigatingRef = useRef(isNavigating);
+    const cameraDetachedRef = useRef(false);
+    const isAnimatingRecenterRef = useRef(false);
+    const carBearingRef = useRef(0);
     const [mapLoaded, setMapLoaded] = React.useState(false);
     const [debouncedSimulationHoursAhead] = useDebounce(simulationHoursAhead, 250);
 
@@ -281,8 +419,28 @@ export default function MapContainer() {
         map.current.getSource('route-b').setData(emptyLine);
         map.current.getSource('route-signal').setData(emptyFC);
         map.current.getSource('dead-zones').setData(emptyFC);
-        map.current.getSource('car').setData({ type: 'Feature', geometry: { type: 'Point', coordinates: [77.5946, 12.9716] } });
     };
+
+    // Sync markers if coords change from elsewhere
+    useEffect(() => {
+        if (originMarkerRef.current) {
+            if (originCoords && !isNavigating) {
+                originMarkerRef.current.setLngLat(originCoords).addTo(map.current);
+            } else {
+                originMarkerRef.current.remove();
+            }
+        }
+    }, [originCoords, isNavigating]);
+
+    useEffect(() => {
+        if (destMarkerRef.current) {
+            if (destinationCoords && !isNavigating) {
+                destMarkerRef.current.setLngLat(destinationCoords).addTo(map.current);
+            } else {
+                destMarkerRef.current.remove();
+            }
+        }
+    }, [destinationCoords, isNavigating]);
 
     // Helper function to update map sources with backend route data
     const updateMapWithRoutes = (routes) => {
@@ -325,9 +483,6 @@ export default function MapContainer() {
             map.current.getSource('route-b').setData(routeGeometry.current.routes[1].geometry);
             map.current.getSource('route-signal').setData(buildSignalRouteFeatures(selectedInitialRoute));
             map.current.getSource('dead-zones').setData({ type: 'FeatureCollection', features: deadZoneFeatures });
-
-            // Reset car to start
-            map.current.getSource('car').setData({ type: 'Feature', geometry: { type: 'Point', coordinates: coordsA[0] } });
         }
     };
 
@@ -337,67 +492,61 @@ export default function MapContainer() {
 
         map.current = new maplibregl.Map({
             container: mapContainer.current,
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+            style: getMapLibreStyle(mapStyle, isDarkMode),
             center: [77.5946, 12.9716],
-            zoom: 12
+            zoom: 12,
+            maxPitch: 85,
+            antialias: true,
+            maxTileCacheSize: 2000,
+            fadeDuration: 300,
+            attributionControl: false,
         });
+        map.current.addControl(new maplibregl.AttributionControl(), 'bottom-left');
 
         map.current.on('load', async () => {
             try {
+                const originEl = document.createElement('div');
+                originEl.className = 'w-4 h-4 bg-sky-400 border-2 border-white rounded-full shadow-[0_0_15px_rgba(56,189,248,0.8)] cursor-grab active:cursor-grabbing';
+                originMarkerRef.current = new maplibregl.Marker({ element: originEl, draggable: true });
+                if (originCoords) originMarkerRef.current.setLngLat(originCoords).addTo(map.current);
+                originMarkerRef.current.on('dragend', () => {
+                    const lngLat = originMarkerRef.current.getLngLat();
+                    setOriginText('Pinned origin');
+                    setOriginCoords([lngLat.lng, lngLat.lat]);
+                });
+
+                const destEl = document.createElement('div');
+                destEl.className = 'w-4 h-4 bg-emerald-400 border-2 border-white rounded-full shadow-[0_0_15px_rgba(52,211,153,0.8)] cursor-grab active:cursor-grabbing';
+                destMarkerRef.current = new maplibregl.Marker({ element: destEl, draggable: true });
+                if (destinationCoords) destMarkerRef.current.setLngLat(destinationCoords).addTo(map.current);
+                destMarkerRef.current.on('dragend', () => {
+                    const lngLat = destMarkerRef.current.getLngLat();
+                    setDestinationText('Pinned destination');
+                    setDestinationCoords([lngLat.lng, lngLat.lat]);
+                });
+
+                map.current.on('click', (event) => {
+                    const mode = useStore.getState().mapSelectionMode;
+                    if (!mode) return;
+
+                    const coords = [event.lngLat.lng, event.lngLat.lat];
+                    if (mode === 'origin') {
+                        setOriginText('Pinned origin');
+                        setOriginCoords(coords);
+                        originMarkerRef.current?.setLngLat(coords).addTo(map.current);
+                    } else if (mode === 'destination') {
+                        setDestinationText('Pinned destination');
+                        setDestinationCoords(coords);
+                        destMarkerRef.current?.setLngLat(coords).addTo(map.current);
+                    }
+                    setMapSelectionMode(null);
+                });
+
                 // ═══════════════════════════════════════════════════
                 // 1. INITIALIZE EMPTY SOURCES & LAYERS
                 // ═══════════════════════════════════════════════════
                 const emptyFC = { type: 'FeatureCollection', features: [] };
                 const emptyLine = { type: 'Feature', geometry: { type: 'LineString', coordinates: [] } };
-
-                map.current.addSource('heatmap', { type: 'geojson', data: emptyFC });
-                map.current.addSource('heatmap-points', { type: 'geojson', data: emptyFC });
-                map.current.addLayer({
-                    id: 'coverage-heat',
-                    type: 'heatmap',
-                    source: 'heatmap-points',
-                    paint: {
-                        'heatmap-weight': [
-                            'interpolate', ['linear'], ['get', 'score'],
-                            0, 0.08,
-                            45, 0.4,
-                            75, 0.82,
-                            100, 1
-                        ],
-                        'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 10, 0.48, 13, 1.1, 16, 1.7],
-                        'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 10, 18, 13, 28, 16, 42],
-                        'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 10, 0.3, 13, 0.38, 16, 0.46],
-                        'heatmap-color': [
-                            'interpolate', ['linear'], ['heatmap-density'],
-                            0, 'rgba(15,23,42,0)',
-                            0.18, 'rgba(239,68,68,0.2)',
-                            0.36, 'rgba(249,115,22,0.34)',
-                            0.56, 'rgba(250,204,21,0.46)',
-                            0.76, 'rgba(187,247,208,0.56)',
-                            1, 'rgba(74,222,128,0.68)'
-                        ],
-                    }
-                });
-                map.current.addLayer({
-                    id: 'heatmap-fill',
-                    type: 'fill',
-                    source: 'heatmap',
-                    paint: {
-                        'fill-color': H3_COLOR_EXPRESSION,
-                        'fill-opacity': ['interpolate', ['linear'], ['zoom'], 10, 0.04, 13, 0.07, 16, 0.11]
-                    }
-                });
-                map.current.addLayer({
-                    id: 'heatmap-border',
-                    type: 'line',
-                    source: 'heatmap',
-                    layout: { 'line-join': 'round', 'line-cap': 'round' },
-                    paint: {
-                        'line-color': H3_COLOR_EXPRESSION,
-                        'line-width': ['interpolate', ['linear'], ['zoom'], 11, 0, 13, 0.45, 16, 1.1],
-                        'line-opacity': ['interpolate', ['linear'], ['zoom'], 11, 0, 13, 0.2, 16, 0.42]
-                    }
-                });
 
                 // ═══════════════════════════════════════════════════
                 // 2. SIGNAL TOWER MARKERS
@@ -518,20 +667,20 @@ export default function MapContainer() {
                 });
 
                 // ═══════════════════════════════════════════════════
-                // 5. VEHICLE MARKER
+                // 5. VEHICLE MARKER (HTML)
                 // ═══════════════════════════════════════════════════
-                map.current.addSource('car', {
-                    type: 'geojson',
-                    data: { type: 'Feature', geometry: { type: 'Point', coordinates: [77.5946, 12.9716] } }
-                });
-                map.current.addLayer({
-                    id: 'car-pulse', type: 'circle', source: 'car',
-                    paint: { 'circle-color': '#3b82f6', 'circle-radius': 16, 'circle-opacity': 0, 'circle-blur': 0.5, 'circle-opacity-transition': { duration: 500 } }
-                });
-                map.current.addLayer({
-                    id: 'car-core', type: 'circle', source: 'car',
-                    paint: { 'circle-color': '#ffffff', 'circle-radius': 5, 'circle-opacity': 0, 'circle-opacity-transition': { duration: 500 } }
-                });
+                const markerEl = document.createElement('div');
+                markerEl.className = 'nav-arrow-marker';
+                markerEl.innerHTML = ARROW_SVG;
+                markerEl.style.display = 'none';
+                
+                carMarkerRef.current = new maplibregl.Marker({
+                    element: markerEl,
+                    pitchAlignment: 'map',
+                    rotationAlignment: 'map'
+                })
+                .setLngLat([77.5946, 12.9716])
+                .addTo(map.current);
 
 
                 // ═══════════════════════════════════════════════════
@@ -574,10 +723,10 @@ export default function MapContainer() {
         });
     }, []);
 
-    // --- CARRIER CHANGE: Refresh heatmap + towers ---
+    // --- CARRIER CHANGE: Refresh towers ---
     useEffect(() => {
         if (!mapLoaded || !map.current) return;
-        if (!map.current.getSource('heatmap') || !map.current.getSource('heatmap-points') || !map.current.getSource('towers')) return;
+        if (!map.current.getSource('towers')) return;
 
         const refreshCarrierData = async () => {
             console.log(`[MAP] Refreshing data for carrier: ${carrier}`);
@@ -586,26 +735,7 @@ export default function MapContainer() {
 
             console.log(`[MAP] Received ${tileData.length} tiles for ${carrier}`);
 
-            // Rebuild soft heat coverage. Hex fills stay subtle; the point layer gives the heatmap feel.
-            const heatFeatures = tileData.map(tile => {
-                const h3Id = tile.h3_id || tile.h3 || tile.id;
-                if (!h3Id) return null;
-                try {
-                    const coords = cellToBoundary(h3Id, true);
-                    if (coords[0][0] !== coords[coords.length - 1][0] || coords[0][1] !== coords[coords.length - 1][1]) {
-                        coords.push(coords[0]);
-                    }
-                    return {
-                        type: 'Feature',
-                        properties: { score: tile.score || 50, confidence: tile.confidence || 0.8 },
-                        geometry: { type: 'Polygon', coordinates: [coords] }
-                    };
-                } catch { return null; }
-            }).filter(Boolean);
-
-            map.current.getSource('heatmap').setData({ type: 'FeatureCollection', features: heatFeatures });
-
-            // Rebuild tower/heat points from the carrier-provided tile centers first.
+            // Rebuild tower points from the carrier-provided tile centers.
             const towerFeatures = tileData
                 .map(tile => {
                     const h3Id = tile.h3_id || tile.h3 || tile.id;
@@ -623,7 +753,6 @@ export default function MapContainer() {
                 })
                 .filter(Boolean);
 
-            map.current.getSource('heatmap-points').setData({ type: 'FeatureCollection', features: towerFeatures });
             map.current.getSource('towers').setData({ type: 'FeatureCollection', features: towerFeatures });
         };
 
@@ -737,28 +866,99 @@ export default function MapContainer() {
             useStore.getState().alpha,
         );
 
+        const handleInteractStart = (e) => {
+            if (e.originalEvent) {
+                cameraDetachedRef.current = true;
+                setIsCameraDetached(true);
+                clearTimeout(interactionTimeout);
+            }
+        };
+        
+        // In this new model, we don't automatically snap back!
+        // The user must press "Recenter", just like Google Maps.
+        const handleInteractEnd = (e) => {
+            // Do nothing
+        };
+
         if (isNavigating) {
             const initialRoute = routeGeometry.current.routes[initialRouteIndex];
             const initialSignal = buildLiveSignalSnapshot(initialRoute, 0);
 
-            // 1. Show the car marker
-            map.current.setPaintProperty('car-core', 'circle-opacity', 1);
-            map.current.setPaintProperty('car-pulse', 'circle-opacity', 0.6);
-            map.current.setPaintProperty('car-pulse', 'circle-color', initialSignal.color);
+            // 1. Position and show the car marker immediately at the start of the route
+            if (carMarkerRef.current) {
+                const startCoords = initialRoute.geometry.coordinates[0];
+                const nextCoords = initialRoute.geometry.coordinates[1];
+                
+                carMarkerRef.current.setLngLat(startCoords);
+                if (startCoords && nextCoords) {
+                    const bearing = Math.atan2(nextCoords[0] - startCoords[0], nextCoords[1] - startCoords[1]) * 180 / Math.PI;
+                    carMarkerRef.current.setRotation(bearing);
+                    carBearingRef.current = bearing;
+                }
+
+                const el = carMarkerRef.current.getElement();
+                el.style.display = 'block';
+                const svgPath = el.querySelector('path');
+                if (svgPath) {
+                    svgPath.setAttribute('fill', initialSignal.color);
+                }
+            }
             useStore.getState().setCurrentNavSignal(initialSignal);
 
+            // Reset detachment state when starting a new navigation session
+            cameraDetachedRef.current = false;
+            setIsCameraDetached(false);
+            isAnimatingRecenterRef.current = false;
+
             // 2. Fly the camera in
+            const initialCameraMode = useStore.getState().cameraMode || 'driver';
+            let initialPitch = 65;
+            let initialZoom = 16.5;
+            let initialBearing = 30;
+
+            if (initialCameraMode === 'top-down') {
+                initialPitch = 0;
+                initialZoom = 15;
+                initialBearing = 0;
+            } else if (initialCameraMode === 'drone') {
+                initialPitch = 45;
+                initialZoom = 15.5;
+            }
+
             map.current.flyTo({
                 center: initialRoute.geometry.coordinates[0],
-                zoom: 16.5,
-                pitch: 65,
-                bearing: 30,
+                zoom: initialZoom,
+                pitch: initialPitch,
+                bearing: initialBearing,
                 essential: true,
                 duration: 2000
             });
 
+            map.current.on('dragstart', handleInteractStart);
+            map.current.on('zoomstart', handleInteractStart);
+            map.current.on('rotatestart', handleInteractStart);
+            map.current.on('pitchstart', handleInteractStart);
+            
+            map.current.on('dragend', handleInteractEnd);
+            map.current.on('zoomend', handleInteractEnd);
+            map.current.on('rotateend', handleInteractEnd);
+            map.current.on('pitchend', handleInteractEnd);
+
             // 3. Start driving the car down the road!
-            let i = 0;
+            let currentDist = 0;
+            let lastStoreUpdateTime = 0;
+            
+            // Cache the SVG path to avoid querying the DOM every frame (which causes severe lag)
+            let carSvgPath = null;
+            if (carMarkerRef.current) {
+                carSvgPath = carMarkerRef.current.getElement().querySelector('path');
+            }
+
+            // Simple Euclidean distance (sufficient for small city scales to normalize speed)
+            const calcDist = (p1, p2) => Math.sqrt((p2[0]-p1[0])**2 + (p2[1]-p1[1])**2);
+            
+            // Speed constant (degrees per frame roughly)
+            const CAR_SPEED = 0.00004;
 
             const drive = () => {
                 // Dynamically check the slider state every single frame!
@@ -767,44 +967,110 @@ export default function MapContainer() {
                 const activeRoute = routeGeometry.current.routes[currentRouteIndex];
                 const coords = activeRoute.geometry.coordinates;
 
-                // Ensure we don't crash if they switch to a route with fewer coordinates
-                if (Math.floor(i) >= coords.length - 1) {
-                    i = coords.length - 1.1;
+                // Build cumulative distances for the current route
+                const dists = [0];
+                for (let j = 1; j < coords.length; j++) {
+                    dists[j] = dists[j - 1] + calcDist(coords[j - 1], coords[j]);
                 }
+                const totalDist = dists[dists.length - 1];
 
-                if (i < coords.length - 1) {
-                    const idx = Math.floor(i);
-                    const fraction = i - idx;
-
-                    const p1 = coords[idx];
-                    const p2 = coords[idx + 1];
-
-                    // Linear interpolation for perfectly smooth movement across frames
-                    const lng = p1[0] + (p2[0] - p1[0]) * fraction;
-                    const lat = p1[1] + (p2[1] - p1[1]) * fraction;
-                    const currentCoord = [lng, lat];
-
-                    map.current.getSource('car').setData({
-                        type: 'Feature',
-                        geometry: { type: 'Point', coordinates: currentCoord }
-                    });
-
-                    // Use jumpTo to prevent camera animation conflicts (this fixes the jitter!)
-                    map.current.jumpTo({ center: currentCoord });
-
-                    // Update progress so UI updates dynamically
-                    const progress = Math.min(i / Math.max(coords.length - 1, 1), 1);
-                    const liveSignal = buildLiveSignalSnapshot(activeRoute, progress);
-                    map.current.setPaintProperty('car-pulse', 'circle-color', liveSignal.color);
-                    useStore.getState().setCurrentNavSignal(liveSignal);
-                    useStore.getState().setNavProgress(progress);
-
-                    i += NAVIGATION_PROGRESS_STEP;
-                    animationFrame.current = requestAnimationFrame(drive);
-                } else {
+                if (currentDist >= totalDist) {
                     useStore.getState().setCurrentNavSignal(buildLiveSignalSnapshot(activeRoute, 1));
                     useStore.getState().setNavProgress(1); // Arrived
+                    return;
                 }
+
+                // Find which segment we are currently in
+                let idx = 0;
+                while (idx < dists.length - 1 && dists[idx + 1] < currentDist) {
+                    idx++;
+                }
+
+                const segmentStartDist = dists[idx];
+                const segmentEndDist = dists[idx + 1];
+                const segmentLen = segmentEndDist - segmentStartDist;
+                
+                let fraction = 0;
+                if (segmentLen > 0) {
+                    fraction = (currentDist - segmentStartDist) / segmentLen;
+                }
+
+                const p1 = coords[idx];
+                const p2 = coords[idx + 1] || p1;
+
+                // Linear interpolation for perfectly smooth movement across frames
+                const lng = p1[0] + (p2[0] - p1[0]) * fraction;
+                const lat = p1[1] + (p2[1] - p1[1]) * fraction;
+                const currentCoord = [lng, lat];
+                
+                const bearing = Math.atan2(p2[0] - p1[0], p2[1] - p1[1]) * 180 / Math.PI;
+                carBearingRef.current = bearing;
+
+                if (carMarkerRef.current) {
+                    carMarkerRef.current.setLngLat(currentCoord);
+                    carMarkerRef.current.setRotation(bearing);
+                }
+
+                // Only lock the camera to the car if the user isn't actively exploring the map
+                if (!cameraDetachedRef.current && !isAnimatingRecenterRef.current) {
+                    const mode = useStore.getState().cameraMode || 'driver';
+                    const currentBearing = map.current.getBearing();
+                    const currentPitch = map.current.getPitch();
+                    const currentZoom = map.current.getZoom();
+
+                    let targetPitch = 65;
+                    let targetZoom = 16.5;
+                    let targetBearing = bearing;
+
+                    if (mode === 'top-down') {
+                        targetPitch = 0;
+                        targetZoom = 15;
+                        targetBearing = 0;
+                    } else if (mode === 'drone') {
+                        targetPitch = 45;
+                        targetZoom = 15.5;
+                        targetBearing = bearing;
+                    } else { // 'driver'
+                        targetPitch = 65;
+                        targetZoom = 16.5;
+                        targetBearing = bearing;
+                    }
+
+                    // Smoothly adjust bearing so it doesn't snap violently on curvy roads
+                    let bearingDiff = targetBearing - currentBearing;
+                    if (bearingDiff > 180) bearingDiff -= 360;
+                    if (bearingDiff < -180) bearingDiff += 360;
+                    
+                    const smoothedBearing = currentBearing + (bearingDiff * 0.1);
+                    const smoothedPitch = currentPitch + ((targetPitch - currentPitch) * 0.1);
+                    const smoothedZoom = currentZoom + ((targetZoom - currentZoom) * 0.1);
+
+                    map.current.jumpTo({ 
+                        center: currentCoord,
+                        bearing: smoothedBearing,
+                        pitch: smoothedPitch,
+                        zoom: smoothedZoom
+                    });
+                }
+
+                // Update progress so UI updates dynamically
+                const progress = Math.min(currentDist / Math.max(totalDist, 0.0001), 1);
+                const liveSignal = buildLiveSignalSnapshot(activeRoute, progress);
+                
+                if (carSvgPath) {
+                    carSvgPath.setAttribute('fill', liveSignal.color);
+                }
+                
+                // Throttle state updates to max 5 times a second to prevent heavy React re-render lag
+                const now = Date.now();
+                if (now - lastStoreUpdateTime > 200) {
+                    useStore.getState().setCurrentNavSignal(liveSignal);
+                    useStore.getState().setNavProgress(progress);
+                    lastStoreUpdateTime = now;
+                }
+
+                currentDist += CAR_SPEED;
+                animationFrame.current = requestAnimationFrame(drive);
             };
 
             // Wait for the flyTo animation to finish before hitting the gas
@@ -812,8 +1078,9 @@ export default function MapContainer() {
 
         } else {
             // Hide the car
-            map.current.setPaintProperty('car-core', 'circle-opacity', 0);
-            map.current.setPaintProperty('car-pulse', 'circle-opacity', 0);
+            if (carMarkerRef.current) {
+                carMarkerRef.current.getElement().style.display = 'none';
+            }
             if (animationFrame.current) cancelAnimationFrame(animationFrame.current);
             useStore.getState().setCurrentNavSignal(null);
 
@@ -835,42 +1102,112 @@ export default function MapContainer() {
             if (!useStore.getState().isNavigating) {
                 useStore.getState().setCurrentNavSignal(null);
             }
+            if (map.current) {
+                // Remove the interaction listeners we added for navigation
+                map.current.off('dragstart', handleInteractStart);
+                map.current.off('zoomstart', handleInteractStart);
+                map.current.off('rotatestart', handleInteractStart);
+                map.current.off('pitchstart', handleInteractStart);
+                map.current.off('dragend', handleInteractEnd);
+                map.current.off('zoomend', handleInteractEnd);
+                map.current.off('rotateend', handleInteractEnd);
+                map.current.off('pitchend', handleInteractEnd);
+            }
         };
     }, [isNavigating]);
 
     const recenterMap = () => {
-        if (map.current) map.current.flyTo({ center: [77.5946, 12.9716], zoom: 12, pitch: 0, bearing: 0, essential: true });
+        if (!map.current) return;
+
+        if (isNavigating) {
+            setIsCameraDetached(false);
+            if (carMarkerRef.current) {
+                isAnimatingRecenterRef.current = true;
+                map.current.flyTo({
+                    center: carMarkerRef.current.getLngLat(),
+                    pitch: 65,
+                    bearing: carBearingRef.current,
+                    zoom: 16.5,
+                    duration: 1000
+                });
+                
+                // Once flyTo completes, let drive() take over again
+                map.current.once('moveend', () => {
+                    isAnimatingRecenterRef.current = false;
+                    cameraDetachedRef.current = false;
+                });
+            }
+        } else {
+            if (!originCoords) return;
+            map.current.flyTo({
+                center: originCoords,
+                zoom: 14,
+                pitch: 0,
+                bearing: 0,
+                duration: 1500
+            });
+        }
+    };
+
+    const toggle3D = () => {
+        if (!map.current) return;
+        const nextIs3D = !is3D;
+        setIs3D(nextIs3D);
+        map.current.easeTo({
+            pitch: nextIs3D ? 60 : 0,
+            bearing: nextIs3D ? (map.current.getBearing() || 15) : 0,
+            duration: 800,
+        });
     };
 
     return (
         <>
             <div ref={mapContainer} className="w-screen h-screen" />
 
-            <div className="absolute top-[22rem] right-6 z-10 w-48 max-lg:w-40 bg-slate-950/85 backdrop-blur-xl border border-white/15 rounded-xl px-3 py-2.5 shadow-[0_14px_40px_rgba(0,0,0,0.38)]">
-                <div className="flex items-center justify-between gap-2">
-                    <span className="text-[9px] font-bold tracking-widest uppercase text-slate-300">Route signal</span>
-                    <span className={`text-[8px] font-bold uppercase tracking-wider ${alpha < 0.5 ? 'text-emerald-300' : 'text-sky-300'}`}>{alpha < 0.5 ? 'Best signal' : 'Fastest'}</span>
-                </div>
-                <div className="mt-2 flex items-center gap-1.5" aria-label="Signal strength legend">
-                    <span title="Excellent signal" className="h-2.5 flex-1 rounded-sm bg-blue-500"></span>
-                    <span title="Good signal" className="h-2.5 flex-1 rounded-sm bg-emerald-500"></span>
-                    <span title="Fair signal" className="h-2.5 flex-1 rounded-sm bg-yellow-400"></span>
-                    <span title="Weak signal" className="h-2.5 flex-1 rounded-sm bg-orange-500"></span>
-                    <span title="Dead zone" className="h-2.5 flex-1 rounded-sm bg-red-500"></span>
-                </div>
-                <div className="mt-1.5 flex justify-between text-[8px] font-semibold uppercase tracking-wider text-slate-500"><span>Strong</span><span>Dead zone</span></div>
-            </div>
 
-            {!isNavigating && (
+
+            <div className="absolute bottom-6 right-6 z-10 flex flex-col items-end gap-2">
                 <button
-                    onClick={recenterMap}
-                    title="Recenter map"
-                    aria-label="Recenter map"
-                    className="absolute bottom-6 right-6 z-10 h-11 w-11 bg-slate-950/85 backdrop-blur-xl hover:bg-slate-800 text-slate-200 rounded-xl shadow-[0_14px_40px_rgba(0,0,0,0.38)] border border-white/15 transition-all flex items-center justify-center"
+                    type="button"
+                    onClick={() => {
+                        toggleDarkMode();
+                        window.location.reload();
+                    }}
+                    title="Toggle theme"
+                    aria-label="Toggle theme"
+                    className="h-11 w-11 bg-slate-950/85 backdrop-blur-xl hover:bg-slate-800 text-slate-200 rounded-xl shadow-[0_14px_40px_rgba(0,0,0,0.38)] border border-white/15 transition-all flex items-center justify-center"
                 >
-                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v3m0 12v3m9-9h-3M6 12H3m14.364-6.364-2.121 2.121M8.757 15.243l-2.121 2.121m10.728 0-2.121-2.121M8.757 8.757 6.636 6.636M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" /></svg>
+                    {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                 </button>
-            )}
+
+                <button
+                    type="button"
+                    onClick={toggle3D}
+                    title={is3D ? 'Switch to 2D map' : 'Switch to 3D map'}
+                    aria-label="Toggle 3D map"
+                    className={`h-11 w-11 rounded-xl shadow-[0_14px_40px_rgba(0,0,0,0.38)] border transition-all flex items-center justify-center font-bold text-xs uppercase tracking-wider backdrop-blur-xl ${
+                        is3D
+                            ? 'bg-sky-500/90 text-white border-sky-400/50'
+                            : 'bg-slate-950/85 hover:bg-slate-800 text-slate-200 border-white/15'
+                    }`}
+                >
+                    {is3D ? '2D' : '3D'}
+                </button>
+
+                <MapStylePicker />
+
+                {(!isNavigating || isCameraDetached) && (
+                    <button
+                        type="button"
+                        onClick={recenterMap}
+                        title="Recenter map"
+                        aria-label="Recenter map"
+                        className="h-11 w-11 bg-slate-950/85 backdrop-blur-xl hover:bg-slate-800 text-slate-200 rounded-xl shadow-[0_14px_40px_rgba(0,0,0,0.38)] border border-white/15 transition-all flex items-center justify-center"
+                    >
+                        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v3m0 12v3m9-9h-3M6 12H3m14.364-6.364-2.121 2.121M8.757 15.243l-2.121 2.121m10.728 0-2.121-2.121M8.757 8.757 6.636 6.636M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" /></svg>
+                    </button>
+                )}
+            </div>
         </>
     );
 }

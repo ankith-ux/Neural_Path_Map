@@ -1,0 +1,337 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "id": "148",
+      "type": "Feature",
+      "properties": {
+        "osm_way_id": "82436401",
+        "composite_score": 71.59,
+        "jio_score": 65.97,
+        "airtel_score": 77.75,
+        "vi_score": 72.04,
+        "bsnl_score": 70.6,
+        "confidence": 0.95,
+        "dominant_band": "GSM",
+        "svf": 0.056,
+        "terrain_shadow": 0,
+        "traversal_time_secs": 4.4,
+        "segment_length": 49.1,
+        "road_class": "secondary",
+        "road_class_score": 0.8,
+        "poi_density": 0.95,
+        "landuse": "none",
+        "landuse_score": 0.0,
+        "is_lit": true,
+        "safety_score": 83.5,
+        "safety_hard_block": false
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.6179924,
+            12.9245641
+          ],
+          [
+            77.6182077,
+            12.9246842
+          ]
+        ]
+      }
+    },
+    {
+      "id": "150",
+      "type": "Feature",
+      "properties": {
+        "osm_way_id": "1238377144",
+        "composite_score": 74.45,
+        "jio_score": 71.19,
+        "airtel_score": 80.49,
+        "vi_score": 77.53,
+        "bsnl_score": 68.58,
+        "confidence": 0.95,
+        "dominant_band": "GSM",
+        "svf": 0.278,
+        "terrain_shadow": 0,
+        "traversal_time_secs": 0.8,
+        "segment_length": 9.0,
+        "road_class": "secondary",
+        "road_class_score": 0.8,
+        "poi_density": 1.0,
+        "landuse": "none",
+        "landuse_score": 0.0,
+        "is_lit": true,
+        "safety_score": 85.2,
+        "safety_hard_block": false
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.5882547,
+            12.967776
+          ],
+          [
+            77.5883841,
+            12.9677785
+          ]
+        ]
+      }
+    },
+    {
+      "id": "1",
+      "type": "Feature",
+      "properties": {
+        "osm_way_id": "28066027",
+        "composite_score": 75.95,
+        "jio_score": 67.84,
+        "airtel_score": 88.39,
+        "vi_score": 72.73,
+        "bsnl_score": 74.85,
+        "confidence": 0.95,
+        "dominant_band": "GSM",
+        "svf": 0.111,
+        "terrain_shadow": 0,
+        "traversal_time_secs": 13.3,
+        "segment_length": 147.9,
+        "road_class": "secondary",
+        "road_class_score": 0.8,
+        "poi_density": 0.9,
+        "landuse": "none",
+        "landuse_score": 0.0,
+        "is_lit": false,
+        "safety_score": 57.9,
+        "safety_hard_block": false
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.5987208,
+            12.9105419
+          ],
+          [
+            77.5989944,
+            12.9105602
+          ]
+        ]
+      }
+    },
+    {
+      "id": "2",
+      "type": "Feature",
+      "properties": {
+        "osm_way_id": "328778565",
+        "composite_score": 81.84,
+        "jio_score": 62.46,
+        "airtel_score": 98.84,
+        "vi_score": 85.32,
+        "bsnl_score": 80.74,
+        "confidence": 0.95,
+        "dominant_band": "GSM",
+        "svf": 0.083,
+        "terrain_shadow": 0,
+        "traversal_time_secs": 5.1,
+        "segment_length": 42.6,
+        "road_class": "tertiary",
+        "road_class_score": 0.6,
+        "poi_density": 0.6,
+        "landuse": "none",
+        "landuse_score": 0.0,
+        "is_lit": false,
+        "safety_score": 45.3,
+        "safety_hard_block": false
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.5987208,
+            12.9105419
+          ],
+          [
+            77.5987257,
+            12.9104885
+          ]
+        ]
+      }
+    },
+    {
+      "id": "0",
+      "type": "Feature",
+      "properties": {
+        "osm_way_id": "141914007",
+        "composite_score": 78.63,
+        "jio_score": 68.22,
+        "airtel_score": 92.82,
+        "vi_score": 76.93,
+        "bsnl_score": 76.55,
+        "confidence": 0.95,
+        "dominant_band": "GSM",
+        "svf": 0.111,
+        "terrain_shadow": 0,
+        "traversal_time_secs": 5.6,
+        "segment_length": 46.9,
+        "road_class": "tertiary",
+        "road_class_score": 0.6,
+        "poi_density": 0.15,
+        "landuse": "none",
+        "landuse_score": 0.0,
+        "is_lit": false,
+        "safety_score": 33.5,
+        "safety_hard_block": false
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.5987208,
+            12.9105419
+          ],
+          [
+            77.5984783,
+            12.9127243
+          ]
+        ]
+      }
+    },
+    {
+      "id": "8",
+      "type": "Feature",
+      "properties": {
+        "osm_way_id": "142475893",
+        "composite_score": 85.3,
+        "jio_score": 90.4,
+        "airtel_score": 92.67,
+        "vi_score": 84.41,
+        "bsnl_score": 73.74,
+        "confidence": 0.95,
+        "dominant_band": "GSM",
+        "svf": 0.0,
+        "terrain_shadow": 0,
+        "traversal_time_secs": 16.4,
+        "segment_length": 136.7,
+        "road_class": "residential",
+        "road_class_score": 0.4,
+        "poi_density": 0.35,
+        "landuse": "none",
+        "landuse_score": 0.0,
+        "is_lit": false,
+        "safety_score": 33.5,
+        "safety_hard_block": false
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.5941775,
+            13.0952244
+          ],
+          [
+            77.5942859,
+            13.0953061
+          ]
+        ]
+      }
+    },
+    {
+      "id": "4254",
+      "type": "Feature",
+      "properties": {
+        "osm_way_id": "688824223",
+        "composite_score": 96.92,
+        "jio_score": 97.14,
+        "airtel_score": 97.14,
+        "vi_score": 97.14,
+        "bsnl_score": 96.26,
+        "confidence": 0.95,
+        "dominant_band": "GSM",
+        "svf": 0.139,
+        "terrain_shadow": 0,
+        "traversal_time_secs": 0.9,
+        "segment_length": 14.2,
+        "road_class": "primary",
+        "road_class_score": 1.0,
+        "poi_density": 0.0,
+        "landuse": "orchard",
+        "landuse_score": 0.0,
+        "is_lit": false,
+        "safety_score": 0.0,
+        "safety_hard_block": true
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.7123548,
+            12.9145726
+          ],
+          [
+            77.7128019,
+            12.9147578
+          ],
+          [
+            77.7132615,
+            12.9149482
+          ],
+          [
+            77.7135325,
+            12.9150318
+          ],
+          [
+            77.7140311,
+            12.9151843
+          ]
+        ]
+      }
+    },
+    {
+      "id": "22566",
+      "type": "Feature",
+      "properties": {
+        "osm_way_id": "37826067",
+        "composite_score": 79.26,
+        "jio_score": 73.35,
+        "airtel_score": 84.33,
+        "vi_score": 85.17,
+        "bsnl_score": 74.18,
+        "confidence": 0.95,
+        "dominant_band": "GSM",
+        "svf": 0.0,
+        "terrain_shadow": 0,
+        "traversal_time_secs": 5.8,
+        "segment_length": 48.2,
+        "road_class": "residential",
+        "road_class_score": 0.4,
+        "poi_density": 0.25,
+        "landuse": "cemetery",
+        "landuse_score": 0.0,
+        "is_lit": false,
+        "safety_score": 0.0,
+        "safety_hard_block": true
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            77.5596846,
+            12.9963838
+          ],
+          [
+            77.560301,
+            12.9962153
+          ],
+          [
+            77.5606766,
+            12.9960951
+          ],
+          [
+            77.5611342,
+            12.9959373
+          ]
+        ]
+      }
+    }
+  ]
+}

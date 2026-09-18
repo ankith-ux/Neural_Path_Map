@@ -1,10 +1,15 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
-export const useStore = create((set) => ({
+export const useStore = create(persist((set) => ({
     carrier: 'composite',
     simulationHoursAhead: 0,
     weatherScenario: 'live',
     heatTiles: [],
+    originText: "Whitefield",
+    destinationText: "MG Road",
+    setOriginText: (originText) => set({ originText }),
+    setDestinationText: (destinationText) => set({ destinationText }),
     origin: null,
     destination: null,
     routes: [],
@@ -26,8 +31,8 @@ export const useStore = create((set) => ({
     setIsNavigating: (val) => set({ isNavigating: val, navProgress: 0, currentNavSignal: null }),
     navProgress: 0,
     setNavProgress: (val) => set({ navProgress: val }),
-    originCoords: [77.7081, 13.1989], // default start
-    destinationCoords: [77.665, 12.846], // default end
+    originCoords: [77.7499, 12.9698],
+    destinationCoords: [77.6013, 12.9716],
     setOriginCoords: (coords) => set({ originCoords: coords }),
     setDestinationCoords: (coords) => set({ destinationCoords: coords }),
     dynamicRouteData: null,
@@ -37,5 +42,22 @@ export const useStore = create((set) => ({
     
     // BACKEND INTEGRATION STATES
     routeCacheKey: null,
-    setRouteCacheKey: (key) => set({ routeCacheKey: key })
+    setRouteCacheKey: (key) => set({ routeCacheKey: key }),
+    mapSelectionMode: null,
+    setMapSelectionMode: (mapSelectionMode) => set({ mapSelectionMode }),
+    isDarkMode: true,
+    toggleDarkMode: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
+    mapStyle: 'normal',
+    setMapStyle: (mapStyle) => set({ mapStyle }),
+    cameraMode: 'driver',
+    setCameraMode: (cameraMode) => set({ cameraMode }),
+}), {
+    name: 'neuralpath-ui',
+    partialize: (state) => ({
+        carrier: state.carrier,
+        weatherScenario: state.weatherScenario,
+        isDarkMode: state.isDarkMode,
+        mapStyle: state.mapStyle,
+        cameraMode: state.cameraMode,
+    }),
 }))

@@ -5,6 +5,8 @@ import {
     getSelectedRouteMetrics,
     getSignalQualityLabel,
 } from '../../utils/routeBlend';
+import AnimatedNumber from '../AnimatedNumber';
+import MagneticButton from '../MagneticButton';
 
 const HOUR_MS = 60 * 60 * 1000;
 
@@ -75,11 +77,17 @@ function RouteChoice({ route, index, selected }) {
     if (!route) return null;
 
     const metrics = getSelectedRouteMetrics([route], 0);
+    const persona = useStore.getState().personaPreset;
     const isSignalRoute = index === 0;
     const tone = isSignalRoute
         ? 'border-emerald-400/40 bg-emerald-400/10'
         : 'border-sky-400/40 bg-sky-400/10';
     const textTone = isSignalRoute ? 'text-emerald-300' : 'text-sky-300';
+    const metricLabel = persona === 'safe_commute'
+        ? `Safety ${Math.round(metrics.safetyScore || 50)}`
+        : persona === 'suv'
+            ? `SUV ${Math.round(metrics.suvScore || 0)}`
+            : `Signal ${Math.round(metrics.connectivityScore)}`;
 
     return (
         <div className={`min-w-0 rounded-xl border px-3 py-2.5 transition-all ${selected ? `${tone} shadow-[0_8px_22px_rgba(0,0,0,0.18)]` : 'border-white/10 bg-white/[0.035] opacity-70'}`}>
@@ -89,7 +97,9 @@ function RouteChoice({ route, index, selected }) {
             </div>
             <div className="flex items-baseline gap-2 mt-1">
                 <span className="text-base font-bold text-white">{Math.max(1, Math.round(metrics.durationSecs / 60))} min</span>
-                <span className="text-[10px] text-slate-400">Signal {Math.round(metrics.connectivityScore)}</span>
+                <span className="text-[10px] text-slate-400">
+                    {metricLabel}
+                </span>
             </div>
         </div>
     );
@@ -98,6 +108,7 @@ function RouteChoice({ route, index, selected }) {
 export default function NavigationPanel() {
     const {
         alpha,
+        personaPreset,
         isNavigating,
         setIsNavigating,
         navProgress,
@@ -105,9 +116,16 @@ export default function NavigationPanel() {
         simulationHoursAhead,
         currentNavSignal,
     } = useStore();
+    const [navDetailsOpen, setNavDetailsOpen] = useState(false);
     const [currentTime, setCurrentTime] = useState(
         () => new Date(Date.now() + simulationHoursAhead * HOUR_MS)
     );
+
+    useEffect(() => {
+        if (isNavigating) {
+            setNavDetailsOpen(false);
+        }
+    }, [isNavigating]);
 
     // Keep the ETA fresh while navigation progress is animating, using the simulated clock.
     useEffect(() => {
@@ -132,12 +150,17 @@ export default function NavigationPanel() {
 
     // Backend Intelligence Metrics
     let connectivityScore = 95;
+    let safetyScore = 50;
+    let safetyHardBlockCount = 0;
+    let suvScore = 0;
+    let suvHardBlockCount = 0;
     let deadZoneCount = 0;
     let dominantBand = "5G_NR";
     let trafficDelaySeconds = 0;
     let routeLabel = "Route";
     let signalProfile = [];
     let activeConditions = [];
+    let safetyExplanation = "";
 
     if (dynamicRouteData && dynamicRouteData.length > 0) {
         const selectedMetrics = getSelectedRouteMetrics(dynamicRouteData, alpha);
@@ -146,12 +169,17 @@ export default function NavigationPanel() {
         totalEtaSeconds = Math.max(60, selectedMetrics.durationSecs);
         totalEtaMins = Math.max(1, Math.round(totalEtaSeconds / 60));
         connectivityScore = Math.round(selectedMetrics.connectivityScore);
+        safetyScore = Math.round(selectedMetrics.safetyScore || 50);
+        safetyHardBlockCount = selectedMetrics.safetyHardBlockCount || 0;
+        suvScore = Math.round(selectedMetrics.suvScore || 0);
+        suvHardBlockCount = selectedMetrics.suvHardBlockCount || 0;
         deadZoneCount = selectedMetrics.deadZoneCount;
         dominantBand = selectedMetrics.dominantBand || "5G_NR";
         trafficDelaySeconds = selectedMetrics.trafficDelaySeconds || 0;
         routeLabel = selectedMetrics.routeLabel || "Route";
         signalProfile = selectedMetrics.signalProfile || [];
         activeConditions = selectedMetrics.activeConditions || [];
+        safetyExplanation = selectedMetrics.safetyExplanation || "";
     }
 
     const primaryCondition = activeConditions[0] || null;
@@ -192,9 +220,81 @@ export default function NavigationPanel() {
                 : liveScore < 65
                     ? 'text-amber-300'
                     : 'text-emerald-300';
+        const activeMetricLabel = personaPreset === 'safe_commute' ? 'Safety' : personaPreset === 'suv' ? 'SUV' : 'Signal';
+        const activeMetricValue = personaPreset === 'safe_commute' ? safetyScore : personaPreset === 'suv' ? suvScore : liveScore;
+        const activeMetricToneClass = personaPreset === 'safe_commute' || personaPreset === 'suv'
+            ? 'text-amber-300'
+            : bandwidthToneClass;
+        const navProgressPct = Math.max(0, Math.min(100, Math.round(navProgress * 100)));
+
+        if (!navDetailsOpen) {
+            return (
+                <div className="absolute bottom-4 left-6 z-20 w-[min(44rem,calc(100vw-1rem))] rounded-2xl border border-white/15 bg-slate-950/90 px-3 py-2.5 shadow-[0_18px_45px_rgba(0,0,0,0.52)] backdrop-blur-2xl">
+                    <div className="flex flex-wrap items-center gap-2.5">
+                        <div className={`h-9 w-9 shrink-0 rounded-xl border ${preferRouteA ? 'border-emerald-400/30 bg-emerald-400/15 text-emerald-300' : 'border-sky-400/30 bg-sky-400/15 text-sky-300'} flex items-center justify-center`}>
+                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d={icon}></path></svg>
+                        </div>
+
+                        <div className="min-w-[5.5rem]">
+                            <span className="block text-[8px] font-bold uppercase tracking-widest text-slate-500">ETA</span>
+                            <span className="text-xl font-bold text-white">{currentEtaMins}<span className="ml-1 text-xs font-semibold text-slate-400">min</span></span>
+                        </div>
+
+                        <div className="min-w-[4.5rem]">
+                            <span className="block text-[8px] font-bold uppercase tracking-widest text-slate-500">Left</span>
+                            <span className="text-sm font-bold text-slate-200">{currentDistKm} km</span>
+                        </div>
+
+                        <div className="min-w-[4.5rem]">
+                            <span className="block text-[8px] font-bold uppercase tracking-widest text-slate-500">{activeMetricLabel}</span>
+                            <span className={`text-sm font-bold ${activeMetricToneClass}`}>{activeMetricValue}<span className="text-[10px] text-slate-500">/100</span></span>
+                        </div>
+
+                        <div className="hidden min-w-[7rem] sm:block">
+                            <span className="block text-[8px] font-bold uppercase tracking-widest text-slate-500">Bandwidth</span>
+                            <span className={`text-sm font-bold ${bandwidthToneClass}`}>
+                                {liveBandwidth !== null ? liveBandwidth.toFixed(1) : '--'}
+                                <span className="ml-1 text-[10px] text-slate-500">Mbps</span>
+                            </span>
+                        </div>
+
+                        <div className="hidden min-w-[5rem] md:block">
+                            <span className="block text-[8px] font-bold uppercase tracking-widest text-slate-500">Link</span>
+                            <span className="block truncate text-sm font-bold text-blue-300">{liveBand}</span>
+                        </div>
+
+                        <div className="min-w-[7rem] flex-1">
+                            <div className="mb-1 flex items-center justify-between gap-2">
+                                <span className="truncate text-[9px] font-bold uppercase tracking-widest text-slate-500">{routeLabel}</span>
+                                <span className="text-[9px] font-bold text-slate-400">{navProgressPct}%</span>
+                            </div>
+                            <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
+                                <div
+                                    className={`h-full rounded-full ${preferRouteA ? 'bg-emerald-400' : 'bg-sky-400'}`}
+                                    style={{ width: `${navProgressPct}%` }}
+                                />
+                            </div>
+                        </div>
+
+                        <button
+                            onClick={() => setNavDetailsOpen(true)}
+                            className="rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-slate-200 transition hover:bg-white/10"
+                        >
+                            Details
+                        </button>
+                        <button
+                            onClick={() => setIsNavigating(false)}
+                            className="rounded-xl bg-red-500 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-white shadow-lg shadow-red-500/20 transition hover:bg-red-600"
+                        >
+                            Exit
+                        </button>
+                    </div>
+                </div>
+            );
+        }
 
         return (
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 max-xl:left-auto max-xl:right-6 max-xl:translate-x-0 z-10 w-[min(26rem,calc(100vw-2rem))] bg-slate-950/95 backdrop-blur-3xl border border-white/20 rounded-2xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.55)] flex flex-col gap-4 transition-all">
+            <div className="absolute bottom-6 left-6 z-10 w-[min(26rem,calc(100vw-2rem))] bg-slate-950/95 backdrop-blur-3xl border border-white/20 rounded-2xl p-5 shadow-[0_20px_50px_rgba(0,0,0,0.55)] flex flex-col gap-4 transition-all">
                 <div className="flex items-center gap-5">
                     <div className="bg-emerald-500/20 p-3 rounded-xl border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                         <svg className="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d={icon}></path></svg>
@@ -203,6 +303,12 @@ export default function NavigationPanel() {
                         <h2 className="text-white font-bold text-2xl">{instructionTitle}</h2>
                         <p className="text-emerald-300 text-xs font-bold tracking-wider uppercase mt-1">{instructionSub}</p>
                     </div>
+                    <button
+                        onClick={() => setNavDetailsOpen(false)}
+                        className="ml-auto rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-[10px] font-bold uppercase tracking-widest text-slate-300 transition hover:bg-white/10"
+                    >
+                        Collapse
+                    </button>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3">
@@ -217,9 +323,11 @@ export default function NavigationPanel() {
                     </div>
                     <div className="bg-white/5 border border-white/10 rounded-xl px-3 py-3">
                         <span className="block text-[9px] text-slate-500 uppercase tracking-widest font-bold mb-1">
-                            Signal
+                            {personaPreset === 'safe_commute' ? 'Safety' : personaPreset === 'suv' ? 'SUV fit' : 'Signal'}
                         </span>
-                        <span className="text-2xl font-bold text-white">{liveScore}</span>
+                        <span className={`text-2xl font-bold ${personaPreset === 'safe_commute' || personaPreset === 'suv' ? 'text-amber-300' : 'text-white'}`}>
+                            {personaPreset === 'safe_commute' ? safetyScore : personaPreset === 'suv' ? suvScore : liveScore}
+                        </span>
                         <span className="ml-1 text-xs font-semibold text-slate-400">/100</span>
                     </div>
                     <div className="bg-white/5 border border-white/10 rounded-xl px-3 py-3">
@@ -252,7 +360,7 @@ export default function NavigationPanel() {
     }
 
     return (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 max-xl:left-auto max-xl:right-6 max-xl:translate-x-0 z-10 w-[min(30rem,calc(100vw-2rem))] bg-slate-950/90 backdrop-blur-2xl border border-white/15 rounded-2xl p-5 shadow-[0_22px_60px_rgba(0,0,0,0.52)] flex flex-col gap-4 transition-all">
+        <div className="absolute bottom-6 left-6 z-10 w-[min(30rem,calc(100vw-2rem))] bg-slate-950/90 backdrop-blur-2xl border border-white/15 rounded-2xl p-5 shadow-[0_22px_60px_rgba(0,0,0,0.52)] flex flex-col gap-4 transition-all">
             <div className="flex justify-between items-start gap-4">
                 <div>
                     <div className="flex items-center gap-2">
@@ -260,7 +368,7 @@ export default function NavigationPanel() {
                         <span className={`text-[10px] font-bold uppercase tracking-widest ${preferRouteA ? 'text-emerald-300' : 'text-sky-300'}`}>{routeLabel} selected</span>
                     </div>
                     <div className="flex items-baseline gap-2 mt-1">
-                        <span className="text-4xl font-bold text-white tracking-tight">{totalEtaMins}</span>
+                        <span className="text-4xl font-bold text-white tracking-tight"><AnimatedNumber value={totalEtaMins} /></span>
                         <span className="text-lg font-semibold text-slate-300">min</span>
                         <span className="text-sm text-slate-400">{totalDistanceKm} km</span>
                     </div>
@@ -273,7 +381,7 @@ export default function NavigationPanel() {
 
             <div className="grid grid-cols-2 gap-2">
                 {routeChoices.map((route, index) => (
-                    <RouteChoice key={route.route_id || `${routeLabel}-${index}`} route={route} index={index} selected={preferredRouteIndex === index} />
+                    <RouteChoice key={`${route.route_id || routeLabel}-${index}`} route={route} index={index} selected={preferredRouteIndex === index} />
                 ))}
             </div>
 
@@ -289,14 +397,28 @@ export default function NavigationPanel() {
                 </div>
             )}
 
+
+
             <div className="grid grid-cols-3 bg-black/45 rounded-xl border border-white/10 divide-x divide-white/10">
                 <div className="px-3 py-3 text-center">
-                    <span className="block text-[8px] text-slate-500 uppercase tracking-widest font-bold mb-1">Signal</span>
-                    <span className={`text-xl font-bold ${connectivityScore < 50 ? 'text-red-400' : connectivityScore < 80 ? 'text-amber-300' : 'text-emerald-300'}`}>{connectivityScore}<span className="text-xs text-slate-400">/100</span></span>
+                    <span className="block text-[8px] text-slate-500 uppercase tracking-widest font-bold mb-1">
+                        {personaPreset === 'safe_commute' ? 'Safety' : personaPreset === 'suv' ? 'SUV fit' : 'Signal'}
+                    </span>
+                    {personaPreset === 'safe_commute' ? (
+                        <span className={`text-xl font-bold ${safetyScore < 50 ? 'text-red-400' : safetyScore < 80 ? 'text-amber-300' : 'text-emerald-300'}`}><AnimatedNumber value={safetyScore} /><span className="text-xs text-slate-400">/100</span></span>
+                    ) : personaPreset === 'suv' ? (
+                        <span className={`text-xl font-bold ${suvScore < 50 ? 'text-red-400' : suvScore < 80 ? 'text-amber-300' : 'text-emerald-300'}`}><AnimatedNumber value={suvScore} /><span className="text-xs text-slate-400">/100</span></span>
+                    ) : (
+                        <span className={`text-xl font-bold ${connectivityScore < 50 ? 'text-red-400' : connectivityScore < 80 ? 'text-amber-300' : 'text-emerald-300'}`}><AnimatedNumber value={connectivityScore} /><span className="text-xs text-slate-400">/100</span></span>
+                    )}
                 </div>
                 <div className="px-3 py-3 text-center">
-                    <span className="block text-[8px] text-slate-500 uppercase tracking-widest font-bold mb-1">Dead zones</span>
-                    <span className={`text-xl font-bold ${deadZoneCount > 0 ? 'text-red-400' : 'text-emerald-300'}`}>{deadZoneCount}</span>
+                    <span className="block text-[8px] text-slate-500 uppercase tracking-widest font-bold mb-1">
+                        {personaPreset === 'safe_commute' || personaPreset === 'suv' ? 'Hard blocks' : 'Dead zones'}
+                    </span>
+                    <span className={`text-xl font-bold ${(personaPreset === 'safe_commute' ? safetyHardBlockCount : personaPreset === 'suv' ? suvHardBlockCount : deadZoneCount) > 0 ? 'text-red-400' : (personaPreset === 'safe_commute' || personaPreset === 'suv' ? 'text-amber-300' : 'text-emerald-300')}`}>
+                        {personaPreset === 'safe_commute' ? safetyHardBlockCount : personaPreset === 'suv' ? suvHardBlockCount : deadZoneCount}
+                    </span>
                 </div>
                 <div className="px-3 py-3 text-center">
                     <span className="block text-[8px] text-slate-500 uppercase tracking-widest font-bold mb-1">Network</span>
@@ -306,13 +428,13 @@ export default function NavigationPanel() {
 
             <SignalProfileBar profile={signalProfile} />
 
-            <button
+            <MagneticButton
                 onClick={() => setIsNavigating(true)}
                 disabled={!hasRouteData}
                 className={`w-full py-3.5 rounded-xl font-bold text-base text-white shadow-lg transition-all uppercase tracking-widest disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400 disabled:shadow-none ${preferRouteA ? 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-950/80' : 'bg-sky-600 hover:bg-sky-500 shadow-sky-950/80'}`}
             >
                 {hasRouteData ? 'Start Navigation' : routeUnavailable ? 'Route Unavailable' : 'Loading Route...'}
-            </button>
+            </MagneticButton>
         </div>
     );
 }

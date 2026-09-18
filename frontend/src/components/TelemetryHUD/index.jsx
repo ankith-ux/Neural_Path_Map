@@ -1,7 +1,10 @@
+import { useState } from 'react';
+import { ChevronLeft, Signal } from 'lucide-react';
 import { useStore } from '../../store';
 import {
     getSelectedRouteMetrics,
 } from '../../utils/routeBlend';
+import CustomSelect from '../CustomSelect';
 
 const WEATHER_OPTIONS = [
     { value: 'live', label: 'Live Weather' },
@@ -19,6 +22,7 @@ function formatWeatherLabel(value = 'clear') {
 }
 
 export default function TelemetryHUD() {
+    const [isExpanded, setIsExpanded] = useState(false);
     const {
         alpha,
         carrier,
@@ -27,6 +31,7 @@ export default function TelemetryHUD() {
         weatherScenario,
         setWeatherScenario,
         weatherConditions,
+        isNavigating,
     } = useStore();
     const selectedMetrics = getSelectedRouteMetrics(dynamicRouteData, alpha);
     const isDanger = selectedMetrics.deadZoneCount > 0;
@@ -41,18 +46,44 @@ export default function TelemetryHUD() {
         weatherConditions && !['clear', 'cloudy'].includes(weatherConditions.condition)
     );
 
+    if (isNavigating) return null;
+
+    if (!isExpanded) {
+        return (
+            <button
+                type="button"
+                onClick={() => setIsExpanded(true)}
+                className="absolute top-6 right-0 z-10 bg-slate-950/85 backdrop-blur-2xl border border-white/15 border-r-0 rounded-l-3xl py-3 px-4 shadow-[0_15px_40px_rgba(0,0,0,0.6)] flex items-center gap-2 hover:bg-slate-900 transition-all group"
+            >
+                <ChevronLeft className="w-4 h-4 text-slate-500" />
+                <span className="text-xs font-bold text-white">Conditions</span>
+                <Signal className="w-4 h-4 text-slate-300 group-hover:scale-110 transition-transform" />
+            </button>
+        );
+    }
+
     return (
-        <div className="absolute top-5 right-6 z-10 w-72 max-lg:w-52 bg-slate-950/85 backdrop-blur-2xl border border-white/15 rounded-2xl p-4 shadow-[0_18px_50px_rgba(0,0,0,0.42)] flex flex-col gap-3">
+        <div className="absolute top-6 right-6 z-10 w-72 max-lg:w-56 bg-slate-950/85 backdrop-blur-2xl border border-white/15 rounded-3xl p-4 shadow-[0_15px_40px_rgba(0,0,0,0.6)] flex flex-col gap-3">
             
             {/* Header */}
             <div className="flex justify-between items-center">
                 <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Network conditions</span>
-                <span className={`flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full ${
-                    isDanger ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                }`}>
-                    <span className={`w-1.5 h-1.5 rounded-full ${isDanger ? 'bg-red-500 animate-pulse' : 'bg-emerald-500'}`}></span>
-                    {isDanger ? 'Warning' : 'Secure'}
-                </span>
+                <div className="flex items-center gap-2">
+                    <span className={`flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest px-2 py-1 rounded-full ${
+                        isDanger ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                    }`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${isDanger ? 'bg-red-500 animate-pulse' : 'bg-emerald-500'}`}></span>
+                        {isDanger ? 'Warning' : 'Secure'}
+                    </span>
+                    <button
+                        type="button"
+                        onClick={() => setIsExpanded(false)}
+                        className="p-1 hover:bg-white/10 rounded-lg text-slate-400 hover:text-slate-200 transition-colors"
+                        title="Collapse conditions"
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
             </div>
 
             {/* Status Message */}
@@ -90,44 +121,26 @@ export default function TelemetryHUD() {
                     </span>
                 </div>
                 
-                {/* Combined Carrier Toggle */}
-                <div className="bg-white/[0.05] rounded-xl p-2.5 border border-white/10 relative">
-                    <span className="block text-[8px] text-slate-500 uppercase tracking-widest mb-1 font-bold">Network Profile</span>
-                    <select 
-                        value={carrier}
-                        onChange={(e) => setCarrier(e.target.value)}
-                        className="w-full bg-transparent text-slate-300 hover:text-white text-xs font-bold outline-none cursor-pointer appearance-none"
-                    >
-                        <option value="composite" className="bg-slate-900">All Networks</option>
-                        <option value="jio" className="bg-slate-900">Jio 5G</option>
-                        <option value="airtel" className="bg-slate-900">Airtel 5G</option>
-                        <option value="vi" className="bg-slate-900">Vi</option>
-                        <option value="bsnl" className="bg-slate-900">BSNL</option>
-                    </select>
-                    {/* Tiny dropdown arrow */}
-                    <div className="absolute right-2 bottom-2.5 pointer-events-none text-slate-500">
-                        <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7"></path></svg>
-                    </div>
-                </div>
+                <CustomSelect
+                    label="Network Profile"
+                    value={carrier}
+                    onChange={setCarrier}
+                    options={[
+                        { value: 'composite', label: 'All Networks' },
+                        { value: 'jio', label: 'Jio 5G' },
+                        { value: 'airtel', label: 'Airtel 5G' },
+                        { value: 'vi', label: 'Vi' },
+                        { value: 'bsnl', label: 'BSNL' },
+                    ]}
+                />
             </div>
 
-            <div className="bg-white/[0.05] rounded-xl p-2.5 border border-white/10 relative">
-                <span className="block text-[8px] text-slate-500 uppercase tracking-widest mb-1 font-bold">Weather Scenario</span>
-                <select
-                    value={weatherScenario}
-                    onChange={(e) => setWeatherScenario(e.target.value)}
-                    className="w-full bg-transparent text-slate-300 hover:text-white text-xs font-bold outline-none cursor-pointer appearance-none"
-                >
-                    {WEATHER_OPTIONS.map((option) => (
-                        <option key={option.value} value={option.value} className="bg-slate-900">
-                            {option.label}
-                        </option>
-                    ))}
-                </select>
-                <div className="absolute right-2 bottom-2.5 pointer-events-none text-slate-500">
-                    <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M19 9l-7 7-7-7"></path></svg>
-                </div>
-            </div>
+            <CustomSelect
+                label="Weather Scenario"
+                value={weatherScenario}
+                onChange={setWeatherScenario}
+                options={WEATHER_OPTIONS}
+            />
 
         </div>
     );

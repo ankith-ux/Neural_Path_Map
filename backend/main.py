@@ -75,6 +75,7 @@ def _resolve_existing_path(env_var: str, *candidates: str) -> Optional[Path]:
 
 GEOJSON_PATH = _resolve_existing_path(
     "SCORED_SEGMENTS_PATH",
+    "geojson/scored_segments_safe.geojson",
     "geojson/scored_segments.geojson",
     "geojson/bangalore_scored_segments.geojson",
     "scored_segments.geojson",
@@ -307,10 +308,12 @@ async def route_score(req: RouteScoreRequest):
         scenario_name=req.weather_scenario,
     )
 
-    # Get OSRM routes
+    # Get OSRM routes (request more alternatives for safe_commute and suv to increase route diversity, max 4 to avoid TooBig)
+    n_alternatives = 4 if req.persona in ("safe_commute", "suv") else 3
     osrm_routes = await get_osrm_routes(
         req.origin.lat, req.origin.lng,
         req.destination.lat, req.destination.lng,
+        n=n_alternatives,
     )
 
     # Score each route
@@ -375,11 +378,20 @@ async def route_score(req: RouteScoreRequest):
             "signal_profile": signal_profile,
             "destination_dead_zone": is_dz,
             "prefetch_burst_point": burst_point,
+            "safety_score": route_scores.get("safety_score", 50.0),
+            "safety_hard_block_count": route_scores.get("safety_hard_block_count", 0),
+            "safety_explanation": route_scores.get("safety_explanation", ""),
+            "suv_score": route_scores.get("suv_score", 50.0),
+            "suv_hard_block_count": route_scores.get("suv_hard_block_count", 0),
             "blended_rank_score": compute_blended_rank(
                 traffic_adjusted_eta_seconds,
                 route_scores["connectivity_score"],
                 req.alpha,
                 handoff_count=route_scores.get("handoff_count", 0),
+                use_safety_score=(req.persona == "safe_commute"),
+                safety_score=route_scores.get("safety_score", 50.0),
+                use_vehicle_score=(req.persona == "suv"),
+                vehicle_score=route_scores.get("suv_score", 50.0),
             ),
             "scored_segments": route_scores.get("scored_segments", []),
         }

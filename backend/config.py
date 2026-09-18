@@ -119,6 +119,8 @@ PERSONA_CONFIG = {
     "emergency": {"alpha": 0.10, "max_dead_zone_m": 300, "hard_floor": True},
     "ride_hailing": {"alpha": 0.70, "hard_floor": False},
     "it_shuttle": {"alpha": 0.50, "hard_floor": False},
+    "safe_commute": {"alpha": 0.15, "hard_floor": True, "max_dead_zone_m": 0, "use_safety_score": True},
+    "suv": {"alpha": 0.40, "hard_floor": False, "use_vehicle_score": True, "vehicle_subtype": "suv", "max_dead_zone_m": 500},
 }
 
 # ──────────────────────────────────────────────────────────────────────────────

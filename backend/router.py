@@ -43,8 +43,22 @@ async def get_osrm_routes(
             resp = await client.get(url, timeout=10.0)
         data = resp.json()
         if data.get("code") != "Ok":
-            print(f"[OSRM] Non-OK response: {data.get('code')}")
-            return []
+            if data.get("code") == "TooBig" and n > 2:
+                print(f"[OSRM] TooBig for alternatives={n-1}, retrying with standard alternatives...")
+                fallback_url = (
+                    f"{OSRM_URL}/route/v1/driving/"
+                    f"{origin_lon},{origin_lat};{dest_lon},{dest_lat}"
+                    f"?alternatives=true&geometries=geojson"
+                    f"&annotations=nodes&overview=full"
+                )
+                resp = await client.get(fallback_url, timeout=10.0)
+                data = resp.json()
+                if data.get("code") != "Ok":
+                    print(f"[OSRM] Fallback Non-OK response: {data.get('code')}")
+                    return []
+            else:
+                print(f"[OSRM] Non-OK response: {data.get('code')}")
+                return []
         return data.get("routes", [])
     except Exception as e:
         print(f"[OSRM] Connection failed: {e}")
@@ -262,14 +276,30 @@ def score_route(
             "active_condition_ids": [condition["id"] for condition in matched_conditions],
             "progress_start": mapping["progress_start"],
             "progress_end": mapping["progress_end"],
+            "safety_score": float(seg.get("safety_score", 50)),
+            "safety_hard_block": bool(seg.get("safety_hard_block", False)),
+            "suv_score": float(seg.get("suv_score", 50)),
+            "suv_hard_block": bool(seg.get("suv_hard_block", False)),
+            "is_lit": bool(seg.get("is_lit", False)),
+            "is_dead_end": bool(seg.get("is_dead_end", False)),
+            "road_class": str(seg.get("road_class", "unclassified")),
+            "poi_density": float(seg.get("poi_density", 0)),
+            "landuse_score": float(seg.get("landuse_score", 0)),
+            "road_class_score": float(seg.get("road_class_score", 0.2)),
+            "lane_count": seg.get("lane_count"),
+            "surface": str(seg.get("surface", "unknown")),
         })
 
     if not scored_segs:
         return _empty_route_score()
 
-    # ── Connectivity score (length-weighted average) ──
+    # ── Connectivity & Safety & SUV scores (length-weighted average) ──
     total_len = sum(s["length"] for s in scored_segs)
     connectivity_score = sum(s["score"] * s["length"] for s in scored_segs) / max(total_len, 1)
+    avg_safety_score = sum(_compute_live_safety_score(s) * s["length"] for s in scored_segs) / max(total_len, 1)
+    safety_hard_block_count = sum(1 for s in scored_segs if s["safety_hard_block"])
+    avg_suv_score = sum(s["suv_score"] * s["length"] for s in scored_segs) / max(total_len, 1)
+    suv_hard_block_count = sum(1 for s in scored_segs if s["suv_hard_block"])
 
     # ── Worst window (500m sliding) ──
     worst_window_score = _compute_worst_window(scored_segs, window_m=500)
@@ -316,8 +346,15 @@ def score_route(
 
     serialized_conditions = _serialize_condition_hits(condition_hits)
 
+    safety_explanation = _build_safety_explanation(scored_segs, total_len)
+
     return {
         "connectivity_score": round(connectivity_score, 2),
+        "safety_score": round(avg_safety_score, 2),
+        "safety_hard_block_count": safety_hard_block_count,
+        "suv_score": round(avg_suv_score, 2),
+        "suv_hard_block_count": suv_hard_block_count,
+        "safety_explanation": safety_explanation,
         "worst_window_score": round(worst_window_score, 2),
         "dead_zones": dead_zones,
         "dead_zone_count": len(dead_zones),
@@ -337,9 +374,112 @@ def score_route(
     }
 
 
+def _build_safety_explanation(scored_segs: list, total_len: float) -> str:
+    """
+    Aggregate per-segment safety metadata into a human-readable explanation.
+    e.g. "This route stays on lit arterial roads with high foot traffic for 87% of the journey."
+    """
+    if not scored_segs or total_len <= 0:
+        return ""
+
+    # Classify road types
+    ARTERIAL = {"primary", "trunk", "secondary", "primary_link", "trunk_link", "motorway", "motorway_link"}
+    COLLECTOR = {"tertiary", "tertiary_link", "secondary_link"}
+
+    lit_len = sum(s["length"] for s in scored_segs if s.get("is_lit"))
+    arterial_len = sum(s["length"] for s in scored_segs if s.get("road_class", "") in ARTERIAL)
+    collector_len = sum(s["length"] for s in scored_segs if s.get("road_class", "") in COLLECTOR)
+    main_road_len = arterial_len + collector_len
+    high_poi_len = sum(s["length"] for s in scored_segs if s.get("poi_density", 0) >= 0.3)
+
+    lit_pct = round(100 * lit_len / total_len)
+    main_road_pct = round(100 * main_road_len / total_len)
+    high_poi_pct = round(100 * high_poi_len / total_len)
+
+    # Build descriptors
+    road_desc = []
+    if main_road_pct >= 70:
+        road_desc.append("arterial roads" if arterial_len > collector_len else "main roads")
+    elif main_road_pct >= 40:
+        road_desc.append("mixed arterial and residential roads")
+    else:
+        road_desc.append("residential streets")
+
+    traits = []
+    if lit_pct >= 60:
+        traits.append("well-lit")
+    elif lit_pct >= 30:
+        traits.append("partially lit")
+
+    if high_poi_pct >= 50:
+        traits.append("with high foot traffic")
+    elif high_poi_pct >= 20:
+        traits.append("with moderate activity nearby")
+
+    # Choose the dominant percentage to quote
+    best_pct = max(lit_pct, main_road_pct)
+
+    trait_str = f" {', '.join(traits)}" if traits else ""
+    if "with " in trait_str:
+        # e.g. "residential streets with moderate activity nearby"
+        return f"This route stays on {road_desc[0]}{trait_str} for {best_pct}% of the journey."
+    elif traits:
+        # e.g. "well-lit residential streets"
+        return f"This route stays on {', '.join(traits)} {road_desc[0]} for {best_pct}% of the journey."
+    elif main_road_pct >= 50:
+        return f"This route uses {road_desc[0]} for {main_road_pct}% of the journey."
+    else:
+        return f"This route passes through {road_desc[0]}. Street lighting covers {lit_pct}% of the path."
+
+
+def _compute_live_safety_score(seg: dict) -> float:
+    """
+    Runtime Safe Commute score, deliberately decoupled from SUV suitability.
+    Safety emphasizes visibility, street activity, landuse, and escape options;
+    road class is only context so wide arterial roads do not dominate.
+    """
+    if seg.get("safety_hard_block"):
+        return 0.0
+
+    road_class = str(seg.get("road_class", "unclassified"))
+    road_context = {
+        "motorway": 0.25, "motorway_link": 0.25,
+        "trunk": 0.45, "trunk_link": 0.45,
+        "primary": 0.75, "primary_link": 0.75,
+        "secondary": 0.85, "secondary_link": 0.85,
+        "tertiary": 0.80, "tertiary_link": 0.80,
+        "residential": 0.70,
+        "living_street": 0.75,
+        "unclassified": 0.45,
+        "service": 0.35,
+    }.get(road_class, max(0.0, min(float(seg.get("road_class_score", 0.2)), 1.0)))
+
+    poi_density = max(0.0, min(float(seg.get("poi_density", 0.0)), 1.0))
+    landuse_score = float(seg.get("landuse_score", 0.0))
+    landuse_context = max(0.0, min((landuse_score + 0.3) / 0.6, 1.0))
+    lit_context = 1.0 if seg.get("is_lit") else 0.20
+    escape_context = 0.25 if seg.get("is_dead_end") else 1.0
+    connectivity_context = max(0.0, min(float(seg.get("score", 50.0)) / 100.0, 1.0))
+
+    safety = (
+        0.30 * poi_density
+        + 0.25 * lit_context
+        + 0.15 * landuse_context
+        + 0.15 * escape_context
+        + 0.10 * road_context
+        + 0.05 * connectivity_context
+    )
+    return round(max(0.0, min(safety, 1.0)) * 100, 2)
+
+
 def _empty_route_score() -> dict:
     return {
         "connectivity_score": 50.0,
+        "safety_score": 50.0,
+        "safety_hard_block_count": 0,
+        "suv_score": 50.0,
+        "suv_hard_block_count": 0,
+        "safety_explanation": "",
         "worst_window_score": 50.0,
         "dead_zones": [],
         "dead_zone_count": 0,
@@ -551,15 +691,27 @@ def compute_blended_rank(
     alpha: float,
     max_eta: float = 3600,
     handoff_count: int = 0,
+    use_safety_score: bool = False,
+    safety_score: float = 50.0,
+    use_vehicle_score: bool = False,
+    vehicle_score: float = 50.0,
 ) -> float:
     """
-    edge_weight = α × norm_travel_time + (1-α) × (1 - norm_connectivity) + handoff_penalty
+    edge_weight = α × norm_travel_time + (1-α) × (1 - norm_score) + handoff_penalty
     Lower is better.
     """
     norm_time = min(eta_seconds / max_eta, 1.0)
-    norm_conn = connectivity_score / 100.0
+    
+    if use_vehicle_score:
+        score_to_use = vehicle_score
+    elif use_safety_score:
+        score_to_use = safety_score
+    else:
+        score_to_use = connectivity_score
+        
+    norm_score = score_to_use / 100.0
     handoff_penalty = handoff_count * 0.02
-    return round(alpha * norm_time + (1 - alpha) * (1 - norm_conn) + handoff_penalty, 4)
+    return round(alpha * norm_time + (1 - alpha) * (1 - norm_score) + handoff_penalty, 4)
 
 
 def rerank_routes(routes: list, alpha: float) -> list:
@@ -581,6 +733,51 @@ def apply_persona_constraints(routes: list, persona: str) -> list:
         return routes
     persona = persona.strip().lower()
     config = PERSONA_CONFIG.get(persona, {})
+
+    if persona == "safe_commute":
+        # Hard block routes with any safety violations
+        valid_routes = [r for r in routes if r.get("safety_hard_block_count", 0) == 0]
+        if valid_routes:
+            # If all are disqualified, just return original to avoid empty map,
+            # but ideally we only route through valid ones.
+            routes = valid_routes
+        
+        # Tag the route with the strongest visible safety metric.
+        # Blended rank still exists for numeric tradeoffs, but the "Safest"
+        # label should never point at a route with a lower safety score.
+        if routes:
+            best_safe = max(
+                routes,
+                key=lambda r: (
+                    r.get("safety_score", 0),
+                    -r.get("safety_hard_block_count", 0),
+                    -r.get("eta_seconds", 999999),
+                ),
+            )
+            best_safe["is_safest_route"] = True
+            best_safe["route_role"] = "safest"
+            best_safe["route_label"] = "Safest"
+
+    if persona == "suv":
+        # Hard block routes with any SUV violations
+        valid_routes = [r for r in routes if r.get("suv_hard_block_count", 0) == 0]
+        if valid_routes:
+            routes = valid_routes
+        
+        # Tag the route with the strongest visible SUV metric.
+        # This keeps the selected "SUV Route" aligned with the SUV score card.
+        if routes:
+            best_suv = max(
+                routes,
+                key=lambda r: (
+                    r.get("suv_score", 0),
+                    -r.get("suv_hard_block_count", 0),
+                    -r.get("eta_seconds", 999999),
+                ),
+            )
+            best_suv["is_suv_route"] = True
+            best_suv["route_role"] = "suv_optimal"
+            best_suv["route_label"] = "SUV Route"
 
     if persona == "emergency":
         # Force zero-dead-zone route if ETA penalty ≤ 30%

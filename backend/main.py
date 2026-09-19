@@ -117,6 +117,19 @@ class TelemetryReport(BaseModel):
     signal_score: float
     ttl_seconds: int = 3600
 
+class RouteOptionsRequest(BaseModel):
+    vehicleType: str = "ev"
+    origin: LatLng
+    destination: LatLng
+    currentSoCPercent: float = 80.0
+    batteryCapacityKwh: float = 60.0
+
+class EVRouteEnergyRequest(BaseModel):
+    origin: LatLng
+    destination: LatLng
+    currentSoCPercent: float = 80.0
+    batteryCapacityKwh: float = 60.0
+
 # ──────────────────────────────────────────────────────────────────────────────
 # STARTUP
 # ──────────────────────────────────────────────────────────────────────────────
@@ -309,7 +322,7 @@ async def route_score(req: RouteScoreRequest):
     )
 
     # Get OSRM routes (request more alternatives for safe_commute and suv to increase route diversity, max 4 to avoid TooBig)
-    n_alternatives = 4 if req.persona in ("safe_commute", "suv") else 3
+    n_alternatives = 4 if req.persona in ("safe_commute", "suv", "ev") else 3
     osrm_routes = await get_osrm_routes(
         req.origin.lat, req.origin.lng,
         req.destination.lat, req.destination.lng,
@@ -571,3 +584,340 @@ async def telemetry_report(report: TelemetryReport):
         "way_id": report.osm_way_id,
         "new_score": report.signal_score
     }
+
+
+# ──────────────────────────────────────────────────────────────────────────────
+# EV ADD-ON ENDPOINTS
+# ──────────────────────────────────────────────────────────────────────────────
+
+EV_HEATMAP_CACHE = None
+
+
+def _feature_intersects_bbox(feature: dict, west: float, south: float, east: float, north: float) -> bool:
+    geometry = feature.get("geometry", {})
+    coords = geometry.get("coordinates", [])
+    if geometry.get("type") == "LineString":
+        points = coords
+    elif geometry.get("type") == "MultiLineString":
+        points = [point for line in coords for point in line]
+    elif geometry.get("type") == "Point":
+        points = [coords]
+    else:
+        points = []
+
+    return any(
+        west <= point[0] <= east and south <= point[1] <= north
+        for point in points
+        if isinstance(point, list) and len(point) >= 2
+    )
+
+
+def _percentile(values: list[float], pct: float) -> float:
+    if not values:
+        return 0.0
+    ordered = sorted(values)
+    index = min(len(ordered) - 1, max(0, round((pct / 100.0) * (len(ordered) - 1))))
+    return ordered[index]
+
+
+def _charger_payload(charger) -> dict:
+    return {
+        "id": charger.id,
+        "name": charger.name,
+        "lat": charger.lat,
+        "lng": charger.lng,
+        "digipin": charger.digipin,
+        "network": charger.operator,
+        "capacity_kw": charger.power_kw,
+        "connectorTypes": charger.connector_types,
+        "numPoints": charger.num_points,
+        "is_operational": charger.is_operational,
+        "distanceKm": round(charger.distance_km, 3),
+        "address": charger.address,
+    }
+
+
+def _process_ev_route(osrm_route: dict, route_type: str, req: RouteOptionsRequest, profile) -> dict:
+    from elevation import get_route_elevation_profile
+    from ev_energy import compute_segment_energy_kwh
+
+    coords = osrm_route.get("geometry", {}).get("coordinates", [])
+    coord_tuples = [(coord[1], coord[0]) for coord in coords]
+    elevation_profile = get_route_elevation_profile(coord_tuples)
+    annotation = osrm_route.get("legs", [{}])[0].get("annotation", {})
+    distances = annotation.get("distance", [])
+    durations = annotation.get("duration", [])
+
+    segments = []
+    drainages = []
+    for index in range(1, len(coords)):
+        lat, lng = coord_tuples[index]
+        if distances and durations and index - 1 < len(distances):
+            distance_m = float(distances[index - 1])
+            duration_s = max(float(durations[index - 1]), 1.0)
+        else:
+            distance_m = (
+                elevation_profile[index]["cumulative_dist_m"]
+                - elevation_profile[index - 1]["cumulative_dist_m"]
+            )
+            duration_s = max(distance_m / 10.0, 1.0)
+
+        speed_mps = distance_m / duration_s
+        elevation_gain_m = (
+            elevation_profile[index]["elevation_m"]
+            - elevation_profile[index - 1]["elevation_m"]
+        )
+        energy_kwh = compute_segment_energy_kwh(
+            distance_m=distance_m,
+            speed_mps=speed_mps,
+            elevation_gain_m=elevation_gain_m,
+            profile=profile,
+        )
+        energy_wh = energy_kwh * 1000.0
+        drainage_wh_per_km = energy_wh / (distance_m / 1000.0) if distance_m > 0 else 0.0
+        drainages.append(drainage_wh_per_km)
+        segments.append({
+            "segmentId": str(index),
+            "distanceM": round(distance_m, 2),
+            "elevationDeltaM": round(elevation_gain_m, 2),
+            "avgSpeedKph": round(speed_mps * 3.6, 2),
+            "energyWh": round(energy_wh, 2),
+            "drainageWhPerKm": round(drainage_wh_per_km, 2),
+            "lat": lat,
+            "lng": lng,
+        })
+
+    low_cutoff = _percentile(drainages, 33)
+    high_cutoff = _percentile(drainages, 66)
+    for segment in segments:
+        drainage = segment["drainageWhPerKm"]
+        if drainage <= low_cutoff:
+            segment["colorTier"] = "low"
+        elif drainage <= high_cutoff:
+            segment["colorTier"] = "medium"
+        else:
+            segment["colorTier"] = "high"
+
+    soc = req.currentSoCPercent
+    critical_coord = coord_tuples[len(coord_tuples) // 2] if coord_tuples else (req.origin.lat, req.origin.lng)
+    critical_soc = soc
+    for segment in segments:
+        soc -= (segment["energyWh"] / (profile.battery_capacity_kwh * 1000.0)) * 100.0
+        if soc < 20.0 and critical_soc == req.currentSoCPercent:
+            critical_coord = (segment["lat"], segment["lng"])
+            critical_soc = soc
+
+    total_dist_km = sum(segment["distanceM"] for segment in segments) / 1000.0
+    total_energy_kwh = sum(segment["energyWh"] for segment in segments) / 1000.0
+    efficiency = total_energy_kwh / total_dist_km if total_dist_km > 0 else 0.0
+
+    return {
+        "routeType": route_type,
+        "routeLabel": {
+            "signal_priority": "Signal Priority",
+            "speed_priority": "Speed Priority",
+            "ev_optimized": "EV Optimized",
+            "alternate_via_charger": "Via Charger",
+        }.get(route_type, "EV Route"),
+        "geometry": osrm_route.get("geometry", {"type": "LineString", "coordinates": []}),
+        "polyline": [[coord[1], coord[0]] for coord in coords],
+        "segments": segments,
+        "totalDistanceKm": round(total_dist_km, 2),
+        "etaMinutes": round(float(osrm_route.get("duration", 0)) / 60.0, 1),
+        "energyConsumedKwh": round(total_energy_kwh, 3),
+        "efficiencyKwhPerKm": round(efficiency, 4),
+        "startSoCPercent": req.currentSoCPercent,
+        "predictedArrivalSoCPercent": round(soc, 2),
+        "critical_coord": critical_coord,
+        "remaining_range_km": max(5.0, (max(critical_soc, 1.0) / 100.0) * profile.battery_capacity_kwh / 0.20),
+    }
+
+
+@app.get("/api/ev/heatmap")
+async def ev_heatmap(
+    west: Optional[float] = Query(None),
+    south: Optional[float] = Query(None),
+    east: Optional[float] = Query(None),
+    north: Optional[float] = Query(None),
+    max_features: int = Query(1000000, ge=100, le=1000000),
+):
+    """Return EV drainage heatmap features, optionally clipped to the visible map."""
+    global EV_HEATMAP_CACHE
+    if EV_HEATMAP_CACHE is None:
+        heatmap_path = _resolve_existing_path(
+            "EV_HEATMAP_PATH",
+            "geojson/ev_heatmap.geojson",
+            "ev_feature/ev_heatmap.geojson",
+        )
+        if not heatmap_path:
+            raise HTTPException(404, "EV heatmap not found")
+        with heatmap_path.open(encoding="utf-8") as file:
+            EV_HEATMAP_CACHE = json.load(file)
+
+    features = EV_HEATMAP_CACHE.get("features", [])
+    if None not in (west, south, east, north):
+        features = [
+            feature for feature in features
+            if _feature_intersects_bbox(feature, west, south, east, north)
+        ]
+
+    truncated = len(features) > max_features
+    return {
+        "type": "FeatureCollection",
+        "features": features[:max_features],
+        "count": min(len(features), max_features),
+        "total_matches": len(features),
+        "truncated": truncated,
+    }
+
+
+@app.post("/api/route/options")
+async def route_options(req: RouteOptionsRequest):
+    if req.vehicleType.lower() != "ev":
+        raise HTTPException(400, "Only EV is supported in this endpoint")
+
+    from ev_charger import find_best_detour_charger, haversine_km
+    from ev_energy import EVProfile
+    from router import OSRM_URL, get_osrm_routes
+
+    profile = EVProfile(battery_capacity_kwh=req.batteryCapacityKwh)
+    osrm_routes = await get_osrm_routes(
+        req.origin.lat,
+        req.origin.lng,
+        req.destination.lat,
+        req.destination.lng,
+        n=4,
+    )
+
+    if not osrm_routes:
+        osrm_routes = [{
+            "geometry": {
+                "type": "LineString",
+                "coordinates": [
+                    [req.origin.lng, req.origin.lat],
+                    [req.destination.lng, req.destination.lat],
+                ],
+            },
+            "distance": haversine_km(req.origin.lat, req.origin.lng, req.destination.lat, req.destination.lng) * 1000,
+            "duration": 1800,
+        }]
+
+    while len(osrm_routes) < 3:
+        osrm_routes.append(osrm_routes[-1])
+
+    speed_route = _process_ev_route(osrm_routes[0], "speed_priority", req, profile)
+    signal_route = _process_ev_route(osrm_routes[1], "signal_priority", req, profile)
+    ev_route = _process_ev_route(osrm_routes[2], "ev_optimized", req, profile)
+    response_routes = [signal_route, speed_route, ev_route]
+    alternate = None
+
+    if ev_route["predictedArrivalSoCPercent"] < 20.0:
+        center_lat, center_lng = ev_route["critical_coord"]
+        best_charger = await find_best_detour_charger(
+            center_lat,
+            center_lng,
+            radius_km=ev_route.get("remaining_range_km", 15.0),
+        )
+        if best_charger:
+            alt_url = (
+                f"{OSRM_URL}/route/v1/driving/"
+                f"{req.origin.lng},{req.origin.lat};"
+                f"{best_charger.lng},{best_charger.lat};"
+                f"{req.destination.lng},{req.destination.lat}"
+                f"?geometries=geojson&overview=full&annotations=distance,duration"
+            )
+            try:
+                import httpx
+
+                async with httpx.AsyncClient() as client:
+                    alt_resp = await client.get(alt_url, timeout=10.0)
+                alt_data = alt_resp.json()
+                if alt_data.get("code") == "Ok" and alt_data.get("routes"):
+                    alternate = _process_ev_route(
+                        alt_data["routes"][0],
+                        "alternate_via_charger",
+                        req,
+                        profile,
+                    )
+                    alternate["chargerWaypoints"] = [{
+                        "stationId": best_charger.id,
+                        "name": best_charger.name,
+                        "digipin": best_charger.digipin,
+                        "lat": best_charger.lat,
+                        "lng": best_charger.lng,
+                        "capacity_kw": best_charger.power_kw,
+                        "detourAddedMinutes": round(alternate["etaMinutes"] - ev_route["etaMinutes"], 1),
+                    }]
+            except Exception:
+                alternate = None
+
+    for route in response_routes:
+        route.pop("critical_coord", None)
+    if alternate:
+        alternate.pop("critical_coord", None)
+
+    return {
+        "vehicleType": "ev",
+        "batteryCapacityKwh": req.batteryCapacityKwh,
+        "currentSoCPercent": req.currentSoCPercent,
+        "routes": response_routes,
+        "alternateViaChargerRoute": alternate,
+    }
+
+
+@app.get("/api/ev/chargers")
+async def ev_chargers(
+    orig_lat: float = Query(...),
+    orig_lng: float = Query(...),
+    dest_lat: float = Query(...),
+    dest_lng: float = Query(...),
+    radius_km: float = Query(0.5, ge=0.1, le=50.0),
+    max_results: int = Query(50, ge=1, le=200),
+):
+    from ev_charger import fetch_enroute_chargers
+
+    chargers = await fetch_enroute_chargers(
+        orig_lat,
+        orig_lng,
+        dest_lat,
+        dest_lng,
+        radius_km,
+        max_results,
+    )
+    return {"chargers": [_charger_payload(charger) for charger in chargers]}
+
+
+@app.post("/api/ev/route-energy")
+async def ev_route_energy(req: EVRouteEnergyRequest):
+    route_req = RouteOptionsRequest(
+        origin=req.origin,
+        destination=req.destination,
+        currentSoCPercent=req.currentSoCPercent,
+        batteryCapacityKwh=req.batteryCapacityKwh,
+    )
+    options = await route_options(route_req)
+    ev_route = next(
+        (route for route in options["routes"] if route["routeType"] == "ev_optimized"),
+        options["routes"][0] if options["routes"] else None,
+    )
+    if not ev_route:
+        return {}
+
+    return {
+        "final_soc_pct": ev_route["predictedArrivalSoCPercent"],
+        "energy_consumed_kwh": ev_route["energyConsumedKwh"],
+        "efficiency_kwh_per_km": ev_route["efficiencyKwhPerKm"],
+        "reroute_needed": ev_route["predictedArrivalSoCPercent"] < 20.0,
+        "reroute_message": (
+            "Battery critical. Detouring to nearest fast charger."
+            if ev_route["predictedArrivalSoCPercent"] < 20.0
+            else ""
+        ),
+    }
+
+
+@app.get("/api/digipin/encode")
+async def digipin_encode(lat: float, lng: float):
+    from digipin_wrapper import encode_digipin
+
+    return {"digipin": encode_digipin(lat, lng)}

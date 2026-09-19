@@ -1,17 +1,27 @@
 import { useState } from 'react';
-import { ChevronRight } from 'lucide-react';
+import { BatteryCharging, ChevronRight } from 'lucide-react';
 import { useStore } from '../../store';
 import CustomSelect from '../CustomSelect';
 
 export default function PersonaPanel() {
-    const { alpha, setAlpha, personaPreset, setPersonaPreset, isNavigating } = useStore();
+    const {
+        alpha,
+        setAlpha,
+        personaPreset,
+        setPersonaPreset,
+        isEvMode,
+        setIsEvMode,
+        isNavigating,
+    } = useStore();
     const [isExpanded, setIsExpanded] = useState(false);
     const favourSignal = alpha < 0.5;
+    const lockedPersona = ['safe_commute', 'suv', 'ev'].includes(personaPreset);
 
     const personas = [
         { id: 'default', label: 'Standard Car', targetAlpha: 0.65 },
         { id: 'suv', label: 'SUV', targetAlpha: 0.40 },
-        { id: 'safe_commute', label: 'Safe Commute', targetAlpha: 0.15 }
+        { id: 'safe_commute', label: 'Safe Commute', targetAlpha: 0.15 },
+        { id: 'ev', label: 'EV', targetAlpha: 0.35 }
     ];
 
     if (isNavigating) return null;
@@ -36,7 +46,9 @@ export default function PersonaPanel() {
                     <h3 className="text-sm font-bold text-white">Route preference</h3>
                     <span className="text-[10px] text-slate-400">Choose what leads the decision</span>
                 </div>
-                {personaPreset === 'safe_commute' ? (
+                {personaPreset === 'ev' ? (
+                    <span className="text-[9px] px-2 py-1 rounded-md font-bold tracking-wider border bg-lime-400/10 border-lime-400/25 text-lime-300">EV MODE</span>
+                ) : personaPreset === 'safe_commute' ? (
                     <span className="text-[9px] px-2 py-1 rounded-md font-bold tracking-wider border bg-amber-400/10 border-amber-400/25 text-amber-300">SAFEST</span>
                 ) : personaPreset === 'suv' ? (
                     <span className="text-[9px] px-2 py-1 rounded-md font-bold tracking-wider border bg-amber-400/10 border-amber-400/25 text-amber-300">SUV ROUTE</span>
@@ -70,10 +82,28 @@ export default function PersonaPanel() {
                 />
             </div>
 
+            <button
+                type="button"
+                onClick={() => setIsEvMode(!isEvMode)}
+                className={`flex items-center justify-between rounded-xl border px-3 py-2 transition-all ${
+                    isEvMode
+                        ? 'border-lime-400/35 bg-lime-400/12 text-lime-200'
+                        : 'border-white/10 bg-white/[0.035] text-slate-300 hover:bg-white/[0.07]'
+                }`}
+            >
+                <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest">
+                    <BatteryCharging className="h-4 w-4" />
+                    EV
+                </span>
+                <span className={`h-5 w-9 rounded-full p-0.5 transition-all ${isEvMode ? 'bg-lime-400/80' : 'bg-white/15'}`}>
+                    <span className={`block h-4 w-4 rounded-full bg-white shadow transition-transform ${isEvMode ? 'translate-x-4' : 'translate-x-0'}`} />
+                </span>
+            </button>
+
             <div className="pt-1">
                 <div className="flex justify-between text-[10px] font-bold text-slate-300 mb-3">
-                    {['safe_commute', 'suv'].includes(personaPreset) ? (
-                        <span className="flex items-center gap-1.5"><span className="w-2 h-2 bg-amber-400 rounded-full"></span>{personaPreset === 'suv' ? 'SUV Route' : 'Safest'}</span>
+                    {lockedPersona ? (
+                        <span className="flex items-center gap-1.5"><span className={`w-2 h-2 rounded-full ${personaPreset === 'ev' ? 'bg-lime-400' : 'bg-amber-400'}`}></span>{personaPreset === 'ev' ? 'EV Route' : personaPreset === 'suv' ? 'SUV Route' : 'Safest'}</span>
                     ) : (
                         <span className="flex items-center gap-1.5"><span className="w-2 h-2 bg-emerald-400 rounded-full"></span>Best signal</span>
                     )}
@@ -86,14 +116,14 @@ export default function PersonaPanel() {
                     max="1"
                     step="0.01"
                     value={alpha}
-                    disabled={['safe_commute', 'suv'].includes(personaPreset)}
+                    disabled={lockedPersona}
                     onChange={(e) => {
                         setPersonaPreset('custom');
                         setAlpha(parseFloat(e.target.value));
                     }}
                     aria-label="Balance signal quality and travel time"
-                    className={`w-full h-2 bg-white/20 rounded-lg appearance-none transition-all ${['safe_commute', 'suv'].includes(personaPreset) ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_0_12px_rgba(255,255,255,0.6)]`}
-                    style={{ background: `linear-gradient(90deg, ${['safe_commute', 'suv'].includes(personaPreset) ? '#fbbf24' : '#34d399'} 0%, ${['safe_commute', 'suv'].includes(personaPreset) ? '#fbbf24' : '#34d399'} ${alpha * 100}%, rgba(255,255,255,0.18) ${alpha * 100}%, rgba(255,255,255,0.18) 100%)` }}
+                    className={`w-full h-2 bg-white/20 rounded-lg appearance-none transition-all ${lockedPersona ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'} [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-[0_0_12px_rgba(255,255,255,0.6)]`}
+                    style={{ background: `linear-gradient(90deg, ${lockedPersona ? (personaPreset === 'ev' ? '#a3e635' : '#fbbf24') : '#34d399'} 0%, ${lockedPersona ? (personaPreset === 'ev' ? '#a3e635' : '#fbbf24') : '#34d399'} ${alpha * 100}%, rgba(255,255,255,0.18) ${alpha * 100}%, rgba(255,255,255,0.18) 100%)` }}
                 />
 
                 <div className="mt-3 flex justify-between text-[9px] uppercase tracking-widest font-bold text-slate-500">

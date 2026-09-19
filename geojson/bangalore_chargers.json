@@ -1,0 +1,3028 @@
+[
+  {
+    "id": "41B94A59-7AD7-40F9-A06E-1E156E2AB920",
+    "name": "JW Marriott",
+    "lat": 12.97228768658023,
+    "lng": 77.59492658243641,
+    "digipin": "DIGIPIN-1297229-7759493",
+    "operator": "Chargezone (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 0.08425866105653232,
+    "address": "Vittal Mallya Road, D'Souza Layout"
+  },
+  {
+    "id": "D1664846-291B-44BD-9D60-5B284ED4A517",
+    "name": "Sundaram Motors",
+    "lat": 12.973845154518216,
+    "lng": 77.59597891080779,
+    "digipin": "DIGIPIN-1297385-7759598",
+    "operator": "Chargezone (India)",
+    "power_kw": 90.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 0.29094623770585604,
+    "address": "107, Kasturba Road, opp. Venkatappa Art Gallery, "
+  },
+  {
+    "id": "B585258F-6E4E-4CA6-B301-C92718F8F13D",
+    "name": "ibis Bengaluru City Centre",
+    "lat": 12.96751,
+    "lng": 77.5939,
+    "digipin": "DIGIPIN-1296751-7759390",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 0.4610691774565895,
+    "address": "Plot No - 30, Raja Ram Mohan Roy Road, off Richmond Road"
+  },
+  {
+    "id": "096698BA-1171-4969-ADC9-3634038543FE",
+    "name": "ITC Gardenia Bengaluru",
+    "lat": 12.96728,
+    "lng": 77.59552,
+    "digipin": "DIGIPIN-1296728-7759552",
+    "operator": "Statiq (IN)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 0.49059735081819966,
+    "address": "1, Residency Road"
+  },
+  {
+    "id": "0DC2F0D2-FCAC-4F66-AF41-269CE8ECEFA3",
+    "name": "BMW Navnit Motors",
+    "lat": 12.97259859569182,
+    "lng": 77.59908118684689,
+    "digipin": "DIGIPIN-1297260-7759908",
+    "operator": "(Unknown Operator)",
+    "power_kw": 24.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 0.49810302173872917,
+    "address": "48/3, Lavelle Road"
+  },
+  {
+    "id": "107C1D1C-6B12-4942-80DF-06BD678EF9EC",
+    "name": "Ather Grid Point - 6000 Miles to Isle of Man",
+    "lat": 12.9756828,
+    "lng": 77.5982326000001,
+    "digipin": "DIGIPIN-1297568-7759823",
+    "operator": "(Unknown Operator)",
+    "power_kw": 3.0,
+    "connector_types": [
+      "Type M"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 0.6008637956704275,
+    "address": "Kasturba Road"
+  },
+  {
+    "id": "E463C365-8783-49CD-BEDA-833D081DE626",
+    "name": "Hotel Southern Star",
+    "lat": 12.974727464060706,
+    "lng": 77.59942186908683,
+    "digipin": "DIGIPIN-1297473-7759942",
+    "operator": "Tata Power",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 0.6276328827714223,
+    "address": "Lavelle Road"
+  },
+  {
+    "id": "60847F2A-5757-4DF9-91DA-875C20F5B316",
+    "name": "Audi Central",
+    "lat": 12.97001545590929,
+    "lng": 77.6004747835533,
+    "digipin": "DIGIPIN-1297002-7760047",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 0.6605118810060853,
+    "address": "1, St Marks Road, Shanthala Nagar"
+  },
+  {
+    "id": "CACC2501-D4EC-4088-AA35-15056CC6FF9E",
+    "name": "BESCOM Head Office",
+    "lat": 12.9755314120859,
+    "lng": 77.5883364581665,
+    "digipin": "DIGIPIN-1297553-7758834",
+    "operator": "(Business Owner at Location)",
+    "power_kw": 3.6,
+    "connector_types": [
+      "Blue Commando (2P+E)",
+      "CHAdeMO"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 0.807298375778061,
+    "address": "K R Subway"
+  },
+  {
+    "id": "82A3DC42-5127-4B67-A063-4B030329EEDC",
+    "name": "Divyasree Chambers",
+    "lat": 12.96192,
+    "lng": 77.59922,
+    "digipin": "DIGIPIN-1296192-7759922",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 1.1870918084441542,
+    "address": "O Shaughnessy Road, Langford Gardens"
+  },
+  {
+    "id": "5C24F280-EC08-4E56-B63A-5C1B7FE21525",
+    "name": "Doddanekundi Lake Walk",
+    "lat": 12.971127783287287,
+    "lng": 77.60600597994562,
+    "digipin": "DIGIPIN-1297113-7760601",
+    "operator": "Unknown",
+    "power_kw": 22.0,
+    "connector_types": [
+      "Type 2"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 1.2370383235079274,
+    "address": "Doddanekundi Lake Walk"
+  },
+  {
+    "id": "270CBE9A-35DA-4F10-A434-CCCF695422CC",
+    "name": "Forum Rex Walk",
+    "lat": 12.972458,
+    "lng": 77.606851,
+    "digipin": "DIGIPIN-1297246-7760685",
+    "operator": "Statiq (IN)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 4,
+    "is_operational": true,
+    "distance_km": 1.330908067271816,
+    "address": "Brigade Road"
+  },
+  {
+    "id": "5D9DA969-42B7-427A-B26B-0A4861995F47",
+    "name": "Vivanta by Taj Residency Road",
+    "lat": 12.97248838809081,
+    "lng": 77.60854161055966,
+    "digipin": "DIGIPIN-1297249-7760854",
+    "operator": "Tata Power",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 1.513900224961125,
+    "address": "66, Residency Road"
+  },
+  {
+    "id": "845026CA-7FE3-41C7-9D67-78DA45362789",
+    "name": "Freedom Park",
+    "lat": 12.97859,
+    "lng": 77.58139,
+    "digipin": "DIGIPIN-1297859-7758139",
+    "operator": "Bolt.Earth (IN)",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 1.6287950163083122,
+    "address": "Sevakshetra, No. 14  6th Cross"
+  },
+  {
+    "id": "86AA23DC-D824-46BE-B7F7-0BBE92F1EB7E",
+    "name": "Charging station",
+    "lat": 12.960850473046193,
+    "lng": 77.58182473802742,
+    "digipin": "DIGIPIN-1296085-7758182",
+    "operator": "(Unknown Operator)",
+    "power_kw": 22.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 1.828955418571083,
+    "address": "2nd Cross Road"
+  },
+  {
+    "id": "1EDB8F8A-B7C8-48EC-B0F7-73EE458EE981",
+    "name": "Welcomhotel Richmond Road",
+    "lat": 12.968709974182843,
+    "lng": 77.61440938105488,
+    "digipin": "DIGIPIN-1296871-7761441",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 2.170427391679714,
+    "address": "46, Richmond Road"
+  },
+  {
+    "id": "DEC51DF9-BC0A-4A24-B8B7-2B4821674B6B",
+    "name": "The Rialto Hotel",
+    "lat": 12.98026,
+    "lng": 77.57661,
+    "digipin": "DIGIPIN-1298026-7757661",
+    "operator": "Zeon Charging",
+    "power_kw": 7.0,
+    "connector_types": [
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 2.174189532559752,
+    "address": "20-21, Seshadri Rd, Gandhi Nagar"
+  },
+  {
+    "id": "B2F8B883-2465-4F0C-BBFA-441C38F272D1",
+    "name": "Renaissance Bengaluru Race Course Hotel",
+    "lat": 12.98439,
+    "lng": 77.57639,
+    "digipin": "DIGIPIN-1298439-7757639",
+    "operator": "Chargezone (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 2.4322573718622116,
+    "address": "No 17 And 17, 1, Race Course Rd, Madhava Nagar, Extension"
+  },
+  {
+    "id": "DC88A8F6-386F-42FD-865B-A4300EC48D61",
+    "name": "The Oberoi, Bengaluru",
+    "lat": 12.972788253204087,
+    "lng": 77.6184047836071,
+    "digipin": "DIGIPIN-1297279-7761840",
+    "operator": "Tata Power",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 2.5827999602096177,
+    "address": "37-39, MG Road"
+  },
+  {
+    "id": "F00CE2C4-A343-4DCB-87D5-D4C61365D119",
+    "name": "Taj MG Road",
+    "lat": 12.97331434540071,
+    "lng": 77.6195781000381,
+    "digipin": "DIGIPIN-1297331-7761958",
+    "operator": "Tata Power",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 2.713257224623616,
+    "address": "41/3, MG Road, Yellappa Garden"
+  },
+  {
+    "id": "D5C9C1C3-4013-49B7-A3EF-FB5A4668CA40",
+    "name": "Radisson Bengaluru City Center",
+    "lat": 12.97622,
+    "lng": 77.61948,
+    "digipin": "DIGIPIN-1297622-7761948",
+    "operator": "Zeon Charging",
+    "power_kw": 22.0,
+    "connector_types": [
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 2.7444166628243685,
+    "address": "2, Gangadhar Chetty Rd, Halasuru"
+  },
+  {
+    "id": "BA37BCAE-EDA1-4BE8-B4A5-BE9B298DA44E",
+    "name": "The Park Hotel",
+    "lat": 12.973940635420362,
+    "lng": 77.61988884794027,
+    "digipin": "DIGIPIN-1297394-7761989",
+    "operator": "Tata Power",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 2.7525530894824737,
+    "address": "No 6/2, Bhaskaran Road, Yellappa Garden"
+  },
+  {
+    "id": "20BA25F5-92CA-40B1-8BA6-2853BB08783E",
+    "name": "Carzonrent",
+    "lat": 12.974519436687544,
+    "lng": 77.62146110718822,
+    "digipin": "DIGIPIN-1297452-7762146",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 2.9286298310309014,
+    "address": "# 16 'B, Bazaar Street, Halasuru"
+  },
+  {
+    "id": "696C6B5F-1CD6-432E-9D73-C6871F3B4907",
+    "name": "Ather Grid Point - Moto Store & Cafe",
+    "lat": 12.9875541362772,
+    "lng": 77.6208706943579,
+    "digipin": "DIGIPIN-1298755-7762087",
+    "operator": "(Unknown Operator)",
+    "power_kw": 3.0,
+    "connector_types": [
+      "Unknown"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 3.354085781975584,
+    "address": "38/4, Kensington Rd, Sindhi Colony, Pulikeshi Nagar"
+  },
+  {
+    "id": "B3FE373E-7A70-431A-BAAC-37D447F92598",
+    "name": "RMZ MILLENIA",
+    "lat": 12.98247,
+    "lng": 77.62461,
+    "digipin": "DIGIPIN-1298247-7762461",
+    "operator": "Zeon Charging",
+    "power_kw": 24.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 3.4691071816999317,
+    "address": "Halasuru,"
+  },
+  {
+    "id": "4E1E46EF-A7AF-4106-B9BC-6B453838ECCB",
+    "name": "Global Mall, Okalipuram",
+    "lat": 12.98211,
+    "lng": 77.56317,
+    "digipin": "DIGIPIN-1298211-7756317",
+    "operator": "Rebolt (IN)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 3.6005389233063974,
+    "address": "Okalipura Road, Gopalapura"
+  },
+  {
+    "id": "397F1CE5-0DE5-4C24-9F26-96FBD5977F7E",
+    "name": "Nexus Mall Koramangala",
+    "lat": 12.93484,
+    "lng": 77.6118,
+    "digipin": "DIGIPIN-1293484-7761180",
+    "operator": "Zeon Charging",
+    "power_kw": 24.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 4.492430420740094,
+    "address": "Hosur Rd, Chikku Lakshmaiah Layout"
+  },
+  {
+    "id": "379A474F-DE3B-4D8A-94C4-9D0280E75368",
+    "name": "Ather Grid Point - Sunny Side Bistro",
+    "lat": 13.0018168,
+    "lng": 77.6235465,
+    "digipin": "DIGIPIN-1300182-7762355",
+    "operator": "(Unknown Operator)",
+    "power_kw": 3.0,
+    "connector_types": [
+      "Unknown"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 4.596319711719785,
+    "address": "Wheeler Road Extension"
+  },
+  {
+    "id": "D76B7F8F-843D-403B-99A4-E37F5B0EF4D7",
+    "name": "GT World Mall",
+    "lat": 12.97396,
+    "lng": 77.55157,
+    "digipin": "DIGIPIN-1297396-7755157",
+    "operator": "Zeon Charging",
+    "power_kw": 22.0,
+    "connector_types": [
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 4.669975413733525,
+    "address": "Magadi Main Rd, next to Prasanna Theatre"
+  },
+  {
+    "id": "D8D99015-2297-428A-BEE6-C07014488DE9",
+    "name": "Ather Space",
+    "lat": 12.9756892941475,
+    "lng": 77.6412298094218,
+    "digipin": "DIGIPIN-1297569-7764123",
+    "operator": "(Unknown Operator)",
+    "power_kw": 3.0,
+    "connector_types": [
+      "Unknown"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 5.073062366559574,
+    "address": "100 Feet Road(S K Karim Khan Road)"
+  },
+  {
+    "id": "6558C1C1-AD59-4E2E-93DF-099475A0AACF",
+    "name": "Orion Avenue",
+    "lat": 13.001137938818005,
+    "lng": 77.63254,
+    "digipin": "DIGIPIN-1300114-7763254",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 5.261815491877185,
+    "address": "10/34, Banaswadi, Dodda Banaswadi Main Road, Jaibharath Nagar,  "
+  },
+  {
+    "id": "60F4F182-FDE5-4517-8DD0-3EAC0B8541E0",
+    "name": "Tata Fast Charger",
+    "lat": 12.952438850806772,
+    "lng": 77.63973152758626,
+    "digipin": "DIGIPIN-1295244-7763973",
+    "operator": "Tata Power",
+    "power_kw": 22.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 5.334488459892727,
+    "address": "Opposite Dell"
+  },
+  {
+    "id": "A9D3DD4C-EE78-41D2-AA59-0293C65856EA",
+    "name": "Divyashree Greens",
+    "lat": 12.952724425242494,
+    "lng": 77.64085233195198,
+    "digipin": "DIGIPIN-1295272-7764085",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 5.433701553509707,
+    "address": "Visitor Parking, Pine Valley, Embassy Golf-links Business Park, Off Intermediate Ring Road "
+  },
+  {
+    "id": "F056EA86-C526-4FB8-8F83-10A8B683B449",
+    "name": "Ather Grid Point - Patel's Inn",
+    "lat": 13.0212463,
+    "lng": 77.5980284,
+    "digipin": "DIGIPIN-1302125-7759803",
+    "operator": "(Unknown Operator)",
+    "power_kw": 3.0,
+    "connector_types": [
+      "Unknown"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 5.532899735420936,
+    "address": "Thimmiah Gardens Streets"
+  },
+  {
+    "id": "931DF86E-A0D0-4E04-9B98-F21AFC129A5A",
+    "name": "AtherGrid Go Native Cafe",
+    "lat": 12.9224636436796,
+    "lng": 77.5846883396955,
+    "digipin": "DIGIPIN-1292246-7758469",
+    "operator": "Unknown",
+    "power_kw": 2.0,
+    "connector_types": [
+      "Unknown"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 5.568291729005736,
+    "address": "Go Native Cafe"
+  },
+  {
+    "id": "5AFEFA64-D036-4F1D-B2F9-5A92E23DAC58",
+    "name": "Prerana Motors, Rajaji Nagar",
+    "lat": 12.99935,
+    "lng": 77.54971,
+    "digipin": "DIGIPIN-1299935-7754971",
+    "operator": "Tata Power",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "CHAdeMO"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 5.760098663286638,
+    "address": "Metro Station, No 46, 2nd Stage 10th Cross, Chord Road"
+  },
+  {
+    "id": "D91078E0-8C80-4B83-B717-CC28A5E891A8",
+    "name": "Orion Mall Outside",
+    "lat": 13.009553121997012,
+    "lng": 77.55461112998876,
+    "digipin": "DIGIPIN-1300955-7755461",
+    "operator": "Zeon Charging",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 6.048375101412895,
+    "address": "Dr Rajkumar Road"
+  },
+  {
+    "id": "4A72AE7B-BAEB-4B5B-B91F-7E08FDA445DE",
+    "name": "Orion Brigade Gateway",
+    "lat": 13.01105,
+    "lng": 77.55471,
+    "digipin": "DIGIPIN-1301105-7755471",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 6.158131285478907,
+    "address": "Dr Rajkumar Road, Rajajinagar"
+  },
+  {
+    "id": "CCBAEB72-A060-4FDF-971B-D382BEF46092",
+    "name": "Sheraton Grand Bangalore Hotel at Brigade Gateway",
+    "lat": 13.01275,
+    "lng": 77.55504,
+    "digipin": "DIGIPIN-1301275-7755504",
+    "operator": "Chargezone (India)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 6.2696747948540335,
+    "address": "26/1 Dr. Rajkumar Road Malleswaram"
+  },
+  {
+    "id": "8572739A-E4A6-47CA-93EF-FA88FA007955",
+    "name": "BESCOM Byatarayanapura",
+    "lat": 12.950278857508295,
+    "lng": 77.54055692747397,
+    "digipin": "DIGIPIN-1295028-7754056",
+    "operator": "(Unknown Operator)",
+    "power_kw": 15.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 6.317910025874269,
+    "address": "opp Byatarayanapura Traffic Police Station, Banashankari 1st Stage"
+  },
+  {
+    "id": "A3C3EE22-0632-41C2-BD3C-2EE41A1BDF59",
+    "name": "Kabra Excelsior",
+    "lat": 12.92786,
+    "lng": 77.63306,
+    "digipin": "DIGIPIN-1292786-7763306",
+    "operator": "Zeon Charging",
+    "power_kw": 50.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 6.405133285694765,
+    "address": "6/A, 80 Feet Rd, Koramangala 1A Block, Koramangala 3 Block,"
+  },
+  {
+    "id": "F68A3A06-E89E-4510-BFC6-30BE3DE12E7A",
+    "name": "Ather Grid Point - Caf Eleven",
+    "lat": 12.9233342441394,
+    "lng": 77.5548753083467,
+    "digipin": "DIGIPIN-1292333-7755488",
+    "operator": "(Unknown Operator)",
+    "power_kw": 3.0,
+    "connector_types": [
+      "Unknown"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 6.880094051107076,
+    "address": "Outer Ring Road"
+  },
+  {
+    "id": "1401E7EA-C851-49C3-9C67-5DE6B0295403",
+    "name": "Ather Grid Point - Chapter One",
+    "lat": 13.0323019,
+    "lng": 77.5697127,
+    "digipin": "DIGIPIN-1303230-7756971",
+    "operator": "(Unknown Operator)",
+    "power_kw": 3.0,
+    "connector_types": [
+      "Unknown"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 7.268395424936044,
+    "address": "New BEL Road"
+  },
+  {
+    "id": "DF5FB032-3C52-4813-B678-92D8869C3723",
+    "name": "Shell Recharge Mysore Road",
+    "lat": 12.94696,
+    "lng": 77.53247,
+    "digipin": "DIGIPIN-1294696-7753247",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 4,
+    "is_operational": true,
+    "distance_km": 7.2687238756583765,
+    "address": "C-77, 3rd Cross Rd, Ranganathan Colony, Mysore Road"
+  },
+  {
+    "id": "C8A0E487-582E-4003-B73A-E79558439C51",
+    "name": "Lithium Charging Station",
+    "lat": 13.014903182800126,
+    "lng": 77.6462047089708,
+    "digipin": "DIGIPIN-1301490-7764620",
+    "operator": "(Unknown Operator)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 7.378846145155829,
+    "address": "820, 2nd A Cross Rd, HRBR Layout 1st Block"
+  },
+  {
+    "id": "FDC5CAA4-6AA8-41E7-B229-DD7D57248185",
+    "name": "Shell Recharge Old Madras Road",
+    "lat": 12.9923,
+    "lng": 77.65942,
+    "digipin": "DIGIPIN-1299230-7765942",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 7.39098139749086,
+    "address": "Old Madras Rd, Rajana Colony, K R PURAM HOBLI"
+  },
+  {
+    "id": "80AD23FD-6B8B-4A37-971B-72007145A316",
+    "name": "Bengaluru One, Old Airport Road",
+    "lat": 12.95925146155301,
+    "lng": 77.6627608005785,
+    "digipin": "DIGIPIN-1295925-7766276",
+    "operator": "(Unknown Operator)",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 7.512459956197837,
+    "address": "S3, Old Airport Road, Sudhama Nagar"
+  },
+  {
+    "id": "014EE155-191B-4871-AC75-E19EF82AC2EB",
+    "name": "RMZ Infinity",
+    "lat": 12.99365,
+    "lng": 77.66045,
+    "digipin": "DIGIPIN-1299365-7766045",
+    "operator": "Zeon Charging",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 7.5445370430492815,
+    "address": "3, Old Madras Rd, opposite Gopalan Signature Mall"
+  },
+  {
+    "id": "9ADC15E3-C06C-4F5F-B2E6-939B724C9F01",
+    "name": "The Pavilion 2",
+    "lat": 12.90375,
+    "lng": 77.60136,
+    "digipin": "DIGIPIN-1290375-7760136",
+    "operator": "Chargezone (India)",
+    "power_kw": 150.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 7.580060689488832,
+    "address": "Dollars Colony, J.P Nagar Phase 4"
+  },
+  {
+    "id": "2B2D8204-428E-4176-9057-6C2CA7D0A510",
+    "name": "Grand Mercure Bengaluru",
+    "lat": 12.99267,
+    "lng": 77.66117,
+    "digipin": "DIGIPIN-1299267-7766117",
+    "operator": "Zeon Charging",
+    "power_kw": 22.0,
+    "connector_types": [
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 7.584003233533686,
+    "address": "Old Madras Rd, Rahat Bagh"
+  },
+  {
+    "id": "04D950FE-CC47-4C9E-AF72-020B31CCF003",
+    "name": "Anant Cars Bannerghatta Road",
+    "lat": 12.90302,
+    "lng": 77.60159,
+    "digipin": "DIGIPIN-1290302-7760159",
+    "operator": "Chargezone (India)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 7.663280877592812,
+    "address": "Janardhan Towers,opposite to Rainbow Hospital"
+  },
+  {
+    "id": "893879F8-253B-45CE-A035-B1E7C2CA0B2B",
+    "name": "Shell Recharge Yeshwantpur",
+    "lat": 13.02499,
+    "lng": 77.54759,
+    "digipin": "DIGIPIN-1302499-7754759",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Unknown"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 7.822174883165567,
+    "address": "Tumkur Rd, Yeshwanthpur Industrial Area, Phase 1, Yeswanthpur, Bengaluru, Karnataka 560022"
+  },
+  {
+    "id": "893B7EE7-FBDD-4EC3-B63F-999C068B30DD",
+    "name": "Key Motors, Kanakapura Main Road",
+    "lat": 12.90401,
+    "lng": 77.57358,
+    "digipin": "DIGIPIN-1290401-7757358",
+    "operator": "Tata Power",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "CHAdeMO"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 7.853306349829083,
+    "address": "No 71, 1A & 71/7, Kanakapura Main Road, opposite Gopalan Temple Trees Apartment"
+  },
+  {
+    "id": "4C948BBA-0CF7-4218-BAE1-33C708D88AB6",
+    "name": "Adishakti Cars, Hebbal",
+    "lat": 13.04291,
+    "lng": 77.60927,
+    "digipin": "DIGIPIN-1304291-7760927",
+    "operator": "Tata Power",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "CHAdeMO"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 8.087031123314842,
+    "address": "56, Outer Ring Road, opposite Lumbini Gardens"
+  },
+  {
+    "id": "403A7087-8709-436D-ABDA-174033755FFB",
+    "name": "KEVAL Charging Station",
+    "lat": 13.0001,
+    "lng": 77.52435,
+    "digipin": "DIGIPIN-1300010-7752435",
+    "operator": "Chargezone (India)",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 8.24502509190212,
+    "address": "568, 6th Cross, Outer Ring Road, Service Road"
+  },
+  {
+    "id": "4C6FBCD1-A8BA-4F96-9322-0F648CA3E437",
+    "name": "MEI EV charging hub",
+    "lat": 13.026816255694186,
+    "lng": 77.54261284631212,
+    "digipin": "DIGIPIN-1302682-7754261",
+    "operator": "Statiq (IN)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 8.332019438716104,
+    "address": ""
+  },
+  {
+    "id": "77A57A97-53F8-4146-99E7-D737952C682B",
+    "name": "Sixth Gear Cars",
+    "lat": 13.046755410837207,
+    "lng": 77.59123644794158,
+    "digipin": "DIGIPIN-1304676-7759124",
+    "operator": "Chargezone (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 8.364841855638431,
+    "address": "Bellary Road, Hebbal Kempapura"
+  },
+  {
+    "id": "77892797-4404-41EF-AF41-7F09BF569B20",
+    "name": "Divija EV charging Station",
+    "lat": 12.918010619982525,
+    "lng": 77.64926514630082,
+    "digipin": "DIGIPIN-1291801-7764927",
+    "operator": "(Unknown Operator)",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 8.402499125794527,
+    "address": "1066, 24th Main Road"
+  },
+  {
+    "id": "B6B4272B-AA5C-4982-B9DB-95BC6933FA65",
+    "name": "Taj Yeshwantpur",
+    "lat": 13.028822486015997,
+    "lng": 77.54032150168894,
+    "digipin": "DIGIPIN-1302882-7754032",
+    "operator": "Tata Power",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 8.664274870644599,
+    "address": "2275, Tumkur Road, Yeshwanthpur Industrial Area, Phase 1"
+  },
+  {
+    "id": "43E2646E-B59A-4F79-A8EB-4A6CB36B451F",
+    "name": "Shell Recharge Yelachenahalli",
+    "lat": 12.89719,
+    "lng": 77.57071,
+    "digipin": "DIGIPIN-1289719-7757071",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 8.669629031871235,
+    "address": "Kanakapura Main Road, next to Yelachenahali, Krishna Devaraya Nagar, Kashi Nagar, Kumaraswamy Layout"
+  },
+  {
+    "id": "D23818F3-9DF8-45E6-A0D4-B3C8AD06E374",
+    "name": "ibis Bengaluru Hosur Road",
+    "lat": 12.90073,
+    "lng": 77.63203,
+    "digipin": "DIGIPIN-1290073-7763203",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 8.863114059554537,
+    "address": "26/1, near Central Silk Board Junction, next to The Oxford College"
+  },
+  {
+    "id": "02CC78CD-D2D7-493C-A8B0-67A2B0698092",
+    "name": "Gokulam Grand Hotel & Spa",
+    "lat": 13.04204,
+    "lng": 77.55465,
+    "digipin": "DIGIPIN-1304204-7755465",
+    "operator": "Tata Power",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 8.948912221877762,
+    "address": "115, Mangalore - Villupuram Road, HMR Layout"
+  },
+  {
+    "id": "53C8266E-6610-43DB-ACA5-67035D079CDD",
+    "name": "Elements Mall",
+    "lat": 13.04612,
+    "lng": 77.6269,
+    "digipin": "DIGIPIN-1304612-7762690",
+    "operator": "Statiq (IN)",
+    "power_kw": 150.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 8.994876398728936,
+    "address": "Thanisandra Main Road"
+  },
+  {
+    "id": "4623AFF3-0202-458C-803E-083C092C6DE2",
+    "name": "KTC Legacy Charging Station",
+    "lat": 12.945761639147051,
+    "lng": 77.67413004669817,
+    "digipin": "DIGIPIN-1294576-7767413",
+    "operator": "(Unknown Operator)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 4,
+    "is_operational": true,
+    "distance_km": 9.08441481202851,
+    "address": "Site No. 1, Pearl Paradise Layout"
+  },
+  {
+    "id": "71AFE526-B762-4513-9A06-FE8D880EF44D",
+    "name": "Key Motors, Bannerghatta Road",
+    "lat": 12.88912,
+    "lng": 77.59736,
+    "digipin": "DIGIPIN-1288912-7759736",
+    "operator": "Tata Power",
+    "power_kw": 24.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 9.176233955939736,
+    "address": "#215/15, Arakere Gate"
+  },
+  {
+    "id": "1A7F8CAB-D7F2-4508-BA9A-A653E553692C",
+    "name": "Blusmart Charging Station (HSR Hub)",
+    "lat": 12.90212,
+    "lng": 77.64191,
+    "digipin": "DIGIPIN-1290212-7764191",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "GB-T DC - GB/T 20234.3",
+      "IEC 60309 3-pin",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 4,
+    "is_operational": true,
+    "distance_km": 9.272299243297752,
+    "address": "ITI Layout, Sector 7, HSR Layout"
+  },
+  {
+    "id": "275EBBCC-F19D-414B-9429-395E9E2DCF36",
+    "name": "Ather Grid Point - Fab Cafe",
+    "lat": 12.9339420487577,
+    "lng": 77.517451890213,
+    "digipin": "DIGIPIN-1293394-7751745",
+    "operator": "(Unknown Operator)",
+    "power_kw": 3.0,
+    "connector_types": [
+      "Unknown"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 9.350242836879431,
+    "address": "Kenchenahalli Main Road"
+  },
+  {
+    "id": "9518D16F-9189-42B7-B1B1-615CB077E335",
+    "name": "DoubleTree Suites by Hilton Bengaluru Outer Ring Road",
+    "lat": 12.919111753741149,
+    "lng": 77.66515519490173,
+    "digipin": "DIGIPIN-1291911-7766516",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 9.618987718244236,
+    "address": "Iblur Gate, Dr. Puneeth Rajkumar Road "
+  },
+  {
+    "id": "5EA42192-BB81-4112-A683-65E4F2067E5E",
+    "name": "Forum South Bengaluru",
+    "lat": 12.88919162512768,
+    "lng": 77.56343684144673,
+    "digipin": "DIGIPIN-1288919-7756344",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 6,
+    "is_operational": true,
+    "distance_km": 9.765963523291784,
+    "address": "Konanakunte Cross Metro Statio, Kanakapura Road"
+  },
+  {
+    "id": "D101E72D-D862-4E3C-A7B1-CC196EB0ABD6",
+    "name": "BESCOM Rajarajeshwari Nagar",
+    "lat": 12.92905,
+    "lng": 77.514789,
+    "digipin": "DIGIPIN-1292905-7751479",
+    "operator": "(Unknown Operator)",
+    "power_kw": 50.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 9.858409411354142,
+    "address": "638, Kenchenahalli Main Road"
+  },
+  {
+    "id": "08582771-4F3E-4C65-AA5D-2358B4FE6EF7",
+    "name": "Shell Recharge Thanisandra",
+    "lat": 13.05367,
+    "lng": 77.63073,
+    "digipin": "DIGIPIN-1305367-7763073",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 9.929824834193475,
+    "address": "Thanisandra Main Road, Hobli, Ashwath Nagar, KR Puram"
+  },
+  {
+    "id": "8AC5BF7F-B7BC-49FE-8554-69A3D90A307B",
+    "name": "Shell Recharge Haralur",
+    "lat": 12.91293,
+    "lng": 77.66542,
+    "digipin": "DIGIPIN-1291293-7766542",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 10.072845076793016,
+    "address": "Plot No.6, Sy No.27/2, Haralur Road, Ambalipura Village"
+  },
+  {
+    "id": "CBBC6B13-5985-439B-8334-38032E921794",
+    "name": "Prerana Motors, Hongasandra",
+    "lat": 12.8912,
+    "lng": 77.63829,
+    "digipin": "DIGIPIN-1289120-7763829",
+    "operator": "Tata Power",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "CHAdeMO"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 10.116528465962062,
+    "address": "No 55 Kudlugate, Hosur Road, next to Ozone Tech Park, Kudlu Gate"
+  },
+  {
+    "id": "91EEBF3F-D249-4E98-9B23-1F68D745FBA7",
+    "name": "MG Motor B Narayanapura",
+    "lat": 12.99577,
+    "lng": 77.6847,
+    "digipin": "DIGIPIN-1299577-7768470",
+    "operator": "Statiq (IN)",
+    "power_kw": 50.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 10.125710633694155,
+    "address": "1, Outer Ring Road, Kamadhenu Nagar"
+  },
+  {
+    "id": "ADCD31E1-69E4-4B06-93B2-693D8B4DAC5A",
+    "name": "Jio BP Pulse",
+    "lat": 12.98931,
+    "lng": 77.50062,
+    "digipin": "DIGIPIN-1298931-7750062",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 10.371731154651679,
+    "address": "Miraj Cinemas"
+  },
+  {
+    "id": "0C0A49F7-0A3D-4B42-AB16-D3E2D86961E2",
+    "name": "Sobha Corporate Office",
+    "lat": 12.932292,
+    "lng": 77.681965,
+    "digipin": "DIGIPIN-1293229-7768197",
+    "operator": "Salzer NexCharge (IN)",
+    "power_kw": 7.0,
+    "connector_types": [
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 10.42764692738488,
+    "address": "Sarjapur - Marthahalli Outer Ring Road, Bellandur"
+  },
+  {
+    "id": "F987EAB6-0C47-4196-A609-D53D404522A9",
+    "name": "Pratham Motors",
+    "lat": 12.89388,
+    "lng": 77.65157,
+    "digipin": "DIGIPIN-1289388-7765157",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 10.620954338584442,
+    "address": "58/5, Kudlu Road, next to Zee School, HSR Extension"
+  },
+  {
+    "id": "33F89667-65D5-4B62-9445-8A9163BE69F2",
+    "name": "Royal Meenakshi Mall",
+    "lat": 12.8759,
+    "lng": 77.59583,
+    "digipin": "DIGIPIN-1287590-7759583",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 10.64218940981716,
+    "address": "Bannerghatta Road"
+  },
+  {
+    "id": "F05DD140-C13C-423C-8A20-FAA50FFEE4DC",
+    "name": "Courtyard by Marriott",
+    "lat": 12.928234378881882,
+    "lng": 77.68218794687056,
+    "digipin": "DIGIPIN-1292823-7768219",
+    "operator": "Chargezone (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 10.646268925876567,
+    "address": "Marathahalli - Sarjapur Outer Ring Road"
+  },
+  {
+    "id": "FB0B7F2F-20DF-4CEB-B703-B1AD862AB97F",
+    "name": "Novotel Bengaluru Outer Ring Road",
+    "lat": 12.9299,
+    "lng": 77.68317,
+    "digipin": "DIGIPIN-1292990-7768317",
+    "operator": "Zeon Charging",
+    "power_kw": 22.0,
+    "connector_types": [
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 10.659367922972587,
+    "address": "ECOSPACE BUSINESS PARK, Sarjapur - Marathahalli Rd, opp. Rmz"
+  },
+  {
+    "id": "F7A07DF5-9DAC-4DF4-933B-2B6BC03120AA",
+    "name": "Shell Recharge TC Palya",
+    "lat": 13.02234,
+    "lng": 77.67867,
+    "digipin": "DIGIPIN-1302234-7767867",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 10.714498616495456,
+    "address": "136 Thambu Chetty Palya Main Road"
+  },
+  {
+    "id": "F05BC321-EA44-4DD1-A76B-D33A95EFC13B",
+    "name": "MobiLane Ecospace",
+    "lat": 12.9249701,
+    "lng": 77.68147802,
+    "digipin": "DIGIPIN-1292497-7768148",
+    "operator": "(Unknown Operator)",
+    "power_kw": 22.0,
+    "connector_types": [
+      "Unknown"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 10.748114301917576,
+    "address": "Outer Ring Rd, Adarsh Palm Retreat, Bellandur, Bengaluru, Karnataka 560103"
+  },
+  {
+    "id": "2C4114D0-7CA9-4255-BE67-5598F924D1D5",
+    "name": "Exora Business Park",
+    "lat": 12.94329,
+    "lng": 77.69229,
+    "digipin": "DIGIPIN-1294329-7769229",
+    "operator": "(Unknown Operator)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 11.044166009921366,
+    "address": "Exora Business Park"
+  },
+  {
+    "id": "90D32E93-F03E-4855-9D64-342109251A38",
+    "name": "Shell Recharge Prestige Tech Park",
+    "lat": 12.94269,
+    "lng": 77.69235,
+    "digipin": "DIGIPIN-1294269-7769235",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 11.069600885241316,
+    "address": "Prestige Tech Park Kadubeesanahalli Bridge"
+  },
+  {
+    "id": "99B67ED1-6FF1-4819-A86C-37EEF214FDCD",
+    "name": "Hosa Road",
+    "lat": 12.911521506082025,
+    "lng": 77.67629825827191,
+    "digipin": "DIGIPIN-1291152-7767630",
+    "operator": "(Unknown Operator)",
+    "power_kw": 3.3,
+    "connector_types": [
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 11.091242908109963,
+    "address": "Hosa Road"
+  },
+  {
+    "id": "B22ADE0D-A7D9-468F-806D-B8F4F91669E9",
+    "name": "The Bay at Ecoworld",
+    "lat": 12.921003663939288,
+    "lng": 77.68539425864924,
+    "digipin": "DIGIPIN-1292100-7768539",
+    "operator": "(Unknown Operator)",
+    "power_kw": 80.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 11.334148411979568,
+    "address": "Building No.6, RMZ Ecoworld Road"
+  },
+  {
+    "id": "5BA35698-25A3-4EC2-B166-B7FA225E9F64",
+    "name": "RMZ EcoWorld",
+    "lat": 12.92542,
+    "lng": 77.68788,
+    "digipin": "DIGIPIN-1292542-7768788",
+    "operator": "Zeon Charging",
+    "power_kw": 50.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 11.3379939452267,
+    "address": "Bellandur"
+  },
+  {
+    "id": "E642E4C5-3DE6-4414-B08A-6DFB80D0F329",
+    "name": "MobiLane The Bay at Ecoworld",
+    "lat": 12.92096727,
+    "lng": 77.68547587,
+    "digipin": "DIGIPIN-1292097-7768548",
+    "operator": "(Unknown Operator)",
+    "power_kw": 80.0,
+    "connector_types": [
+      "Unknown"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 11.343835432763656,
+    "address": "Outer Ring Road, Bellandur, Bengaluru, Karnataka 560103"
+  },
+  {
+    "id": "C3A73E5C-3FAE-4F2E-AB87-D731DB45B962",
+    "name": "RMZ Eco World",
+    "lat": 12.92099415205729,
+    "lng": 77.6860545556384,
+    "digipin": "DIGIPIN-1292099-7768605",
+    "operator": "Zeon Charging",
+    "power_kw": 50.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 11.396843629250748,
+    "address": "Adarsh Palm Retreat Tower 1"
+  },
+  {
+    "id": "91316782-2F38-421D-8C9E-1BD5017B5C00",
+    "name": "Aloft Bengaluru Outer Ring Road ",
+    "lat": 12.93674468018763,
+    "lng": 77.69488851137544,
+    "digipin": "DIGIPIN-1293674-7769489",
+    "operator": "Chargezone (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 11.538179078181535,
+    "address": "Cessna Business Park Sarjapur - Marathahalli Outer Ring Road"
+  },
+  {
+    "id": "4A743326-B911-4377-8D9A-96F3776B94CD",
+    "name": "More Hypermarket, Hosur Road",
+    "lat": 12.88014,
+    "lng": 77.64592,
+    "digipin": "DIGIPIN-1288014-7764592",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 11.591444707112542,
+    "address": "#764/A ACC Layout B Block Near National Vemite"
+  },
+  {
+    "id": "2B93FDF5-08BB-4DE5-A468-F270FCDC449A",
+    "name": "Trifecta Addatto",
+    "lat": 12.994305942257284,
+    "lng": 77.69929493060977,
+    "digipin": "DIGIPIN-1299431-7769929",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 11.621522253019261,
+    "address": "ITPL Main Road, Garudachar Palya"
+  },
+  {
+    "id": "1BAA9D12-9AAC-445F-AF70-0B7D59A50321",
+    "name": "Shell Recharge Marathahalli",
+    "lat": 12.94285,
+    "lng": 77.69782,
+    "digipin": "DIGIPIN-1294285-7769782",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 11.633173316005063,
+    "address": "Marathahalli, Outer Ring Road"
+  },
+  {
+    "id": "B5E7451D-59E0-48B5-BBF5-D72A495BF552",
+    "name": "Akshaya Motors Mercedes-Benz",
+    "lat": 12.923963230811792,
+    "lng": 77.49720824597415,
+    "digipin": "DIGIPIN-1292396-7749721",
+    "operator": "Chargezone (India)",
+    "power_kw": 90.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 11.80878617539192,
+    "address": "Valagerehalli Village, 77/1, Mysore Road"
+  },
+  {
+    "id": "D6EA3E0D-FF54-4CA5-8D7A-21E4C688730B",
+    "name": "Jio-BP Pulse Hub, Marathalli",
+    "lat": 12.95179,
+    "lng": 77.70207,
+    "digipin": "DIGIPIN-1295179-7770207",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "GB-T DC - GB/T 20234.3",
+      "IEC 60309 3-pin",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 11,
+    "is_operational": true,
+    "distance_km": 11.852128792122617,
+    "address": "17, behind Biriyani Zone, Vivekananda Layout"
+  },
+  {
+    "id": "93CC8512-DC60-4A20-86DE-15FC3E3C2E83",
+    "name": "Ather Grid Point - Royal Airawat Residency",
+    "lat": 12.9222872,
+    "lng": 77.4954903,
+    "digipin": "DIGIPIN-1292229-7749549",
+    "operator": "(Unknown Operator)",
+    "power_kw": 3.0,
+    "connector_types": [
+      "Unknown"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 12.05909077154833,
+    "address": "Bangalore-Mysore Road"
+  },
+  {
+    "id": "F081CE82-1CB7-43E5-9796-E8B151C944DD",
+    "name": "Metropolis Gurukrupa Apartment",
+    "lat": 12.87479,
+    "lng": 77.64694,
+    "digipin": "DIGIPIN-1287479-7764694",
+    "operator": "Zeon Charging",
+    "power_kw": 7.4,
+    "connector_types": [
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 12.167911371317198,
+    "address": "58/1, near Fab Hypermart, Aishwarya Crystal Layout"
+  },
+  {
+    "id": "52234FB5-D43E-4129-9A0D-F68404F88667",
+    "name": "Metropolis Gurukrupa",
+    "lat": 12.87544,
+    "lng": 77.64835,
+    "digipin": "DIGIPIN-1287544-7764835",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 12.176376611207154,
+    "address": "58/1, Hosur Road, Service Road"
+  },
+  {
+    "id": "FBF3767F-4DD2-43EA-AC90-CCE880AB4BBF",
+    "name": "Shell Recharge Bagmane Solarium",
+    "lat": 12.9717,
+    "lng": 77.7075,
+    "digipin": "DIGIPIN-1297170-7770750",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 12.23355217058926,
+    "address": "Chinnapanahalli Main Rd, Kundalahalli Colony"
+  },
+  {
+    "id": "87920804-143D-43CA-B698-3B9DC151071D",
+    "name": "Big Pitcher Sarjapur Road",
+    "lat": 12.90986,
+    "lng": 77.68856,
+    "digipin": "DIGIPIN-1290986-7768856",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 12.280650679475237,
+    "address": "Doddakannelli, 116/9, Ambalipura - Sarjapur Rd"
+  },
+  {
+    "id": "670BA7A0-C156-4FAA-BE00-67EACF1C9F91",
+    "name": "Shell Recharge Brookfield",
+    "lat": 12.982973492700651,
+    "lng": 77.7080860046741,
+    "digipin": "DIGIPIN-1298297-7770809",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 12.36162866429337,
+    "address": "Graphite India Main Road, ITPL Main Rd, Hoodi, "
+  },
+  {
+    "id": "6605D11B-0776-4FE6-AD6C-23583B4BDE4B",
+    "name": "BMW Deutsche Motoren",
+    "lat": 12.984136068485071,
+    "lng": 77.70811153054012,
+    "digipin": "DIGIPIN-1298414-7770811",
+    "operator": "(Unknown Operator)",
+    "power_kw": 50.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 12.378241887916621,
+    "address": "217, 2, ITPL Main Road, Doddanakundi Industrial Area 2"
+  },
+  {
+    "id": "B03A2FE1-C227-49F1-ACCA-885B217769B4",
+    "name": "Fairfield by Marriott, Mahadevapura",
+    "lat": 12.981842444072356,
+    "lng": 77.7086328330862,
+    "digipin": "DIGIPIN-1298184-7770863",
+    "operator": "Chargezone (India)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 12.408423846591825,
+    "address": "3-A1 Kundanahalli Main Road, Mahadevpura"
+  },
+  {
+    "id": "1DFB3CC7-2381-482F-899C-9BC628F387F2",
+    "name": "Epitome KIA Whitefield",
+    "lat": 12.985769101393643,
+    "lng": 77.70856232742358,
+    "digipin": "DIGIPIN-1298577-7770856",
+    "operator": "Tata Power",
+    "power_kw": 150.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 12.44841479320426,
+    "address": "19/A, Hoodi Main Road, Doddanakundi Industrial Area 2"
+  },
+  {
+    "id": "A95B1B05-A67E-4631-9E90-6BCBDAA7D193",
+    "name": "Lithium Urban Tech Pvt Ltd",
+    "lat": 12.98306,
+    "lng": 77.70906,
+    "digipin": "DIGIPIN-1298306-7770906",
+    "operator": "(Unknown Operator)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 12.46759409856967,
+    "address": "158, ITPL Main Road, NCPR Industrial Layout, Doddanakundi Industrial Area 2"
+  },
+  {
+    "id": "06145333-FCEC-4CB1-B344-7A601B810768",
+    "name": "Blusmart Charging Station (Gottigere Hub)",
+    "lat": 12.85845,
+    "lng": 77.58721,
+    "digipin": "DIGIPIN-1285845-7758721",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 12.607173904465435,
+    "address": "52, Gottigere - Kengeri Rd, Vidyasagar Layout, Gundappa Layout"
+  },
+  {
+    "id": "3BD6763A-561E-40E2-AFCC-7E3C82CB2AD0",
+    "name": "Kropex Auto, Hosur Road",
+    "lat": 12.87194,
+    "lng": 77.65095,
+    "digipin": "DIGIPIN-1287194-7765095",
+    "operator": "Tata Power",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "CHAdeMO"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 12.653108925276083,
+    "address": "No 49/1, Hosur Road"
+  },
+  {
+    "id": "294B677C-A7F3-4CC3-B8AA-E98BDE71C6B9",
+    "name": "Bellandur Charging Hub",
+    "lat": 12.92924,
+    "lng": 77.70305,
+    "digipin": "DIGIPIN-1292924-7770305",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 10,
+    "is_operational": true,
+    "distance_km": 12.661124758402888,
+    "address": "Fitso Panathur PK Sports, Swimming, No.6"
+  },
+  {
+    "id": "DF7A758A-8102-428E-BDCC-F7D966BC1C24",
+    "name": "Prestige Technostar",
+    "lat": 12.972600290996027,
+    "lng": 77.71145680417794,
+    "digipin": "DIGIPIN-1297260-7771146",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 12.66276159883244,
+    "address": "ITPL Main Road Doddanakundi Industrial Area 2, Phase 1"
+  },
+  {
+    "id": "B874F86B-0820-44CD-8C13-3A93E71C6A37",
+    "name": "Shell Recharge Tumkur Road",
+    "lat": 13.046725564235746,
+    "lng": 77.50216038004966,
+    "digipin": "DIGIPIN-1304673-7750216",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 13.041570530161634,
+    "address": "Nelamangala - Majestic Service Road Dasarahalli, "
+  },
+  {
+    "id": "F5AA7D6A-DAA8-4E19-8B64-12F5DE221013",
+    "name": "VST Central KIA",
+    "lat": 13.05335,
+    "lng": 77.50798,
+    "digipin": "DIGIPIN-1305335-7750798",
+    "operator": "Tata Power",
+    "power_kw": 150.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 13.06514060747545,
+    "address": "69/2, Hesarghatta Rd, Bhuvaneshwari Nagar, Bagalakunte, Bengaluru, Karnataka 560057"
+  },
+  {
+    "id": "07513543-FC26-4597-9C53-E40F4B7D5750",
+    "name": "Shell Recharge Hennur",
+    "lat": 13.07536,
+    "lng": 77.6524,
+    "digipin": "DIGIPIN-1307536-7765240",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 13.127275506038734,
+    "address": "Hennur Bagalur Main Rd, opp. Mantri Web City, Visthar"
+  },
+  {
+    "id": "E75957D9-4FAF-4AB1-8641-471E6C00F99A",
+    "name": "KHT Brookefield",
+    "lat": 12.96712414548928,
+    "lng": 77.71696159433418,
+    "digipin": "DIGIPIN-1296712-7771696",
+    "operator": "Tata Power",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "CHAdeMO"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 13.268240039156975,
+    "address": "#2, Kundalahalli Main Road, AECS Layout, "
+  },
+  {
+    "id": "012365B3-0BEA-4472-A73F-4AD1C6C3E90B",
+    "name": "JLR Shakti Auto",
+    "lat": 12.963582255188314,
+    "lng": 77.7173795341912,
+    "digipin": "DIGIPIN-1296358-7771738",
+    "operator": "Tata Power",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "CHAdeMO"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 13.334122248155294,
+    "address": "Jaguar and Land Rover, #36 Kundalahalli Main Road"
+  },
+  {
+    "id": "80B3DA2D-77DD-45EC-AC97-899E13B33F90",
+    "name": "goEgo EV CHARGE PARK",
+    "lat": 12.96316,
+    "lng": 77.71814,
+    "digipin": "DIGIPIN-1296316-7771814",
+    "operator": "(Unknown Operator)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 13.419555570686608,
+    "address": "SRIT House, #113/1B, ITPL Main Road"
+  },
+  {
+    "id": "7F52B02A-B90E-4572-9F69-A802FDBB367E",
+    "name": "IKEA Bengaluru",
+    "lat": 13.04917,
+    "lng": 77.49967,
+    "digipin": "DIGIPIN-1304917-7749967",
+    "operator": "Zeon Charging",
+    "power_kw": 7.2,
+    "connector_types": [
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 13.422877868740713,
+    "address": "Nelamangala - Majestic Service Rd, Manjunatha Nagar, "
+  },
+  {
+    "id": "732BBA3B-E31B-43F7-A340-9B5EBFD069AB",
+    "name": "MG Motor Hosur Road",
+    "lat": 12.86563,
+    "lng": 77.65753,
+    "digipin": "DIGIPIN-1286563-7765753",
+    "operator": "Statiq (IN)",
+    "power_kw": 50.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "CHAdeMO"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 13.614857812794897,
+    "address": "Old, 2B Workshop No 6, 384, 6/2 1, Hosur Road"
+  },
+  {
+    "id": "8B5AF926-37BA-478B-BE57-D0E300177F43",
+    "name": "Shell Recharge Kanakapura Road",
+    "lat": 12.86276,
+    "lng": 77.53146,
+    "digipin": "DIGIPIN-1286276-7753146",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 13.903184053512767,
+    "address": "Kanakapura Main Rd, Uttarahalli Hobli"
+  },
+  {
+    "id": "AEC5A30D-BB76-4DCD-9AEC-FDD6E4B5C701",
+    "name": "Adarsh Green Apartments",
+    "lat": 13.095707,
+    "lng": 77.610903,
+    "digipin": "DIGIPIN-1309571-7761090",
+    "operator": "Salzer NexCharge (IN)",
+    "power_kw": 7.0,
+    "connector_types": [
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 13.912621493152498,
+    "address": "Adarsh Green Oak, Prakruthi Nagar Kogilu"
+  },
+  {
+    "id": "3265D1F2-368E-48BA-8092-E6075AB3E816",
+    "name": "La Maison Citro\u00ebn Hosur Road, Bengaluru",
+    "lat": 12.86308,
+    "lng": 77.65922,
+    "digipin": "DIGIPIN-1286308-7765922",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 13.952044176359513,
+    "address": "Survey No.4, Khata No. 62-4, Beratena Agrahara Village Begur Hobli"
+  },
+  {
+    "id": "42EACE21-AF1C-4861-9E14-756F608BF67F",
+    "name": "DivyaSree LitBox",
+    "lat": 12.97098961190295,
+    "lng": 77.7250244631253,
+    "digipin": "DIGIPIN-1297099-7772502",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 14.132634979981537,
+    "address": "DivyaSree Republic of Whitefield Sy. No. 36/2 & 36/3, Kundanahalli Village "
+  },
+  {
+    "id": "2C1891D6-019B-4DEA-A3CC-54FF9F02B97C",
+    "name": "Metro Cash&Carry",
+    "lat": 12.8610658784023,
+    "lng": 77.66099764437081,
+    "digipin": "DIGIPIN-1286107-7766100",
+    "operator": "(Unknown Operator)",
+    "power_kw": 7.4,
+    "connector_types": [
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 14.24257297599844,
+    "address": "5/2, NH - 44, Lavakusha Nagar"
+  },
+  {
+    "id": "4B1CB918-90CA-42CF-A38A-8C81720D9B17",
+    "name": "Shell Yelahanka New Town",
+    "lat": 13.098,
+    "lng": 77.5658,
+    "digipin": "DIGIPIN-1309800-7756580",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 14.397148094228053,
+    "address": "Yelahanka Rd, Escorts Colony"
+  },
+  {
+    "id": "1DC5AC05-CA9A-4A2C-BC54-9F5D7DB44029",
+    "name": "Marriott Hotel Whitefield",
+    "lat": 12.979262407836174,
+    "lng": 77.72744812682743,
+    "digipin": "DIGIPIN-1297926-7772745",
+    "operator": "Chargezone (India)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 14.420047965679712,
+    "address": "Plot No 75, 8th Road"
+  },
+  {
+    "id": "AA7BBAB6-8C34-466C-B06F-CDB93C6E1477",
+    "name": "Nexus Shantiniketan Jio-BP",
+    "lat": 12.989040024957774,
+    "lng": 77.72758362256013,
+    "digipin": "DIGIPIN-1298904-7772758",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 14.53916213624255,
+    "address": "ITPL Road"
+  },
+  {
+    "id": "363D9FF9-BBC8-4392-A748-5ADAC2F92953",
+    "name": "Nexus Shantiniketan - Statiq",
+    "lat": 12.989065694796125,
+    "lng": 77.72760379808074,
+    "digipin": "DIGIPIN-1298907-7772760",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 7,
+    "is_operational": true,
+    "distance_km": 14.541708892744216,
+    "address": "ITPL Road"
+  },
+  {
+    "id": "07A063DE-C357-4C43-9147-B48E7E03BA8A",
+    "name": "Jio-bp Pulse Hub, Siddhapura",
+    "lat": 12.957173268150797,
+    "lng": 77.72954555409183,
+    "digipin": "DIGIPIN-1295717-7772955",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "GB-T DC - GB/T 20234.3",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 14.710501595900281,
+    "address": "#244 Shop No 1 Varthur Main Road"
+  },
+  {
+    "id": "1347E41C-7C7C-4818-9FD4-0CAEA5658A11",
+    "name": "JioBP Pulse Charging Hub - Electronic City Phase II",
+    "lat": 12.86462,
+    "lng": 77.67486,
+    "digipin": "DIGIPIN-1286462-7767486",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "GB-T DC - GB/T 20234.3",
+      "IEC 60309 3-pin",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 4,
+    "is_operational": true,
+    "distance_km": 14.73676497185904,
+    "address": "Sy No 62/1, Electronic City, Hobli, Begur"
+  },
+  {
+    "id": "254475FE-6705-4FE3-9C95-29502D77CA47",
+    "name": "Jio BP Charging Hub Chikkagubbi ",
+    "lat": 13.087848141186939,
+    "lng": 77.66014774782752,
+    "digipin": "DIGIPIN-1308785-7766015",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "GB-T DC - GB/T 20234.3",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 14.748212712523436,
+    "address": "Chikkagubbi Village, Nadagowdagollahalli"
+  },
+  {
+    "id": "4A3E773F-EA0B-43C6-8677-9E500E02778F",
+    "name": "Sheraton Grand Bengaluru Whitefield Hotel & Convention Center",
+    "lat": 12.989215375302493,
+    "lng": 77.72961910576282,
+    "digipin": "DIGIPIN-1298922-7772962",
+    "operator": "Chargezone (India)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 14.760342389832772,
+    "address": "Whitefield Road, Prestige Shantiniketan"
+  },
+  {
+    "id": "99CB5E99-0D57-4093-A64D-774CAEE6A373",
+    "name": "Shell Recharge Kogilu Road",
+    "lat": 13.1043,
+    "lng": 77.60448,
+    "digipin": "DIGIPIN-1310430-7760448",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 14.794332003794144,
+    "address": "Kogilu Main Rd, Kurlappa Layout"
+  },
+  {
+    "id": "0956F968-A413-4D26-8554-3EC41D95BC74",
+    "name": "Divyasree NR Enclave",
+    "lat": 12.986347110711023,
+    "lng": 77.73038387486008,
+    "digipin": "DIGIPIN-1298635-7773038",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 14.803850014773696,
+    "address": "#1, 1st Main Rd, Whitefield"
+  },
+  {
+    "id": "5A15CF38-3FC6-457C-BFB8-036C53D3684B",
+    "name": "Shell Recharge Prestige Shantiniketan",
+    "lat": 12.992,
+    "lng": 77.7299,
+    "digipin": "DIGIPIN-1299200-7772990",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 14.834609374957337,
+    "address": "9, Shanthi Road Bheemanna Garden, Shanti Nagar, Thigalarapalya"
+  },
+  {
+    "id": "F3E65AE6-9BFD-48D8-A6F4-4A8049ED19DA",
+    "name": "Kengeri Charging Hub",
+    "lat": 12.9055171580421,
+    "lng": 77.47375007379192,
+    "digipin": "DIGIPIN-1290552-7747375",
+    "operator": "Zeon Charging",
+    "power_kw": 75.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 15.017266351895405,
+    "address": "Sy.no 125/1B, 111/1C, 129/1C, Mysore Road"
+  },
+  {
+    "id": "23601C3D-2940-48C1-9DD0-B778298721F0",
+    "name": "Electronic City - BPCL",
+    "lat": 12.85327,
+    "lng": 77.6672,
+    "digipin": "DIGIPIN-1285327-7766720",
+    "operator": "Statiq (IN)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 15.331014693607523,
+    "address": "Hosur Road, Konappana Agrahara"
+  },
+  {
+    "id": "4C5D0E8A-1AAB-42FC-971F-53EC7B8BA001",
+    "name": "Park Square Mall",
+    "lat": 12.987280089618991,
+    "lng": 77.73628236461366,
+    "digipin": "DIGIPIN-1298728-7773628",
+    "operator": "(Unknown Operator)",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 15.45053953992424,
+    "address": "ITPB, ITPL Main Road"
+  },
+  {
+    "id": "307999AF-E2F8-4DD7-9E96-726911C0B3B8",
+    "name": "Ather Grid Point - Ascendas Park square mall",
+    "lat": 12.9872191,
+    "lng": 77.7364744,
+    "digipin": "DIGIPIN-1298722-7773647",
+    "operator": "(Unknown Operator)",
+    "power_kw": 3.0,
+    "connector_types": [
+      "Unknown"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 15.47045366904054,
+    "address": "40, ITPL Main Rd, Pattandur Agrahara,"
+  },
+  {
+    "id": "D08551A7-AC54-4487-8714-A60C67F6321C",
+    "name": "Jio-BP Pulse Varthur Hub",
+    "lat": 12.93979,
+    "lng": 77.73447,
+    "digipin": "DIGIPIN-1293979-7773447",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "GB-T DC - GB/T 20234.3",
+      "IEC 60309 3-pin",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 5,
+    "is_operational": true,
+    "distance_km": 15.564166371424859,
+    "address": "Survey No 13/3, Balagere Road, opposite EuroKids"
+  },
+  {
+    "id": "899B0B3A-0E09-49FA-9EAA-695D94FFE68D",
+    "name": "Taj Vivanta Whitefield",
+    "lat": 12.98720238234145,
+    "lng": 77.7373662993079,
+    "digipin": "DIGIPIN-1298720-7773737",
+    "operator": "Tata Power",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 15.566280604107472,
+    "address": "ITPB Main Road, Beside Park Square Mall"
+  },
+  {
+    "id": "9016926E-46CF-4A41-A6DA-C3D6A936E865",
+    "name": "International Tech Park, Bangalore",
+    "lat": 12.985420937588,
+    "lng": 77.7385128788513,
+    "digipin": "DIGIPIN-1298542-7773851",
+    "operator": "(Unknown Operator)",
+    "power_kw": 3.0,
+    "connector_types": [
+      "Unknown"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 15.669137928169535,
+    "address": "Whitefield Road, Pattandur Agrahara, Whitefield"
+  },
+  {
+    "id": "AD1FFE04-65CF-4EF2-B595-F65A6D505539",
+    "name": "Hotel Kadamba Veg",
+    "lat": 12.9019345,
+    "lng": 77.4689096,
+    "digipin": "DIGIPIN-1290193-7746891",
+    "operator": "Zeon Charging",
+    "power_kw": 24.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 15.670025299757448,
+    "address": "Sy. No 272/2, Nice Road Junction"
+  },
+  {
+    "id": "93482840-3A0D-4FF3-929F-C6D091E93CAB",
+    "name": "BloomSuites",
+    "lat": 12.839685411251565,
+    "lng": 77.65952566488613,
+    "digipin": "DIGIPIN-1283969-7765953",
+    "operator": "Tata Power",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 16.268894211735955,
+    "address": "No. 5-56/A, Wipro Avenue, opp. Wipro Gate, Electronics City Phase 1"
+  },
+  {
+    "id": "B82F144C-4B89-4C87-B8AE-A7DF763A6537",
+    "name": "Jaguar Land Rover Cars Airport Road",
+    "lat": 13.11756,
+    "lng": 77.60923,
+    "digipin": "DIGIPIN-1311756-7760923",
+    "operator": "Tata Power",
+    "power_kw": 50.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "CHAdeMO",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 16.307202999665677,
+    "address": "NH - 44, Airport Road"
+  },
+  {
+    "id": "808CB5AC-0A46-4E91-BC02-273219DF01D5",
+    "name": "Monk Mansion",
+    "lat": 12.841088856819354,
+    "lng": 77.66441658541129,
+    "digipin": "DIGIPIN-1284109-7766442",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 16.36656965028129,
+    "address": "89, Neeladri Nagar"
+  },
+  {
+    "id": "86084062-6C9B-4B8C-A52C-1B4A9DC64842",
+    "name": "Nexus Whitefield Statiq",
+    "lat": 12.960076399887868,
+    "lng": 77.74719391663552,
+    "digipin": "DIGIPIN-1296008-7774719",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 7,
+    "is_operational": true,
+    "distance_km": 16.58463633465261,
+    "address": "62, Whitefield Main Road"
+  },
+  {
+    "id": "20E99141-2B11-4978-B7FE-21584FCF6876",
+    "name": "Nexus Whitefield Jio-BP",
+    "lat": 12.960076399887868,
+    "lng": 77.74719391663552,
+    "digipin": "DIGIPIN-1296008-7774719",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 16.58463633465261,
+    "address": "62, Whitefield Main Road, Prestige Ozone"
+  },
+  {
+    "id": "D791A671-9135-498A-9F1B-F10B7922D0FC",
+    "name": "Ather Grid Point - Herbs and Spices",
+    "lat": 12.9679246469975,
+    "lng": 77.7497762255596,
+    "digipin": "DIGIPIN-1296792-7774978",
+    "operator": "(Unknown Operator)",
+    "power_kw": 3.0,
+    "connector_types": [
+      "Unknown"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 16.819580995285882,
+    "address": "Whitefield Main Road"
+  },
+  {
+    "id": "30B61B35-E501-453F-AEF7-0E1AD091A6C2",
+    "name": "Blusmart Charging Station Electronic City Phase 1",
+    "lat": 12.82734,
+    "lng": 77.65552,
+    "digipin": "DIGIPIN-1282734-7765552",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "GB-T DC - GB/T 20234.3",
+      "IEC 60309 3-pin",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 4,
+    "is_operational": true,
+    "distance_km": 17.34684904261213,
+    "address": "Maragondanahalli, Bommasandra"
+  },
+  {
+    "id": "CFB6B09E-CAC6-4A9F-A51D-65CF6DC7B5D6",
+    "name": "The Zinc By Fern Hotels",
+    "lat": 12.97757571689229,
+    "lng": 77.7570895079167,
+    "digipin": "DIGIPIN-1297758-7775709",
+    "operator": "(Unknown Operator)",
+    "power_kw": 24.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 17.619261566001168,
+    "address": "Surya Elegance, Off Channasandra Main Road, "
+  },
+  {
+    "id": "BF9924D4-0CDE-4630-BFFB-1B9E23A3E3EF",
+    "name": "Shell Recharge Avalahalli",
+    "lat": 13.04041,
+    "lng": 77.74131,
+    "digipin": "DIGIPIN-1304041-7774131",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 17.640603973589624,
+    "address": "Old Madras Road Bidarahalli Hobli"
+  },
+  {
+    "id": "04564C49-199E-4A40-B934-CA91692D69AF",
+    "name": "Kia India Training Center",
+    "lat": 13.05242,
+    "lng": 77.74675,
+    "digipin": "DIGIPIN-1305242-7774675",
+    "operator": "Tata Power",
+    "power_kw": 150.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 18.77447296514655,
+    "address": "Budigere Road, Virgonagar"
+  },
+  {
+    "id": "00CE5FB8-0803-49B9-9AA3-BD585D5B37C6",
+    "name": "Shell Recharge Budigere",
+    "lat": 13.06226,
+    "lng": 77.74273,
+    "digipin": "DIGIPIN-1306226-7774273",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 18.95165020465564,
+    "address": "Budigere Rd Hosakote, Cheemasandra"
+  },
+  {
+    "id": "9B1DDC84-D458-4F07-A002-9F043B49C1DE",
+    "name": "Orion Uptown Mall",
+    "lat": 13.05515,
+    "lng": 77.7638,
+    "digipin": "DIGIPIN-1305515-7776380",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 20.550799086761344,
+    "address": "Kattamnallur, Old Madras Rd"
+  },
+  {
+    "id": "C553DB8F-5EF4-4FDE-8802-A309B3F1DAE6",
+    "name": "Jio BP Chikkajala",
+    "lat": 13.16554,
+    "lng": 77.62933,
+    "digipin": "DIGIPIN-1316554-7762933",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 21.890783683079775,
+    "address": "NH 44, Yelahanka"
+  },
+  {
+    "id": "C65833F5-7AAE-4BA8-9480-C5F84A6C426F",
+    "name": "DS Max Sky Fields",
+    "lat": 12.954683,
+    "lng": 77.801405,
+    "digipin": "DIGIPIN-1295468-7780141",
+    "operator": "Salzer NexCharge (IN)",
+    "power_kw": 7.0,
+    "connector_types": [
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 22.4884231974694,
+    "address": "Soukya Road, Whitefield, Kacharakanahalli"
+  },
+  {
+    "id": "D6343FF9-69AA-4854-A2E9-2DB2EFB76CD1",
+    "name": "Miracle Dhaba",
+    "lat": 13.08468,
+    "lng": 77.41488,
+    "digipin": "DIGIPIN-1308468-7741488",
+    "operator": "Adani Gas-EV (TR)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 23.176861743511953,
+    "address": "Near Vishwashanthi Ashrama, Nelamangala, NH - 48, Tumkur Road"
+  },
+  {
+    "id": "558E4B08-CDD6-4C6C-B1F1-E40AE0A58B9A",
+    "name": "Shell Recharge Mahadeva Kodigehalli",
+    "lat": 13.15446,
+    "lng": 77.70277,
+    "digipin": "DIGIPIN-1315446-7770277",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 23.467338063491493,
+    "address": "IT Park, No 1, Road, Kiadb Industrial Park, Mahadeva Kodigehalli"
+  },
+  {
+    "id": "B18F23A9-91A6-471A-B8CA-8A325B58942B",
+    "name": "Jio BP Nelamangala",
+    "lat": 13.086525423479687,
+    "lng": 77.4084730159021,
+    "digipin": "DIGIPIN-1308653-7740847",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 23.872059089636487,
+    "address": "Survey No 113/1, 117/2 & 115/1, Nelamangala Road, Vijaya Vittala Nagar, Kasaba Hobli"
+  },
+  {
+    "id": "178C3DFD-E822-4D9B-BD84-97B733FBAACD",
+    "name": "Jio BP Chandapura",
+    "lat": 12.79284,
+    "lng": 77.72766,
+    "digipin": "DIGIPIN-1279284-7772766",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 24.558740292192848,
+    "address": "Survey No 73, Anekal, Neraluru"
+  },
+  {
+    "id": "C218EA4C-66D8-4DB8-9F44-B8CFCB78828E",
+    "name": "GAIL Gas Station -Tata Power",
+    "lat": 13.15341,
+    "lng": 77.72827,
+    "digipin": "DIGIPIN-1315341-7772827",
+    "operator": "Tata Power",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 24.866379745305846,
+    "address": "SH 104, Singahalli"
+  },
+  {
+    "id": "B8CF9BEB-5EED-44BD-B375-136EA85A4B89",
+    "name": "Moxy Bengaluru Airport Prestige Tech Cloud",
+    "lat": 13.19211,
+    "lng": 77.64456,
+    "digipin": "DIGIPIN-1319211-7764456",
+    "operator": "Chargezone (India)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 25.109573752844444,
+    "address": "4 & 5, Sadahalli Main Road, Near Sadhahalli Gate"
+  },
+  {
+    "id": "36CC6169-7004-4D8F-832D-72BD1181D0C5",
+    "name": "GLIDA Charging Hub",
+    "lat": 13.18324,
+    "lng": 77.67608,
+    "digipin": "DIGIPIN-1318324-7767608",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 10,
+    "is_operational": true,
+    "distance_km": 25.13363883421387,
+    "address": "Airport Hub, BK Halli Road, Chikkanahalli"
+  },
+  {
+    "id": "8BBE0741-8043-4282-94C9-0A2C5034B67E",
+    "name": "Click Hotel Sadahalli",
+    "lat": 13.19218,
+    "lng": 77.64652,
+    "digipin": "DIGIPIN-1319218-7764652",
+    "operator": "Tata Power",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 25.163762103782485,
+    "address": "No. 35, Down Town Park, Sadahalli Gate, near ITC Factory, "
+  },
+  {
+    "id": "B68DDAEA-E977-4AD8-8964-17F4E99D8F9A",
+    "name": "Shell Recharge, Chandapura",
+    "lat": 12.78840738219364,
+    "lng": 77.73682462376587,
+    "digipin": "DIGIPIN-1278841-7773682",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 25.546356583356125,
+    "address": "44 Anekal, Balagaranahalli Road"
+  },
+  {
+    "id": "9E284FB4-5373-43C6-B52F-39CFCBC7751D",
+    "name": "Wonderla Bengaluru",
+    "lat": 12.838006,
+    "lng": 77.402104,
+    "digipin": "DIGIPIN-1283801-7740210",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 25.611999632616588,
+    "address": "Left Side of the Parking Area from Main Entrance Gate, Wonderla Resort,"
+  },
+  {
+    "id": "D7423D02-A3E6-4346-B7CE-72228742D48D",
+    "name": "Shell Recharge Anekal Road",
+    "lat": 12.76356,
+    "lng": 77.70167,
+    "digipin": "DIGIPIN-1276356-7770167",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 25.881454706580758,
+    "address": "Chandapura - Anekal Road, Marsur"
+  },
+  {
+    "id": "D7661991-870B-4832-AE83-E1DB48C1E805",
+    "name": "Sowmya Fuel Station",
+    "lat": 12.78393,
+    "lng": 77.75433,
+    "digipin": "DIGIPIN-1278393-7775433",
+    "operator": "Tata Power",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 27.115690457803304,
+    "address": "Sy no 3, Hosur Road"
+  },
+  {
+    "id": "D59BD172-D958-4B4D-ABB5-1FF409069B31",
+    "name": "Eagleton The Golf Resort",
+    "lat": 12.80007,
+    "lng": 77.41324,
+    "digipin": "DIGIPIN-1280007-7741324",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 27.390578696192673,
+    "address": "off Bangalore \u2013 Mysore Highway, Shyanamangala Cross, Mysore Road"
+  },
+  {
+    "id": "18DD36C2-6228-4065-A813-DC58DDE6EB49",
+    "name": "Taj Bangalore",
+    "lat": 13.19736,
+    "lng": 77.71011,
+    "digipin": "DIGIPIN-1319736-7771011",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 28.048089866014035,
+    "address": "Taj Hotel, Right side of the Reception Entry"
+  },
+  {
+    "id": "14CAED5C-30A9-4E2F-BD5A-D6DB0AA4F790",
+    "name": "Shell Recharge Devanahalli",
+    "lat": 13.24117,
+    "lng": 77.70313,
+    "digipin": "DIGIPIN-1324117-7770313",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 4,
+    "is_operational": true,
+    "distance_km": 32.196847184593054,
+    "address": "Devanahalli Bypass NH - 44, "
+  },
+  {
+    "id": "3DB8CBDD-F272-4816-920C-CFA61033519F",
+    "name": "Shell Recharge Gokare Road",
+    "lat": 13.23897,
+    "lng": 77.72394,
+    "digipin": "DIGIPIN-1323897-7772394",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "IEC 60309 3-pin"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 32.864725444257544,
+    "address": "Devanahalli, Boodihal"
+  },
+  {
+    "id": "35BD628A-D063-4F92-AFEF-F0C3AE5B4A41",
+    "name": "Hotel Hills, Hosur",
+    "lat": 12.75413,
+    "lng": 77.80406,
+    "digipin": "DIGIPIN-1275413-7780406",
+    "operator": "Tata Power",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "Type 2 (Tethered Connector) "
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 33.17120228317566,
+    "address": "No 41, SIPCOT Industrial Complex, Phase 1"
+  },
+  {
+    "id": "636D2277-B49F-4027-BBD5-E2D4F6193B07",
+    "name": "Manikanta Filling Centre BPCL",
+    "lat": 12.6915,
+    "lng": 77.47631,
+    "digipin": "DIGIPIN-1269150-7747631",
+    "operator": "Statiq (IN)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 33.682770446227806,
+    "address": "Kanakapura Road"
+  },
+  {
+    "id": "B45154AD-6FC0-4CDD-8499-83E44E25D14C",
+    "name": "Chennai Silks Hosur",
+    "lat": 12.74717,
+    "lng": 77.81056,
+    "digipin": "DIGIPIN-1274717-7781056",
+    "operator": "(Unknown Operator)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 34.21794084878343,
+    "address": "181/182 Sipcot Complex Phase 1 Mookondapalli"
+  },
+  {
+    "id": "1FABC898-7A03-48EC-A98E-38746F707861",
+    "name": "Paakashala @ TBegur",
+    "lat": 13.15172,
+    "lng": 77.33795,
+    "digipin": "DIGIPIN-1315172-7733795",
+    "operator": "Zeon Charging",
+    "power_kw": 200.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 3,
+    "is_operational": true,
+    "distance_km": 34.26320599977325,
+    "address": "Thyamagondlu Cross, Karnataka 562123"
+  },
+  {
+    "id": "D70C02D4-79ED-4E72-A2ED-77E3F541E1FD",
+    "name": "Shell Recharge Devanahalli",
+    "lat": 13.26416,
+    "lng": 77.71751,
+    "digipin": "DIGIPIN-1326416-7771751",
+    "operator": "Shell Recharge (IN)",
+    "power_kw": 120.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 35.14886411981175,
+    "address": "NH Service Road, NH44 Bypass"
+  },
+  {
+    "id": "2E03D93F-F352-4B97-BD47-D54E247F59A7",
+    "name": "SemaConnect Bangalore(Wait list Enabled) - 5",
+    "lat": 13.18893573769,
+    "lng": 77.344641725,
+    "digipin": "DIGIPIN-1318894-7734464",
+    "operator": "Blink Charging",
+    "power_kw": 3.7,
+    "connector_types": [
+      "Type 1 (J1772)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 36.290072697196216,
+    "address": "#123, Block 4, 50 Feet Road, Indira Nagar"
+  },
+  {
+    "id": "C9C17CEB-1CB8-4A14-AEE5-B5F3C63A9884",
+    "name": "Hotel Kantara Dine",
+    "lat": 13.06457377178711,
+    "lng": 77.25712516384169,
+    "digipin": "DIGIPIN-1306457-7725713",
+    "operator": "Tata Power",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 37.99458196836818,
+    "address": "NH-75 Bengaluru - Mangaluru Highway"
+  },
+  {
+    "id": "AE9F4E0D-BEC3-4371-922E-D2F7F59B8DAB",
+    "name": "JW Marriott Bengaluru Prestige Golfshire Resort & Spa",
+    "lat": 13.31205,
+    "lng": 77.69087,
+    "digipin": "DIGIPIN-1331205-7769087",
+    "operator": "Chargezone (India)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 39.26535074618772,
+    "address": "Nandi Hills Road Karahalli Post, "
+  },
+  {
+    "id": "1DF5A0DE-39EE-4080-94A1-605179A628C4",
+    "name": "True Sai Tata",
+    "lat": 12.71741,
+    "lng": 77.87594,
+    "digipin": "DIGIPIN-1271741-7787594",
+    "operator": "Tata Power",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)",
+      "CHAdeMO"
+    ],
+    "num_points": 2,
+    "is_operational": true,
+    "distance_km": 41.58346956441126,
+    "address": "Survey No 46/ 1A and 47/1A "
+  },
+  {
+    "id": "88DC8D60-D7FC-47E8-82D7-A402B51DC188",
+    "name": "Siri Motors",
+    "lat": 12.71462,
+    "lng": 77.88475,
+    "digipin": "DIGIPIN-1271462-7788475",
+    "operator": "Statiq (IN)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 42.49711723850278,
+    "address": "S3 Plaza, Door No 3/61 Opp to Ashok Leyland Phase II, Plot no 14 and 23"
+  },
+  {
+    "id": "8440D2FF-EBD6-4F0D-9320-D44649AA5814",
+    "name": "Mulberry Shades Bengaluru Nandi Hills",
+    "lat": 13.34843,
+    "lng": 77.68211,
+    "digipin": "DIGIPIN-1334843-7768211",
+    "operator": "Chargezone (India)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 42.959519414989295,
+    "address": "Survey No: 28, 29 & 30, Kemathimmanahalli Village"
+  },
+  {
+    "id": "F2CC8370-A35B-4DF7-A1EC-8E98CA13B70B",
+    "name": "Key Motors",
+    "lat": 12.57449,
+    "lng": 77.42937,
+    "digipin": "DIGIPIN-1257449-7742937",
+    "operator": "Tata Power",
+    "power_kw": 25.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 47.65357087892633,
+    "address": "Malavalli Road, Survey No 38/14, Kallahalli"
+  },
+  {
+    "id": "DC4D5C19-C4F6-4278-A06D-9C0257557CD9",
+    "name": "Hotel Masala Suruchi",
+    "lat": 13.0595636,
+    "lng": 77.1631723,
+    "digipin": "DIGIPIN-1305956-7716317",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 60.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 47.75255029508008,
+    "address": "NH - 75"
+  },
+  {
+    "id": "A674E6E5-2FF9-4076-B789-A007D6FA3393",
+    "name": "Jio BP Hosur",
+    "lat": 12.68784,
+    "lng": 77.92684,
+    "digipin": "DIGIPIN-1268784-7792684",
+    "operator": "JIO BP Pulse (India)",
+    "power_kw": 30.0,
+    "connector_types": [
+      "CCS (Type 2)"
+    ],
+    "num_points": 1,
+    "is_operational": true,
+    "distance_km": 47.886182034070586,
+    "address": "NH - 44"
+  }
+]

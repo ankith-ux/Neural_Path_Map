@@ -87,7 +87,9 @@ function RouteChoice({ route, index, selected }) {
         ? `Safety ${Math.round(metrics.safetyScore || 50)}`
         : persona === 'suv'
             ? `SUV ${Math.round(metrics.suvScore || 0)}`
-            : `Signal ${Math.round(metrics.connectivityScore)}`;
+            : persona === 'ev'
+                ? `Signal ${Math.round(metrics.connectivityScore)}`
+                : `Signal ${Math.round(metrics.connectivityScore)}`;
 
     return (
         <div className={`min-w-0 rounded-xl border px-3 py-2.5 transition-all ${selected ? `${tone} shadow-[0_8px_22px_rgba(0,0,0,0.18)]` : 'border-white/10 bg-white/[0.035] opacity-70'}`}>
@@ -115,6 +117,10 @@ export default function NavigationPanel() {
         dynamicRouteData,
         simulationHoursAhead,
         currentNavSignal,
+        isEvMode,
+        evRouteOptions,
+        evChargers,
+        evHeatmapMeta,
     } = useStore();
     const [navDetailsOpen, setNavDetailsOpen] = useState(false);
     const [currentTime, setCurrentTime] = useState(
@@ -189,6 +195,12 @@ export default function NavigationPanel() {
             ? `${primaryCondition.reason} near ${primaryCondition.label}`
             : `${primaryCondition.reason} at ${primaryCondition.label}`
         : null;
+    const evRoute = evRouteOptions?.routes?.find(route => route.routeType === 'ev_optimized') || evRouteOptions?.routes?.[0] || null;
+    const evAlternate = evRouteOptions?.alternateViaChargerRoute || null;
+    const evArrivalSoc = evRoute ? Math.max(0, Math.round(evRoute.predictedArrivalSoCPercent ?? 0)) : null;
+    const evEnergyKwh = evRoute ? Number(evRoute.energyConsumedKwh ?? 0) : null;
+    const evEfficiency = evRoute ? Number(evRoute.efficiencyKwhPerKm ?? 0) : null;
+    const evChargerCount = Array.isArray(evChargers) ? evChargers.length : 0;
 
     // Dynamic values based on navProgress
     const remainingEtaSeconds = Math.max(0, totalEtaSeconds * (1 - navProgress));
@@ -220,9 +232,11 @@ export default function NavigationPanel() {
                 : liveScore < 65
                     ? 'text-amber-300'
                     : 'text-emerald-300';
-        const activeMetricLabel = personaPreset === 'safe_commute' ? 'Safety' : personaPreset === 'suv' ? 'SUV' : 'Signal';
-        const activeMetricValue = personaPreset === 'safe_commute' ? safetyScore : personaPreset === 'suv' ? suvScore : liveScore;
-        const activeMetricToneClass = personaPreset === 'safe_commute' || personaPreset === 'suv'
+        const activeMetricLabel = isEvMode ? 'Battery' : personaPreset === 'safe_commute' ? 'Safety' : personaPreset === 'suv' ? 'SUV' : 'Signal';
+        const activeMetricValue = isEvMode ? (evArrivalSoc ?? 0) : personaPreset === 'safe_commute' ? safetyScore : personaPreset === 'suv' ? suvScore : liveScore;
+        const activeMetricToneClass = isEvMode
+            ? evArrivalSoc === null ? 'text-slate-300' : evArrivalSoc < 20 ? 'text-red-400' : evArrivalSoc < 35 ? 'text-amber-300' : 'text-lime-300'
+            : personaPreset === 'safe_commute' || personaPreset === 'suv'
             ? 'text-amber-300'
             : bandwidthToneClass;
         const navProgressPct = Math.max(0, Math.min(100, Math.round(navProgress * 100)));
@@ -247,7 +261,7 @@ export default function NavigationPanel() {
 
                         <div className="min-w-[4.5rem]">
                             <span className="block text-[8px] font-bold uppercase tracking-widest text-slate-500">{activeMetricLabel}</span>
-                            <span className={`text-sm font-bold ${activeMetricToneClass}`}>{activeMetricValue}<span className="text-[10px] text-slate-500">/100</span></span>
+                            <span className={`text-sm font-bold ${activeMetricToneClass}`}>{activeMetricValue}<span className="text-[10px] text-slate-500">{isEvMode ? '%' : '/100'}</span></span>
                         </div>
 
                         <div className="hidden min-w-[7rem] sm:block">
@@ -323,12 +337,12 @@ export default function NavigationPanel() {
                     </div>
                     <div className="bg-white/5 border border-white/10 rounded-xl px-3 py-3">
                         <span className="block text-[9px] text-slate-500 uppercase tracking-widest font-bold mb-1">
-                            {personaPreset === 'safe_commute' ? 'Safety' : personaPreset === 'suv' ? 'SUV fit' : 'Signal'}
+                            {isEvMode ? 'Battery' : personaPreset === 'safe_commute' ? 'Safety' : personaPreset === 'suv' ? 'SUV fit' : 'Signal'}
                         </span>
-                        <span className={`text-2xl font-bold ${personaPreset === 'safe_commute' || personaPreset === 'suv' ? 'text-amber-300' : 'text-white'}`}>
-                            {personaPreset === 'safe_commute' ? safetyScore : personaPreset === 'suv' ? suvScore : liveScore}
+                        <span className={`text-2xl font-bold ${isEvMode ? (evArrivalSoc !== null && evArrivalSoc < 20 ? 'text-red-400' : 'text-lime-300') : personaPreset === 'safe_commute' || personaPreset === 'suv' ? 'text-amber-300' : 'text-white'}`}>
+                            {isEvMode ? (evArrivalSoc ?? '--') : personaPreset === 'safe_commute' ? safetyScore : personaPreset === 'suv' ? suvScore : liveScore}
                         </span>
-                        <span className="ml-1 text-xs font-semibold text-slate-400">/100</span>
+                        <span className="ml-1 text-xs font-semibold text-slate-400">{isEvMode ? '%' : '/100'}</span>
                     </div>
                     <div className="bg-white/5 border border-white/10 rounded-xl px-3 py-3">
                         <span className="block text-[9px] text-slate-500 uppercase tracking-widest font-bold mb-1">
@@ -397,14 +411,44 @@ export default function NavigationPanel() {
                 </div>
             )}
 
+            {isEvMode && (
+                <div className="rounded-xl border border-lime-300/20 bg-lime-400/10 px-3 py-3 text-lime-50">
+                    <div className="flex items-center justify-between gap-3">
+                        <div>
+                            <span className="block text-[8px] font-bold uppercase tracking-widest text-lime-200/80">EV route</span>
+                            <span className={`text-2xl font-bold ${evArrivalSoc !== null && evArrivalSoc < 20 ? 'text-red-300' : 'text-lime-200'}`}>
+                                {evArrivalSoc === null ? '--' : evArrivalSoc}<span className="ml-1 text-xs text-lime-100/70">%</span>
+                            </span>
+                        </div>
+                        <div className="text-right text-[10px] font-semibold text-lime-100/80">
+                            <div>{evEnergyKwh === null ? '--' : evEnergyKwh.toFixed(1)} kWh</div>
+                            <div>{evEfficiency === null ? '--' : evEfficiency.toFixed(2)} kWh/km</div>
+                            <div>{evChargerCount} chargers</div>
+                        </div>
+                    </div>
+                    {evAlternate?.chargerWaypoints?.[0] && (
+                        <div className="mt-2 rounded-lg border border-lime-200/15 bg-black/20 px-2.5 py-2 text-[11px] leading-relaxed text-lime-50/90">
+                            Charger detour: {evAlternate.chargerWaypoints[0].name || 'fast charger'} · {Number(evAlternate.chargerWaypoints[0].capacity_kw || 0).toFixed(0)} kW.
+                        </div>
+                    )}
+                    {evHeatmapMeta?.truncated && (
+                        <div className="mt-2 text-[10px] text-lime-100/65">
+                            Showing {evHeatmapMeta.count} EV heat segments in view.
+                        </div>
+                    )}
+                </div>
+            )}
+
 
 
             <div className="grid grid-cols-3 bg-black/45 rounded-xl border border-white/10 divide-x divide-white/10">
                 <div className="px-3 py-3 text-center">
                     <span className="block text-[8px] text-slate-500 uppercase tracking-widest font-bold mb-1">
-                        {personaPreset === 'safe_commute' ? 'Safety' : personaPreset === 'suv' ? 'SUV fit' : 'Signal'}
+                        {isEvMode ? 'Battery' : personaPreset === 'safe_commute' ? 'Safety' : personaPreset === 'suv' ? 'SUV fit' : 'Signal'}
                     </span>
-                    {personaPreset === 'safe_commute' ? (
+                    {isEvMode ? (
+                        <span className={`text-xl font-bold ${evArrivalSoc !== null && evArrivalSoc < 20 ? 'text-red-400' : evArrivalSoc !== null && evArrivalSoc < 35 ? 'text-amber-300' : 'text-lime-300'}`}>{evArrivalSoc === null ? '--' : <AnimatedNumber value={evArrivalSoc} />}<span className="text-xs text-slate-400">%</span></span>
+                    ) : personaPreset === 'safe_commute' ? (
                         <span className={`text-xl font-bold ${safetyScore < 50 ? 'text-red-400' : safetyScore < 80 ? 'text-amber-300' : 'text-emerald-300'}`}><AnimatedNumber value={safetyScore} /><span className="text-xs text-slate-400">/100</span></span>
                     ) : personaPreset === 'suv' ? (
                         <span className={`text-xl font-bold ${suvScore < 50 ? 'text-red-400' : suvScore < 80 ? 'text-amber-300' : 'text-emerald-300'}`}><AnimatedNumber value={suvScore} /><span className="text-xs text-slate-400">/100</span></span>
@@ -414,15 +458,15 @@ export default function NavigationPanel() {
                 </div>
                 <div className="px-3 py-3 text-center">
                     <span className="block text-[8px] text-slate-500 uppercase tracking-widest font-bold mb-1">
-                        {personaPreset === 'safe_commute' || personaPreset === 'suv' ? 'Hard blocks' : 'Dead zones'}
+                        {isEvMode ? 'Chargers' : personaPreset === 'safe_commute' || personaPreset === 'suv' ? 'Hard blocks' : 'Dead zones'}
                     </span>
-                    <span className={`text-xl font-bold ${(personaPreset === 'safe_commute' ? safetyHardBlockCount : personaPreset === 'suv' ? suvHardBlockCount : deadZoneCount) > 0 ? 'text-red-400' : (personaPreset === 'safe_commute' || personaPreset === 'suv' ? 'text-amber-300' : 'text-emerald-300')}`}>
-                        {personaPreset === 'safe_commute' ? safetyHardBlockCount : personaPreset === 'suv' ? suvHardBlockCount : deadZoneCount}
+                    <span className={`text-xl font-bold ${isEvMode ? 'text-lime-300' : (personaPreset === 'safe_commute' ? safetyHardBlockCount : personaPreset === 'suv' ? suvHardBlockCount : deadZoneCount) > 0 ? 'text-red-400' : (personaPreset === 'safe_commute' || personaPreset === 'suv' ? 'text-amber-300' : 'text-emerald-300')}`}>
+                        {isEvMode ? evChargerCount : personaPreset === 'safe_commute' ? safetyHardBlockCount : personaPreset === 'suv' ? suvHardBlockCount : deadZoneCount}
                     </span>
                 </div>
                 <div className="px-3 py-3 text-center">
-                    <span className="block text-[8px] text-slate-500 uppercase tracking-widest font-bold mb-1">Network</span>
-                    <span className="text-base font-bold text-sky-300">{dominantBand}</span>
+                    <span className="block text-[8px] text-slate-500 uppercase tracking-widest font-bold mb-1">{isEvMode ? 'Energy' : 'Network'}</span>
+                    <span className={`text-base font-bold ${isEvMode ? 'text-lime-300' : 'text-sky-300'}`}>{isEvMode ? (evEnergyKwh === null ? '--' : `${evEnergyKwh.toFixed(1)} kWh`) : dominantBand}</span>
                 </div>
             </div>
 

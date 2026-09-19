@@ -29,5 +29,6 @@ states_india.geojson
 geojson/bangalore_buildings.geojson
 geojson/states_india.geojson
 geojson/scored_segments_safe.geojson
+geojson/ev_heatmap.geojson
 kepler.gl.html
 osrm-data/

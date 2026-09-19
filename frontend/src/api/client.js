@@ -14,6 +14,61 @@ export const api = {
         return data.tiles || [];
     },
 
+    async evHeatmap() {
+        try {
+            const url = `${BASE_URL}/api/ev/heatmap?max_features=1000000`;
+            const res = await fetch(url);
+            if (!res.ok) return null;
+            return await res.json();
+        } catch (error) {
+            console.error("EV heatmap unavailable:", error);
+            return null;
+        }
+    },
+
+    async evChargers(originCoords, destCoords, radiusKm = 3.0) {
+        if (!originCoords || !destCoords) return [];
+        try {
+            const params = new URLSearchParams({
+                orig_lat: originCoords[1],
+                orig_lng: originCoords[0],
+                dest_lat: destCoords[1],
+                dest_lng: destCoords[0],
+                radius_km: radiusKm,
+                max_results: 80,
+            });
+            const res = await fetch(`${BASE_URL}/api/ev/chargers?${params.toString()}`);
+            if (!res.ok) return [];
+            const data = await res.json();
+            return data.chargers || [];
+        } catch (error) {
+            console.error("EV chargers unavailable:", error);
+            return [];
+        }
+    },
+
+    async evRouteOptions(originCoords, destCoords, currentSoCPercent = 80, batteryCapacityKwh = 60) {
+        if (!originCoords || !destCoords) return null;
+        try {
+            const res = await fetch(`${BASE_URL}/api/route/options`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    vehicleType: 'ev',
+                    origin: { lat: originCoords[1], lng: originCoords[0] },
+                    destination: { lat: destCoords[1], lng: destCoords[0] },
+                    currentSoCPercent,
+                    batteryCapacityKwh,
+                }),
+            });
+            if (!res.ok) return null;
+            return await res.json();
+        } catch (error) {
+            console.error("EV route options unavailable:", error);
+            return null;
+        }
+    },
+
     // Score routes — backend is the single source of truth for routing + scoring
     async scoreRoutes(
         originCoords,

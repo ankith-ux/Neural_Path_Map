@@ -75,6 +75,51 @@ function getNavigationCamera(mode, bearing = 30) {
     return { zoom: 16.5, pitch: 65, bearing };
 }
 
+function emptyFeatureCollection() {
+    return { type: 'FeatureCollection', features: [] };
+}
+
+function emptyLineString() {
+    return { type: 'Feature', geometry: { type: 'LineString', coordinates: [] } };
+}
+
+function buildChargerFeatures(chargers = []) {
+    return {
+        type: 'FeatureCollection',
+        features: chargers.map((charger) => ({
+            type: 'Feature',
+            properties: {
+                id: charger.id,
+                name: charger.name,
+                network: charger.network || 'Unknown',
+                capacity_kw: charger.capacity_kw || 0,
+                distanceKm: charger.distanceKm || 0,
+                connectorTypes: Array.isArray(charger.connectorTypes)
+                    ? charger.connectorTypes.join(', ')
+                    : '',
+            },
+            geometry: {
+                type: 'Point',
+                coordinates: [charger.lng, charger.lat],
+            },
+        })),
+    };
+}
+
+function pickEvRoute(evRouteOptions) {
+    const routes = evRouteOptions?.routes || [];
+    return routes.find((route) => route.routeType === 'ev_optimized') || routes[0] || null;
+}
+
+function escapeHtml(value = '') {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 function routesShareGeometry(a, b) {
     const coordsA = a?.geometry?.coordinates;
     const coordsB = b?.geometry?.coordinates;
@@ -371,11 +416,17 @@ export default function MapContainer() {
         setDynamicRouteData,
         carrier,
         persona,
+        isEvMode,
+        evCurrentSoCPercent,
+        evBatteryCapacityKwh,
         simulationHoursAhead,
         weatherScenario,
         setRouteCacheKey,
         setCurrentNavSignal,
         setWeatherConditions,
+        setEvRouteOptions,
+        setEvChargers,
+        setEvHeatmapMeta,
         setOriginCoords,
         setDestinationCoords,
         setOriginText,
@@ -409,16 +460,22 @@ export default function MapContainer() {
         setDynamicRouteData([]);
         setCurrentNavSignal(null);
         setWeatherConditions(null);
+        setEvRouteOptions(null);
+        setEvChargers([]);
+        setEvHeatmapMeta(null);
 
         if (!map.current?.getSource('route-a')) return;
 
-        const emptyLine = { type: 'Feature', geometry: { type: 'LineString', coordinates: [] } };
-        const emptyFC = { type: 'FeatureCollection', features: [] };
+        const emptyLine = emptyLineString();
+        const emptyFC = emptyFeatureCollection();
 
         map.current.getSource('route-a').setData(emptyLine);
         map.current.getSource('route-b').setData(emptyLine);
         map.current.getSource('route-signal').setData(emptyFC);
         map.current.getSource('dead-zones').setData(emptyFC);
+        map.current.getSource('ev-route')?.setData(emptyLine);
+        map.current.getSource('ev-heatmap')?.setData(emptyFC);
+        map.current.getSource('ev-chargers')?.setData(emptyFC);
     };
 
     // Sync markers if coords change from elsewhere
@@ -545,8 +602,8 @@ export default function MapContainer() {
                 // ═══════════════════════════════════════════════════
                 // 1. INITIALIZE EMPTY SOURCES & LAYERS
                 // ═══════════════════════════════════════════════════
-                const emptyFC = { type: 'FeatureCollection', features: [] };
-                const emptyLine = { type: 'Feature', geometry: { type: 'LineString', coordinates: [] } };
+                const emptyFC = emptyFeatureCollection();
+                const emptyLine = emptyLineString();
 
                 // ═══════════════════════════════════════════════════
                 // 2. SIGNAL TOWER MARKERS
@@ -666,6 +723,68 @@ export default function MapContainer() {
                     paint: { 'line-color': '#f87171', 'line-width': 7, 'line-dasharray': [1.5, 2], 'line-opacity-transition': { duration: 600 } }
                 });
 
+                // EV drainage and charger add-on layers. They stay empty unless EV mode is active.
+                map.current.addSource('ev-heatmap', { type: 'geojson', data: emptyFC });
+                map.current.addLayer({
+                    id: 'ev-heatmap-line',
+                    type: 'line',
+                    source: 'ev-heatmap',
+                    layout: { 'line-join': 'round', 'line-cap': 'round' },
+                    paint: {
+                        'line-color': [
+                            'match',
+                            ['get', 'colorTier'],
+                            'low', '#22c55e',
+                            'medium', '#facc15',
+                            'high', '#ef4444',
+                            '#a3e635',
+                        ],
+                        'line-width': 3,
+                        'line-opacity': 0,
+                        'line-opacity-transition': { duration: 400 },
+                    },
+                });
+
+                map.current.addSource('ev-route', { type: 'geojson', data: emptyLine, lineMetrics: true });
+                map.current.addLayer({
+                    id: 'ev-route-line',
+                    type: 'line',
+                    source: 'ev-route',
+                    layout: { 'line-join': 'round', 'line-cap': 'round' },
+                    paint: {
+                        'line-color': '#a3e635',
+                        'line-width': 6,
+                        'line-dasharray': [0.8, 1.2],
+                        'line-opacity': 0,
+                        'line-opacity-transition': { duration: 400 },
+                    },
+                });
+
+                map.current.addSource('ev-chargers', { type: 'geojson', data: emptyFC });
+                map.current.addLayer({
+                    id: 'ev-charger-glow',
+                    type: 'circle',
+                    source: 'ev-chargers',
+                    paint: {
+                        'circle-radius': 13,
+                        'circle-color': '#a3e635',
+                        'circle-blur': 0.7,
+                        'circle-opacity': 0,
+                    },
+                });
+                map.current.addLayer({
+                    id: 'ev-charger-core',
+                    type: 'circle',
+                    source: 'ev-chargers',
+                    paint: {
+                        'circle-radius': 5,
+                        'circle-color': '#ecfccb',
+                        'circle-stroke-color': '#365314',
+                        'circle-stroke-width': 1.5,
+                        'circle-opacity': 0,
+                    },
+                });
+
                 // ═══════════════════════════════════════════════════
                 // 5. VEHICLE MARKER (HTML)
                 // ═══════════════════════════════════════════════════
@@ -717,6 +836,25 @@ export default function MapContainer() {
 
                 map.current.on('mouseenter', 'dead-zones-glow', () => { map.current.getCanvas().style.cursor = 'pointer'; });
                 map.current.on('mouseleave', 'dead-zones-glow', () => { map.current.getCanvas().style.cursor = ''; });
+
+                map.current.on('click', 'ev-charger-core', (e) => {
+                    const feature = e.features?.[0];
+                    if (!feature) return;
+                    const props = feature.properties || {};
+                    const chargerName = escapeHtml(props.name || 'EV Charger');
+                    const network = escapeHtml(props.network || 'Unknown');
+                    const connectorTypes = escapeHtml(props.connectorTypes || '');
+                    new maplibregl.Popup({ closeButton: true, closeOnClick: true, className: 'neural-popup' })
+                        .setLngLat(e.lngLat)
+                        .setHTML(`<div style="padding:10px;font-family:sans-serif;color:#fff;background:#0f172a;border-radius:8px;max-width:240px;">
+                            <strong style="color:#bef264;font-size:12px;text-transform:uppercase;letter-spacing:1px;">${chargerName}</strong>
+                            <p style="font-size:13px;margin-top:5px;color:#e2e8f0;">${network} · ${Number(props.capacity_kw || 0).toFixed(0)} kW</p>
+                            <p style="font-size:11px;margin-top:5px;color:#94a3b8;">${Number(props.distanceKm || 0).toFixed(2)} km from route${connectorTypes ? `<br/>${connectorTypes}` : ''}</p>
+                        </div>`)
+                        .addTo(map.current);
+                });
+                map.current.on('mouseenter', 'ev-charger-core', () => { map.current.getCanvas().style.cursor = 'pointer'; });
+                map.current.on('mouseleave', 'ev-charger-core', () => { map.current.getCanvas().style.cursor = ''; });
 
                 setMapLoaded(true);
             } catch (err) { console.error("Map init error:", err); }
@@ -797,6 +935,94 @@ export default function MapContainer() {
         // Alpha changes should only update route emphasis/metrics locally; refetching geometry on every slider move makes the ETA feel laggy.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [originCoords, destinationCoords, carrier, persona, debouncedSimulationHoursAhead, weatherScenario, isNavigating, mapLoaded]); // EXCLUDE ALPHA
+
+    // --- EV MODE ADD-ON: heatmap, charger markers, and EV route summary ---
+    useEffect(() => {
+        if (!mapLoaded || !map.current) return;
+
+        const emptyFC = emptyFeatureCollection();
+        const emptyLine = emptyLineString();
+
+        const setEvLayerVisibility = (visible) => {
+            const heatOpacity = visible ? 0.62 : 0;
+            const routeOpacity = visible ? 0.95 : 0;
+            const chargerOpacity = visible ? 0.9 : 0;
+
+            if (map.current.getLayer('ev-heatmap-line')) {
+                map.current.setPaintProperty('ev-heatmap-line', 'line-opacity', heatOpacity);
+            }
+            if (map.current.getLayer('ev-route-line')) {
+                map.current.setPaintProperty('ev-route-line', 'line-opacity', routeOpacity);
+            }
+            if (map.current.getLayer('ev-charger-glow')) {
+                map.current.setPaintProperty('ev-charger-glow', 'circle-opacity', visible ? 0.35 : 0);
+            }
+            if (map.current.getLayer('ev-charger-core')) {
+                map.current.setPaintProperty('ev-charger-core', 'circle-opacity', chargerOpacity);
+            }
+        };
+
+        const loadVisibleHeatmap = async () => {
+            const heatmap = await api.evHeatmap();
+            if (!heatmap || !useStore.getState().isEvMode) return;
+            map.current.getSource('ev-heatmap')?.setData({
+                type: 'FeatureCollection',
+                features: heatmap.features || [],
+            });
+            setEvHeatmapMeta({
+                count: heatmap.count || 0,
+                totalMatches: heatmap.total_matches || 0,
+                truncated: Boolean(heatmap.truncated),
+            });
+        };
+
+        if (!isEvMode || !originCoords || !destinationCoords) {
+            map.current.getSource('ev-route')?.setData(emptyLine);
+            map.current.getSource('ev-heatmap')?.setData(emptyFC);
+            map.current.getSource('ev-chargers')?.setData(emptyFC);
+            setEvLayerVisibility(false);
+            setEvRouteOptions(null);
+            setEvChargers([]);
+            setEvHeatmapMeta(null);
+            return;
+        }
+
+        let cancelled = false;
+
+        const loadEvData = async () => {
+            setEvLayerVisibility(true);
+            const [options, chargers] = await Promise.all([
+                api.evRouteOptions(originCoords, destinationCoords, evCurrentSoCPercent, evBatteryCapacityKwh),
+                api.evChargers(originCoords, destinationCoords),
+            ]);
+
+            if (cancelled || !useStore.getState().isEvMode) return;
+
+            setEvRouteOptions(options);
+            const evRoute = pickEvRoute(options);
+            map.current.getSource('ev-route')?.setData(evRoute?.geometry || emptyLine);
+
+            setEvChargers(chargers);
+            map.current.getSource('ev-chargers')?.setData(buildChargerFeatures(chargers));
+            // await loadVisibleHeatmap(); // Disabled as requested
+        };
+
+        loadEvData();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [
+        mapLoaded,
+        isEvMode,
+        originCoords,
+        destinationCoords,
+        evCurrentSoCPercent,
+        evBatteryCapacityKwh,
+        setEvRouteOptions,
+        setEvChargers,
+        setEvHeatmapMeta,
+    ]);
 
     // --- SMOOTH INTERPOLATION CONTROLLER ---
     useEffect(() => {
